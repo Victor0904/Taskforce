@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collaborateur index{% endblock %}
+
+{% block body %}
+    <h1>Collaborateur index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+                <th>Poste</th>
+                <th>Actif</th>
+                <th>DateNaissance</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for collaborateur in collaborateurs %}
+            <tr>
+                <td>{{ collaborateur.id }}</td>
+                <td>{{ collaborateur.nom }}</td>
+                <td>{{ collaborateur.prenom }}</td>
+                <td>{{ collaborateur.email }}</td>
+                <td>{{ collaborateur.poste }}</td>
+                <td>{{ collaborateur.actif ? 'Yes' : 'No' }}</td>
+                <td>{{ collaborateur.dateNaissance ? collaborateur.dateNaissance|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_collaborateur_show', {'id': collaborateur.id}) }}">show</a>
+                    <a href="{{ path('app_collaborateur_edit', {'id': collaborateur.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_collaborateur_new') }}">Create new</a>
+{% endblock %}
