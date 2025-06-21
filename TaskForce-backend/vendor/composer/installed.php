@@ -3,7 +3,7 @@
         'name' => 'vayk0/taskforce',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '69e61d7ae0886465cea8580030e481c04d0bcabc',
+        'reference' => '65cd5d7839cdd1c2a6f15cd7c5fcacab9d4fe153',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -162,6 +162,15 @@
             'install_path' => __DIR__ . '/../fakerphp/faker',
             'aliases' => array(),
             'dev_requirement' => true,
+        ),
+        'nelmio/cors-bundle' => array(
+            'pretty_version' => '2.5.0',
+            'version' => '2.5.0.0',
+            'reference' => '3a526fe025cd20e04a6a11370cf5ab28dbb5a544',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../nelmio/cors-bundle',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'nikic/php-parser' => array(
             'pretty_version' => 'v5.4.0',
@@ -700,7 +709,7 @@
         'vayk0/taskforce' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '69e61d7ae0886465cea8580030e481c04d0bcabc',
+            'reference' => '65cd5d7839cdd1c2a6f15cd7c5fcacab9d4fe153',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

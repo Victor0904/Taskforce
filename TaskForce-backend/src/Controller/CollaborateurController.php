@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse; // ✅ doit être ici, en haut
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/collaborateur')]
@@ -71,11 +72,13 @@ class CollaborateurController extends AbstractController
     #[Route('/{id}', name: 'app_collaborateur_delete', methods: ['POST'])]
     public function delete(Request $request, Collaborateur $collaborateur, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$collaborateur->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $collaborateur->getId(), $request->request->get('_token'))) {
             $entityManager->remove($collaborateur);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_collaborateur_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
 }

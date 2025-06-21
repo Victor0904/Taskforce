@@ -88,6 +88,10 @@ class ComposerStaticInitc343821d76576f5c1c7d985875387a54
             'Psr\\Cache\\' => 10,
             'PhpParser\\' => 10,
         ),
+        'N' => 
+        array (
+            'Nelmio\\CorsBundle\\' => 18,
+        ),
         'F' => 
         array (
             'Faker\\' => 6,
@@ -333,6 +337,10 @@ class ComposerStaticInitc343821d76576f5c1c7d985875387a54
         'PhpParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
+        ),
+        'Nelmio\\CorsBundle\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/nelmio/cors-bundle',
         ),
         'Faker\\' => 
         array (

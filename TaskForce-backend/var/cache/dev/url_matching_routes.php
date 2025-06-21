@@ -10,6 +10,7 @@ return [
     [ // $staticRoutes
         '/affectation' => [[['_route' => 'app_affectation_index', '_controller' => 'App\\Controller\\AffectationController::index'], null, ['GET' => 0], null, true, false, null]],
         '/affectation/new' => [[['_route' => 'app_affectation_new', '_controller' => 'App\\Controller\\AffectationController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/api/collaborateurs' => [[['_route' => 'api_collaborateurs', '_controller' => 'App\\Controller\\Api\\CollaborateurApiController::index'], null, ['GET' => 0], null, false, false, null]],
         '/collaborateur' => [[['_route' => 'app_collaborateur_index', '_controller' => 'App\\Controller\\CollaborateurController::index'], null, ['GET' => 0], null, true, false, null]],
         '/collaborateur/new' => [[['_route' => 'app_collaborateur_new', '_controller' => 'App\\Controller\\CollaborateurController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/' => [[['_route' => 'home', '_controller' => 'App\\Controller\\HomeController::index'], null, null, null, false, false, null]],

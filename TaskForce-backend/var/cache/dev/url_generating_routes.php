@@ -14,6 +14,7 @@ return [
     'app_collaborateur_show' => [['id'], ['_controller' => 'App\\Controller\\CollaborateurController::show'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/collaborateur']], [], [], []],
     'app_collaborateur_edit' => [['id'], ['_controller' => 'App\\Controller\\CollaborateurController::edit'], [], [['text', '/edit'], ['variable', '/', '[^/]++', 'id', true], ['text', '/collaborateur']], [], [], []],
     'app_collaborateur_delete' => [['id'], ['_controller' => 'App\\Controller\\CollaborateurController::delete'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/collaborateur']], [], [], []],
+    'api_collaborateurs' => [[], ['_controller' => 'App\\Controller\\CollaborateurController::apiIndex'], [], [['text', '/collaborateur/api/collaborateurs']], [], [], []],
     'home' => [[], ['_controller' => 'App\\Controller\\HomeController::index'], [], [['text', '/']], [], [], []],
     'app_mission_index' => [[], ['_controller' => 'App\\Controller\\MissionController::index'], [], [['text', '/mission/']], [], [], []],
     'app_mission_new' => [[], ['_controller' => 'App\\Controller\\MissionController::new'], [], [['text', '/mission/new']], [], [], []],
