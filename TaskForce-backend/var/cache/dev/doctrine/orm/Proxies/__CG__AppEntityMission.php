@@ -23,18 +23,22 @@ class Mission extends \App\Entity\Mission implements \Doctrine\ORM\Proxy\Interna
 
     private const LAZY_OBJECT_PROPERTY_SCOPES = [
         "\0".parent::class."\0".'affectations' => [parent::class, 'affectations', null],
+        "\0".parent::class."\0".'competencesRequises' => [parent::class, 'competencesRequises', null],
         "\0".parent::class."\0".'date_debut' => [parent::class, 'date_debut', null],
         "\0".parent::class."\0".'date_fin' => [parent::class, 'date_fin', null],
         "\0".parent::class."\0".'description' => [parent::class, 'description', null],
         "\0".parent::class."\0".'id' => [parent::class, 'id', null],
         "\0".parent::class."\0".'nom' => [parent::class, 'nom', null],
+        "\0".parent::class."\0".'statut' => [parent::class, 'statut', null],
         "\0".parent::class."\0".'titre' => [parent::class, 'titre', null],
         'affectations' => [parent::class, 'affectations', null],
+        'competencesRequises' => [parent::class, 'competencesRequises', null],
         'date_debut' => [parent::class, 'date_debut', null],
         'date_fin' => [parent::class, 'date_fin', null],
         'description' => [parent::class, 'description', null],
         'id' => [parent::class, 'id', null],
         'nom' => [parent::class, 'nom', null],
+        'statut' => [parent::class, 'statut', null],
         'titre' => [parent::class, 'titre', null],
     ];
 

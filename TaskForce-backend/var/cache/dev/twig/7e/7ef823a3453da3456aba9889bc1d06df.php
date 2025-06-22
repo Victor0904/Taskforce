@@ -182,6 +182,6 @@ class __TwigTemplate_900bb9bbca6616be8be239d2203ea39d extends Template
         {% block body %}{% endblock %}
     </body>
 </html>
-", "base.html.twig", "C:\\Users\\vayk0\\Desktop\\TaskForce\\templates\\base.html.twig");
+", "base.html.twig", "C:\\Users\\vayk0\\Desktop\\Taskforce\\TaskForce-backend\\templates\\base.html.twig");
     }
 }

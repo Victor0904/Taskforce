@@ -28,18 +28,30 @@ class Affectation
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $date_affectation = null;
 
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateDebut = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateFin = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setId(string $id): static
-    {
-        $this->id = $id;
 
+    public function setDateDebut(?\DateTimeInterface $dateDebut): static
+    {
+        $this->dateDebut = $dateDebut;
         return $this;
     }
-
+    
+    public function setDateFin(?\DateTimeInterface $dateFin): static
+    {
+        $this->dateFin = $dateFin;
+        return $this;
+    }
+    
     public function getCollaborateur(): ?Collaborateur
     {
         return $this->collaborateur;
@@ -56,6 +68,16 @@ class Affectation
     {
         return $this->mission;
     }
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->dateDebut;
+    }
+
+    public function getDateFin(): ?\DateTimeInterface
+    {
+        return $this->dateFin;
+    }
+
 
     public function setMission(?Mission $mission): static
     {

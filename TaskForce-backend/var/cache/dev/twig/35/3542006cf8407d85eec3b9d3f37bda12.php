@@ -245,6 +245,6 @@ class __TwigTemplate_53e9a303282d76421ae07ec3d58b51a5 extends Template
 
     <a href=\"{{ path('app_collaborateur_new') }}\">Create new</a>
 {% endblock %}
-", "collaborateur/index.html.twig", "C:\\Users\\vayk0\\Desktop\\TaskForce\\templates\\collaborateur\\index.html.twig");
+", "collaborateur/index.html.twig", "C:\\Users\\vayk0\\Desktop\\Taskforce\\TaskForce-backend\\templates\\collaborateur\\index.html.twig");
     }
 }

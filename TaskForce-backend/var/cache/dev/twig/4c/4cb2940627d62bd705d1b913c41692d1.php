@@ -88,6 +88,6 @@ class __TwigTemplate_b100be049be9c17d39605f684ad1243a extends Template
     <input type=\"hidden\" name=\"_token\" value=\"{{ csrf_token('delete' ~ collaborateur.id) }}\">
     <button class=\"btn\">Delete</button>
 </form>
-", "collaborateur/_delete_form.html.twig", "C:\\Users\\vayk0\\Desktop\\TaskForce\\templates\\collaborateur\\_delete_form.html.twig");
+", "collaborateur/_delete_form.html.twig", "C:\\Users\\vayk0\\Desktop\\Taskforce\\TaskForce-backend\\templates\\collaborateur\\_delete_form.html.twig");
     }
 }

@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import Collaborateurs from '../views/Collaborateurs.vue' // 👈 Ajout ici
+import Collaborateurs from '../views/Collaborateurs.vue'
+import Affectations from '../views/Affectations.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -8,17 +8,22 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      redirect: '/dashboard', // redirige vers Dashboard
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue'),
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('../views/Dashboard.vue'),
     },
     {
       path: '/collaborateurs',
       name: 'collaborateurs',
-      component: Collaborateurs, // 👈 Route ajoutée ici
+      component: Collaborateurs,
+    },
+    {
+      path: '/affectations',
+      name: 'affectations',
+      component: Affectations,
     },
   ],
 })

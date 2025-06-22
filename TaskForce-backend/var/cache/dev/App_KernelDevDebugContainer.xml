@@ -231,11 +231,25 @@
         <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\AffectationController"/>
       </call>
     </service>
+    <service id="App\Controller\Api\AffectationApiController" class="App\Controller\Api\AffectationApiController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\Api\AffectationApiController"/>
+      </call>
+    </service>
     <service id="App\Controller\Api\CollaborateurApiController" class="App\Controller\Api\CollaborateurApiController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\Api\CollaborateurApiController"/>
+      </call>
+    </service>
+    <service id="App\Controller\Api\MissionApiController" class="App\Controller\Api\MissionApiController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\Api\MissionApiController"/>
       </call>
     </service>
     <service id="App\Controller\CollaborateurController" class="App\Controller\CollaborateurController" public="true" autowire="true" autoconfigure="true">
@@ -306,7 +320,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.CmhKYWZ"/>
+      <argument type="service" id=".service_locator.nQbTcqh"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -1531,7 +1545,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.CmhKYWZ"/>
+      <argument type="service" id=".service_locator.nQbTcqh"/>
     </service>
     <service id="routing.resolver" class="Symfony\Component\Config\Loader\LoaderResolver">
       <call method="addLoader">
@@ -3473,9 +3487,15 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\AffectationController" class="App\Controller\AffectationController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\AffectationController" class="App\Controller\AffectationController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\AffectationController" class="App\Controller\AffectationController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\Api\AffectationApiController" class="App\Controller\Api\AffectationApiController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\Api\AffectationApiController" class="App\Controller\Api\AffectationApiController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\Api\AffectationApiController" class="App\Controller\Api\AffectationApiController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\Api\CollaborateurApiController" class="App\Controller\Api\CollaborateurApiController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\Api\CollaborateurApiController" class="App\Controller\Api\CollaborateurApiController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\Api\CollaborateurApiController" class="App\Controller\Api\CollaborateurApiController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\Api\MissionApiController" class="App\Controller\Api\MissionApiController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\Api\MissionApiController" class="App\Controller\Api\MissionApiController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\Api\MissionApiController" class="App\Controller\Api\MissionApiController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\CollaborateurController" class="App\Controller\CollaborateurController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\CollaborateurController" class="App\Controller\CollaborateurController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\CollaborateurController" class="App\Controller\CollaborateurController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -3904,10 +3924,58 @@
         <argument key="entityManager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
       </argument>
     </service>
+    <service id=".service_locator.leirPGp" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="repo" type="service_closure" id="App\Repository\AffectationRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.9kKwU2t" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+      </argument>
+    </service>
+    <service id=".service_locator.4AI9MLr" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="aff" type="service_closure" id=".errored..service_locator.4AI9MLr.App\Entity\Affectation"/>
+      </argument>
+    </service>
+    <service id=".service_locator.JO4GrNH" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="aff" type="service_closure" id=".errored..service_locator.JO4GrNH.App\Entity\Affectation"/>
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+      </argument>
+    </service>
+    <service id=".service_locator._ZJvILD" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="affectation" type="service_closure" id=".errored..service_locator._ZJvILD.App\Entity\Affectation"/>
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+      </argument>
+    </service>
     <service id=".service_locator.6ogv8E6" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="repo" type="service_closure" id="App\Repository\CollaborateurRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.pbmtNu8" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection"/>
+    </service>
+    <service id=".service_locator..RWIA6N" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+      </argument>
+    </service>
+    <service id=".service_locator._zEnmFj" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="repository" type="service_closure" id="App\Repository\MissionRepository"/>
       </argument>
     </service>
     <service id=".service_locator.YiuYd7T" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -3948,7 +4016,7 @@
         <argument key="mission" type="service_closure" id=".errored..service_locator.fiqNNQC.App\Entity\Mission"/>
       </argument>
     </service>
-    <service id=".service_locator.CmhKYWZ" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.nQbTcqh" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AffectationController::delete" type="service_closure" id=".service_locator.dOY9ozk"/>
@@ -3956,7 +4024,17 @@
         <argument key="App\Controller\AffectationController::index" type="service_closure" id=".service_locator.7XSAMv0"/>
         <argument key="App\Controller\AffectationController::new" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\AffectationController::show" type="service_closure" id=".service_locator.w7RyIPL"/>
-        <argument key="App\Controller\Api\CollaborateurApiController::index" type="service_closure" id=".service_locator.6ogv8E6"/>
+        <argument key="App\Controller\Api\AffectationApiController::create" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\Api\AffectationApiController::delete" type="service_closure" id=".service_locator.JO4GrNH"/>
+        <argument key="App\Controller\Api\AffectationApiController::list" type="service_closure" id=".service_locator.leirPGp"/>
+        <argument key="App\Controller\Api\AffectationApiController::show" type="service_closure" id=".service_locator.4AI9MLr"/>
+        <argument key="App\Controller\Api\AffectationApiController::update" type="service_closure" id=".service_locator._ZJvILD"/>
+        <argument key="App\Controller\Api\CollaborateurApiController::create" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\Api\CollaborateurApiController::delete" type="service_closure" id=".service_locator..RWIA6N"/>
+        <argument key="App\Controller\Api\CollaborateurApiController::list" type="service_closure" id=".service_locator.6ogv8E6"/>
+        <argument key="App\Controller\Api\CollaborateurApiController::update" type="service_closure" id=".service_locator..RWIA6N"/>
+        <argument key="App\Controller\Api\MissionApiController::create" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\Api\MissionApiController::list" type="service_closure" id=".service_locator._zEnmFj"/>
         <argument key="App\Controller\CollaborateurController::delete" type="service_closure" id=".service_locator.gv8l6lm"/>
         <argument key="App\Controller\CollaborateurController::edit" type="service_closure" id=".service_locator.gv8l6lm"/>
         <argument key="App\Controller\CollaborateurController::index" type="service_closure" id=".service_locator.YiuYd7T"/>
@@ -3976,7 +4054,17 @@
         <argument key="App\Controller\AffectationController:index" type="service_closure" id=".service_locator.7XSAMv0"/>
         <argument key="App\Controller\AffectationController:new" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\AffectationController:show" type="service_closure" id=".service_locator.w7RyIPL"/>
-        <argument key="App\Controller\Api\CollaborateurApiController:index" type="service_closure" id=".service_locator.6ogv8E6"/>
+        <argument key="App\Controller\Api\AffectationApiController:create" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\Api\AffectationApiController:delete" type="service_closure" id=".service_locator.JO4GrNH"/>
+        <argument key="App\Controller\Api\AffectationApiController:list" type="service_closure" id=".service_locator.leirPGp"/>
+        <argument key="App\Controller\Api\AffectationApiController:show" type="service_closure" id=".service_locator.4AI9MLr"/>
+        <argument key="App\Controller\Api\AffectationApiController:update" type="service_closure" id=".service_locator._ZJvILD"/>
+        <argument key="App\Controller\Api\CollaborateurApiController:create" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\Api\CollaborateurApiController:delete" type="service_closure" id=".service_locator..RWIA6N"/>
+        <argument key="App\Controller\Api\CollaborateurApiController:list" type="service_closure" id=".service_locator.6ogv8E6"/>
+        <argument key="App\Controller\Api\CollaborateurApiController:update" type="service_closure" id=".service_locator..RWIA6N"/>
+        <argument key="App\Controller\Api\MissionApiController:create" type="service_closure" id=".service_locator.9kKwU2t"/>
+        <argument key="App\Controller\Api\MissionApiController:list" type="service_closure" id=".service_locator._zEnmFj"/>
         <argument key="App\Controller\CollaborateurController:delete" type="service_closure" id=".service_locator.gv8l6lm"/>
         <argument key="App\Controller\CollaborateurController:edit" type="service_closure" id=".service_locator.gv8l6lm"/>
         <argument key="App\Controller\CollaborateurController:index" type="service_closure" id=".service_locator.YiuYd7T"/>
@@ -4137,9 +4225,21 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.O2p6Lk7" method="withContext"/>
     </service>
+    <service id=".service_locator.O2p6Lk7.App\Controller\Api\AffectationApiController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\Api\AffectationApiController"/>
+      <argument>App\Controller\Api\AffectationApiController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.O2p6Lk7" method="withContext"/>
+    </service>
     <service id=".service_locator.O2p6Lk7.App\Controller\Api\CollaborateurApiController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\Api\CollaborateurApiController"/>
       <argument>App\Controller\Api\CollaborateurApiController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.O2p6Lk7" method="withContext"/>
+    </service>
+    <service id=".service_locator.O2p6Lk7.App\Controller\Api\MissionApiController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\Api\MissionApiController"/>
+      <argument>App\Controller\Api\MissionApiController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.O2p6Lk7" method="withContext"/>
     </service>
@@ -4287,6 +4387,15 @@
     </service>
     <service id=".errored..service_locator.dOY9ozk.App\Entity\Affectation" class="App\Entity\Affectation">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.dOY9ozk&quot;: it needs an instance of &quot;App\Entity\Affectation&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
+    <service id=".errored..service_locator.4AI9MLr.App\Entity\Affectation" class="App\Entity\Affectation">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.4AI9MLr&quot;: it needs an instance of &quot;App\Entity\Affectation&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
+    <service id=".errored..service_locator.JO4GrNH.App\Entity\Affectation" class="App\Entity\Affectation">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.JO4GrNH&quot;: it needs an instance of &quot;App\Entity\Affectation&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
+    <service id=".errored..service_locator._ZJvILD.App\Entity\Affectation" class="App\Entity\Affectation">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator._ZJvILD&quot;: it needs an instance of &quot;App\Entity\Affectation&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
     </service>
     <service id=".errored..service_locator.Yb3Rv_S.App\Entity\Collaborateur" class="App\Entity\Collaborateur">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.Yb3Rv_S&quot;: it needs an instance of &quot;App\Entity\Collaborateur&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
@@ -5035,14 +5144,14 @@
     <service id="Twig\Environment" alias="twig"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.CmhKYWZ"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.nQbTcqh"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
     <service id=".service_locator.XDGmiR3" alias=".1_ServiceLocator~oTDBTVU"/>
     <service id=".service_locator.o.uf2zi" alias=".service_locator.7nzbL4K"/>
     <service id=".service_locator.ETjrRyM" alias=".service_locator.fiqNNQC"/>
-    <service id=".service_locator.xVE9eLU" alias=".service_locator.CmhKYWZ"/>
+    <service id=".service_locator.WsNo6qt" alias=".service_locator.nQbTcqh"/>
     <service id=".service_locator.zOrwI6F" alias=".service_locator.nrgc8tJ"/>
     <service id=".service_locator.wvJy2cV" alias=".service_locator.JKIl8NV"/>
     <service id=".service_locator.LMuqDDe" alias=".service_locator.VHsrTPK"/>
@@ -5058,7 +5167,14 @@
     <service id=".service_locator.9e2t_lq" alias=".service_locator.CsMkqUa"/>
     <service id=".service_locator.lBkZPgi" alias=".service_locator.w7RyIPL"/>
     <service id=".service_locator.nHOC0KN" alias=".service_locator.dOY9ozk"/>
+    <service id=".service_locator.bnRLOZG" alias=".service_locator.leirPGp"/>
+    <service id=".service_locator.gaTSUXr" alias=".service_locator.9kKwU2t"/>
+    <service id=".service_locator.bU2P0kZ" alias=".service_locator.4AI9MLr"/>
+    <service id=".service_locator.5_5NHhg" alias=".service_locator.JO4GrNH"/>
+    <service id=".service_locator.zAFHV9I" alias=".service_locator._ZJvILD"/>
     <service id=".service_locator..vxbaji" alias=".service_locator.6ogv8E6"/>
+    <service id=".service_locator.ST0Z5oP" alias=".service_locator..RWIA6N"/>
+    <service id=".service_locator.cRR3Xsv" alias=".service_locator._zEnmFj"/>
     <service id=".service_locator.3R0nXfc" alias=".service_locator.YiuYd7T"/>
     <service id=".service_locator.AxH89vZ" alias=".service_locator.Yb3Rv_S"/>
     <service id=".service_locator.HEGKygs" alias=".service_locator.gv8l6lm"/>

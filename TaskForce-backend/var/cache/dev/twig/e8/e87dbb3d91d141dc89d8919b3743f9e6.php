@@ -238,6 +238,6 @@ class __TwigTemplate_5a679d5471723c6a5fc8ed8454b1f661 extends Template
 
     <a href=\"{{ path('app_mission_new') }}\">Create new</a>
 {% endblock %}
-", "mission/index.html.twig", "C:\\Users\\vayk0\\Desktop\\TaskForce\\templates\\mission\\index.html.twig");
+", "mission/index.html.twig", "C:\\Users\\vayk0\\Desktop\\Taskforce\\TaskForce-backend\\templates\\mission\\index.html.twig");
     }
 }

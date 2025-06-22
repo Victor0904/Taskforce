@@ -217,6 +217,6 @@ class __TwigTemplate_ecd8296a1b2505e45d886a4d04a10c9c extends Template
 
     <a href=\"{{ path('app_affectation_new') }}\">Create new</a>
 {% endblock %}
-", "affectation/index.html.twig", "C:\\Users\\vayk0\\Desktop\\TaskForce\\templates\\affectation\\index.html.twig");
+", "affectation/index.html.twig", "C:\\Users\\vayk0\\Desktop\\Taskforce\\TaskForce-backend\\templates\\affectation\\index.html.twig");
     }
 }

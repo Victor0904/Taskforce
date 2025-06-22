@@ -79,6 +79,6 @@ class __TwigTemplate_724ef32344210b78d324c28c92c23591 extends Template
     <path d=\"M4 6v6a8 3 0 0 0 16 0v-6\"></path>
     <path d=\"M4 12v6a8 3 0 0 0 16 0v-6\"></path>
 </svg>
-", "@Doctrine/Collector/database.svg", "C:\\Users\\vayk0\\Desktop\\TaskForce\\vendor\\doctrine\\doctrine-bundle\\templates\\Collector\\database.svg");
+", "@Doctrine/Collector/database.svg", "C:\\Users\\vayk0\\Desktop\\Taskforce\\TaskForce-backend\\vendor\\doctrine\\doctrine-bundle\\templates\\Collector\\database.svg");
     }
 }

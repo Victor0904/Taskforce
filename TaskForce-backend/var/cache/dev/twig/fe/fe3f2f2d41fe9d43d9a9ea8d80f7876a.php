@@ -231,6 +231,6 @@ class __TwigTemplate_ec57f0a027f7004d64daad749e10b570 extends Template
 
     {{ include('collaborateur/_delete_form.html.twig') }}
 {% endblock %}
-", "collaborateur/show.html.twig", "C:\\Users\\vayk0\\Desktop\\TaskForce\\templates\\collaborateur\\show.html.twig");
+", "collaborateur/show.html.twig", "C:\\Users\\vayk0\\Desktop\\Taskforce\\TaskForce-backend\\templates\\collaborateur\\show.html.twig");
     }
 }

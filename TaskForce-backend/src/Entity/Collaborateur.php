@@ -111,11 +111,15 @@ class Collaborateur
     {
         return $this->dateNaissance;
     }
+        public function getNomComplet(): string
+    {
+        return $this->prenom . ' ' . $this->nom;
+    }
 
-    public function setDateNaissance(\DateTimeInterface $dateNaissance): static
+
+    public function setDateNaissance(?\DateTimeInterface $dateNaissance): static
     {
         $this->dateNaissance = $dateNaissance;
-
         return $this;
     }
 
