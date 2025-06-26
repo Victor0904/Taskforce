@@ -9,7 +9,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse; // ✅ doit être ici, en haut
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/collaborateur')]
@@ -39,7 +38,7 @@ class CollaborateurController extends AbstractController
 
         return $this->render('collaborateur/new.html.twig', [
             'collaborateur' => $collaborateur,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -51,25 +50,26 @@ class CollaborateurController extends AbstractController
         ]);
     }
 
-#[Route('/{id}/edit', name: 'app_collaborateur_edit', methods: ['GET', 'POST'])]
-public function edit(Request $request, Collaborateur $collaborateur, EntityManagerInterface $entityManager): Response
-{
-    $form = $this->createForm(CollaborateurType::class, $collaborateur);
-    $form->handleRequest($request);
+    #[Route('/{id}/edit', name: 'app_collaborateur_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Collaborateur $collaborateur, EntityManagerInterface $entityManager): Response
+    {
+        // Pour debug, à enlever en production
+        dump($collaborateur);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        $entityManager->flush();
+        $form = $this->createForm(CollaborateurType::class, $collaborateur);
+        $form->handleRequest($request);
 
-        return $this->redirectToRoute('app_collaborateur_index', [], Response::HTTP_SEE_OTHER);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_collaborateur_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('collaborateur/edit.html.twig', [
+            'collaborateur' => $collaborateur,
+            'form' => $form->createView(),
+        ]);
     }
-
-    return $this->render('collaborateur/edit.html.twig', [
-        'collaborateur' => $collaborateur,
-        'form' => $form,
-    ]);
-}
-
-
 
     #[Route('/{id}', name: 'app_collaborateur_delete', methods: ['POST'])]
     public function delete(Request $request, Collaborateur $collaborateur, EntityManagerInterface $entityManager): Response

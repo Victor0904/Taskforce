@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Collaborateurs from '../views/Collaborateurs.vue'
 import Affectations from '../views/Affectations.vue'
+import Missions from '../views/Missions.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -25,6 +26,13 @@ const router = createRouter({
       name: 'affectations',
       component: Affectations,
     },
+    {
+      path: '/missions',
+      name: 'missions',
+      component: Missions,
+    },
+    
+    
   ],
 })
 

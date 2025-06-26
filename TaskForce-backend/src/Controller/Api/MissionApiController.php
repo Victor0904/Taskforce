@@ -25,7 +25,7 @@ class MissionApiController extends AbstractController
                 'titre' => $mission->getTitre(),
                 'description' => $mission->getDescription(),
                 'statut' => $mission->getStatut(),
-                'competences' => $mission->getCompetencesRequisesArray(),
+                'competences' => array_map(fn($c) => ['id' => $c->getId(), 'nom' => $c->getNom()], $mission->getCompetences()->toArray()),
                 'date_debut' => $mission->getDateDebut()?->format('Y-m-d'),
                 'date_fin' => $mission->getDateFin()?->format('Y-m-d'),
             ];

@@ -28,6 +28,7 @@ class CollaborateurApiController extends AbstractController
                 'poste' => $collab->getPoste(),
                 'actif' => $collab->isActif(),
                 'date_naissance' => $collab->getDateNaissance()?->format('Y-m-d'),
+                'competences' => array_map(fn($c) => ['id' => $c->getId(), 'nom' => $c->getNom()], $collab->getCompetences()->toArray()),
             ];
         }, $collaborateurs);
 
@@ -66,6 +67,7 @@ class CollaborateurApiController extends AbstractController
             'poste' => $collab->getPoste(),
             'actif' => $collab->isActif(),
             'date_naissance' => $collab->getDateNaissance()?->format('Y-m-d'),
+            'competences' => array_map(fn($c) => ['id' => $c->getId(), 'nom' => $c->getNom()], $collab->getCompetences()->toArray()),
         ]);
     }
 

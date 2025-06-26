@@ -25,13 +25,13 @@ class CollaborateurType extends AbstractType
                 'input' => 'datetime',
                 'required' => false,
             ])
-             ->add('competences', EntityType::class, [
-               'class' => Competence::class,
-                 'choice_label' => 'nom',
-               'multiple' => true,
-                 'expanded' => true,
-                 'required' => false,
-             ])
+            ->add('competences', EntityType::class, [
+                'class' => Competence::class,
+                'choice_label' => 'nom',
+                'multiple' => true,   // permet sélection multiple
+                'expanded' => true,   // affiche des cases à cocher
+                'required' => false,
+            ])
         ;
     }
 

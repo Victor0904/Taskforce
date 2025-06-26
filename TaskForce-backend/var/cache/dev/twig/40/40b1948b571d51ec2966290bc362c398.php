@@ -86,7 +86,7 @@ class __TwigTemplate_98f9f5c33fc4b79308b24529804015ac extends Template
 
     ";
         // line 8
-        yield Twig\Extension\CoreExtension::include($this->env, $context, "mission/_form.html.twig", ["button_label" => "Update"]);
+        yield Twig\Extension\CoreExtension::include($this->env, $context, "mission/_form.html.twig", ["form" => (isset($context["form"]) || array_key_exists("form", $context) ? $context["form"] : (function () { throw new RuntimeError('Variable "form" does not exist.', 8, $this->source); })()), "button_label" => "Update"]);
         yield "
 
     <a href=\"";
@@ -138,7 +138,7 @@ class __TwigTemplate_98f9f5c33fc4b79308b24529804015ac extends Template
 {% block body %}
     <h1>Edit Mission</h1>
 
-    {{ include('mission/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('mission/_form.html.twig', { form: form, button_label: 'Update' }) }}
 
     <a href=\"{{ path('app_mission_index') }}\">back to list</a>
 

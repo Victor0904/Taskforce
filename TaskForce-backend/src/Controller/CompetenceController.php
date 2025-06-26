@@ -38,7 +38,7 @@ class CompetenceController extends AbstractController
 
         return $this->render('competence/new.html.twig', [
             'competence' => $competence,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -64,14 +64,14 @@ class CompetenceController extends AbstractController
 
         return $this->render('competence/edit.html.twig', [
             'competence' => $competence,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('/{id}', name: 'app_competence_delete', methods: ['POST'])]
     public function delete(Request $request, Competence $competence, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$competence->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $competence->getId(), $request->request->get('_token'))) {
             $entityManager->remove($competence);
             $entityManager->flush();
         }

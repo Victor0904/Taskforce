@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Edit Competence</h1>
 
-    {{ include('competence/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('competence/_form.html.twig', { 'form': form, 'button_label': 'Update' }) }}
 
     <a href="{{ path('app_competence_index') }}">back to list</a>
 
