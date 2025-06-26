@@ -3,11 +3,12 @@
 namespace App\Form;
 
 use App\Entity\Mission;
+use App\Entity\Competence;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class MissionType extends AbstractType
 {
@@ -24,9 +25,13 @@ class MissionType extends AbstractType
             ])
             ->add('nom')
             ->add('statut')
-            ->add('competencesRequises', TextType::class, [
+            ->add('competences', EntityType::class, [
+                'class' => Competence::class,
+                'choice_label' => 'nom',
+                'multiple' => true,
+                'expanded' => true,
                 'required' => false,
-                'label' => 'Compétences requises (séparées par des virgules)',
+                'label' => 'Compétences requises',
             ]);
     }
 
@@ -34,8 +39,7 @@ class MissionType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Mission::class,
-            'csrf_protection' => false, // 🔒 désactivation pour l'API
-
+            'csrf_protection' => false,
         ]);
     }
 }

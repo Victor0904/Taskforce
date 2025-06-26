@@ -34,15 +34,16 @@ class Mission
     #[ORM\Column(length: 255)]
     private ?string $statut = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $competencesRequises = null;
-
     #[ORM\OneToMany(targetEntity: Affectation::class, mappedBy: 'mission')]
     private Collection $affectations;
+
+    #[ORM\ManyToMany(targetEntity: Competence::class, inversedBy: 'missions')]
+    private Collection $competences;
 
     public function __construct()
     {
         $this->affectations = new ArrayCollection();
+        $this->competences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,24 +117,6 @@ class Mission
         return $this;
     }
 
-    // Pour formulaire (string)
-    public function getCompetencesRequises(): ?string
-    {
-        return $this->competencesRequises;
-    }
-
-    public function setCompetencesRequises(?string $competences): static
-    {
-        $this->competencesRequises = $competences;
-        return $this;
-    }
-
-    // Pour l’API (array)
-    public function getCompetencesRequisesArray(): array
-    {
-        return array_filter(array_map('trim', explode(',', $this->competencesRequises ?? '')));
-    }
-
     /**
      * @return Collection<int, Affectation>
      */
@@ -158,6 +141,29 @@ class Mission
                 $affectation->setMission(null);
             }
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Competence>
+     */
+    public function getCompetences(): Collection
+    {
+        return $this->competences;
+    }
+
+    public function addCompetence(Competence $competence): static
+    {
+        if (!$this->competences->contains($competence)) {
+            $this->competences->add($competence);
+        }
+
+        return $this;
+    }
+
+    public function removeCompetence(Competence $competence): static
+    {
+        $this->competences->removeElement($competence);
         return $this;
     }
 }

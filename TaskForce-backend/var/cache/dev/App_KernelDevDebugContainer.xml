@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd">
   <parameters>
-    <parameter key="kernel.project_dir">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend</parameter>
+    <parameter key="kernel.project_dir">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend</parameter>
     <parameter key="kernel.environment">dev</parameter>
     <parameter key="kernel.runtime_environment">%env(default:kernel.environment:APP_RUNTIME_ENV)%</parameter>
     <parameter key="kernel.debug">true</parameter>
-    <parameter key="kernel.build_dir">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev</parameter>
-    <parameter key="kernel.cache_dir">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev</parameter>
-    <parameter key="kernel.logs_dir">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\log</parameter>
+    <parameter key="kernel.build_dir">C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev</parameter>
+    <parameter key="kernel.cache_dir">C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev</parameter>
+    <parameter key="kernel.logs_dir">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\var\log</parameter>
     <parameter key="kernel.bundles" type="collection">
       <parameter key="FrameworkBundle">Symfony\Bundle\FrameworkBundle\FrameworkBundle</parameter>
       <parameter key="WebpackEncoreBundle">Symfony\WebpackEncoreBundle\WebpackEncoreBundle</parameter>
@@ -20,35 +20,35 @@
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
-        <parameter key="path">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\symfony\framework-bundle</parameter>
+        <parameter key="path">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\symfony\framework-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\FrameworkBundle</parameter>
       </parameter>
       <parameter key="WebpackEncoreBundle" type="collection">
-        <parameter key="path">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\symfony\webpack-encore-bundle\src</parameter>
+        <parameter key="path">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\symfony\webpack-encore-bundle\src</parameter>
         <parameter key="namespace">Symfony\WebpackEncoreBundle</parameter>
       </parameter>
       <parameter key="DoctrineBundle" type="collection">
-        <parameter key="path">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-bundle</parameter>
+        <parameter key="path">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-bundle</parameter>
         <parameter key="namespace">Doctrine\Bundle\DoctrineBundle</parameter>
       </parameter>
       <parameter key="DoctrineMigrationsBundle" type="collection">
-        <parameter key="path">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-migrations-bundle</parameter>
+        <parameter key="path">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-migrations-bundle</parameter>
         <parameter key="namespace">Doctrine\Bundle\MigrationsBundle</parameter>
       </parameter>
       <parameter key="MakerBundle" type="collection">
-        <parameter key="path">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\symfony\maker-bundle\src</parameter>
+        <parameter key="path">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\symfony\maker-bundle\src</parameter>
         <parameter key="namespace">Symfony\Bundle\MakerBundle</parameter>
       </parameter>
       <parameter key="DoctrineFixturesBundle" type="collection">
-        <parameter key="path">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-fixtures-bundle</parameter>
+        <parameter key="path">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-fixtures-bundle</parameter>
         <parameter key="namespace">Doctrine\Bundle\FixturesBundle</parameter>
       </parameter>
       <parameter key="TwigBundle" type="collection">
-        <parameter key="path">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\symfony\twig-bundle</parameter>
+        <parameter key="path">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\symfony\twig-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\TwigBundle</parameter>
       </parameter>
       <parameter key="NelmioCorsBundle" type="collection">
-        <parameter key="path">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\nelmio\cors-bundle</parameter>
+        <parameter key="path">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\nelmio\cors-bundle</parameter>
         <parameter key="namespace">Nelmio\CorsBundle</parameter>
       </parameter>
     </parameter>
@@ -86,15 +86,15 @@
     <parameter key="asset.request_context.base_path">null</parameter>
     <parameter key="asset.request_context.secure">null</parameter>
     <parameter key="debug.error_handler.throw_at">-1</parameter>
-    <parameter key="debug.container.dump">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/App_KernelDevDebugContainer.xml</parameter>
+    <parameter key="debug.container.dump">C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/App_KernelDevDebugContainer.xml</parameter>
     <parameter key="router.request_context.host">localhost</parameter>
     <parameter key="router.request_context.scheme">http</parameter>
     <parameter key="router.request_context.base_url"></parameter>
     <parameter key="router.resource">kernel::loadRoutes</parameter>
-    <parameter key="router.cache_dir">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev</parameter>
+    <parameter key="router.cache_dir">C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev</parameter>
     <parameter key="request_listener.http_port">80</parameter>
     <parameter key="request_listener.https_port">443</parameter>
-    <parameter key="cache.prefix.seed">_C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend.App_KernelDevDebugContainer</parameter>
+    <parameter key="cache.prefix.seed">_C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend.App_KernelDevDebugContainer</parameter>
     <parameter key="session.metadata.storage_key">_sf2_meta</parameter>
     <parameter key="session.storage.options" type="collection">
       <parameter key="cache_limiter" type="string">0</parameter>
@@ -107,7 +107,7 @@
     <parameter key="session.metadata.update_threshold">0</parameter>
     <parameter key="form.type_extension.csrf.enabled">true</parameter>
     <parameter key="form.type_extension.csrf.field_name">_token</parameter>
-    <parameter key="validator.mapping.cache.file">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/validation.php</parameter>
+    <parameter key="validator.mapping.cache.file">C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/validation.php</parameter>
     <parameter key="validator.translation_domain">validators</parameter>
     <parameter key="data_collector.templates" type="collection"/>
     <parameter key="doctrine.dbal.configuration.class">Doctrine\DBAL\Configuration</parameter>
@@ -175,14 +175,14 @@
     <parameter key="doctrine.orm.second_level_cache.regions_configuration.class">Doctrine\ORM\Cache\RegionsConfiguration</parameter>
     <parameter key="doctrine.orm.auto_generate_proxy_classes">true</parameter>
     <parameter key="doctrine.orm.enable_lazy_ghost_objects">true</parameter>
-    <parameter key="doctrine.orm.proxy_dir">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/doctrine/orm/Proxies</parameter>
+    <parameter key="doctrine.orm.proxy_dir">C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/doctrine/orm/Proxies</parameter>
     <parameter key="doctrine.orm.proxy_namespace">Proxies</parameter>
     <parameter key="doctrine.migrations.preferred_em">null</parameter>
     <parameter key="doctrine.migrations.preferred_connection">null</parameter>
     <parameter key="twig.form.resources" type="collection">
       <parameter>form_div_layout.html.twig</parameter>
     </parameter>
-    <parameter key="twig.default_path">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend/templates</parameter>
+    <parameter key="twig.default_path">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend/templates</parameter>
     <parameter key="nelmio_cors.map" type="collection">
       <parameter key="^/" type="collection"/>
     </parameter>
@@ -259,6 +259,13 @@
         <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\CollaborateurController"/>
       </call>
     </service>
+    <service id="App\Controller\CompetenceController" class="App\Controller\CompetenceController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.O2p6Lk7.App\Controller\CompetenceController"/>
+      </call>
+    </service>
     <service id="App\Controller\HomeController" class="App\Controller\HomeController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -282,6 +289,9 @@
     <service id="App\Form\CollaborateurType" class="App\Form\CollaborateurType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
+    <service id="App\Form\CompetenceType" class="App\Form\CompetenceType" autowire="true" autoconfigure="true">
+      <tag name="form.type"/>
+    </service>
     <service id="App\Form\MissionType" class="App\Form\MissionType" autowire="true" autoconfigure="true">
       <tag name="form.type"/>
     </service>
@@ -290,6 +300,10 @@
       <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\CollaborateurRepository" class="App\Repository\CollaborateurRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\CompetenceRepository" class="App\Repository\CompetenceRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -320,7 +334,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
       <tag priority="-50" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">controller.argument_value_resolver</tag>
-      <argument type="service" id=".service_locator.nQbTcqh"/>
+      <argument type="service" id=".service_locator..4HAyD2"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
       <tag priority="-100" name="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">controller.argument_value_resolver</tag>
@@ -401,7 +415,7 @@
       </argument>
     </service>
     <service id="http_cache.store" class="Symfony\Component\HttpKernel\HttpCache\Store">
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/http_cache</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/http_cache</argument>
     </service>
     <service id="url_helper" class="Symfony\Component\HttpFoundation\UrlHelper">
       <argument type="service" id="request_stack"/>
@@ -411,7 +425,7 @@
       <tag name="container.no_preload"/>
       <argument type="tagged_iterator" tag="kernel.cache_warmer"/>
       <argument>true</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/App_KernelDevDebugContainerDeprecations.log</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/App_KernelDevDebugContainerDeprecations.log</argument>
     </service>
     <service id="cache_clearer" class="Symfony\Component\HttpKernel\CacheClearer\ChainCacheClearer">
       <argument type="tagged_iterator" tag="kernel.cache_clearer"/>
@@ -597,7 +611,7 @@
       </argument>
       <argument>UTF-8</argument>
       <argument type="service" id="debug.file_link_formatter" on-invalid="null"/>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend</argument>
       <argument type="service">
         <service>
           <argument type="service" id="request_stack"/>
@@ -630,7 +644,7 @@
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
       <argument type="service" id="filesystem"/>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend</argument>
       <call method="setName">
         <argument>assets:install</argument>
       </call>
@@ -807,7 +821,7 @@
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
       <argument>dev</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend</argument>
       <call method="setName">
         <argument>debug:dotenv</argument>
       </call>
@@ -883,6 +897,7 @@
       <argument type="collection">
         <argument>App\Form\AffectationType</argument>
         <argument>App\Form\CollaborateurType</argument>
+        <argument>App\Form\CompetenceType</argument>
         <argument>App\Form\MissionType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\FormType</argument>
         <argument>Symfony\Component\Form\Extension\Core\Type\ChoiceType</argument>
@@ -985,9 +1000,9 @@
     <service id="cache.app" class="Symfony\Component\Cache\Adapter\FilesystemAdapter" public="true">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>4AT+fdLoz-</argument>
+      <argument>T-HgwSZsnK</argument>
       <argument>0</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/pools/app</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="logger" on-invalid="ignore"/>
@@ -1000,50 +1015,50 @@
     <service id="cache.system" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="true">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>C+1lNt1i+1</argument>
+      <argument>YZGA0LLX-2</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/pools/system</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.validator" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>LP74rLW+I8</argument>
+      <argument>u+hzYfoTAQ</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/pools/system</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.serializer" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>Gsx9pSLgOS</argument>
+      <argument>61GCufoVPe</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/pools/system</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.annotations" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>Vfv3TdSTLU</argument>
+      <argument>w-ATLyTPiG</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/pools/system</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.property_info" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>bu1sQDXA5V</argument>
+      <argument>spcNNljoNV</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/pools/system</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -1053,7 +1068,7 @@
       <argument></argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/pools/system</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -1072,7 +1087,7 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/pools/app</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/pools/app</argument>
       <argument type="service" id="cache.default_marshaller" on-invalid="ignore"/>
       <call method="setLogger">
         <argument type="service" id="logger" on-invalid="ignore"/>
@@ -1228,7 +1243,7 @@
       <argument>false</argument>
     </service>
     <service id="assets._version__default" class="Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy">
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend/public/build/manifest.json</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend/public/build/manifest.json</argument>
       <argument>null</argument>
       <argument>false</argument>
     </service>
@@ -1545,7 +1560,7 @@
     </service>
     <service id="argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
       <tag name="controller.argument_value_resolver" priority="-200"/>
-      <argument type="service" id=".service_locator.nQbTcqh"/>
+      <argument type="service" id=".service_locator..4HAyD2"/>
     </service>
     <service id="routing.resolver" class="Symfony\Component\Config\Loader\LoaderResolver">
       <call method="addLoader">
@@ -1641,7 +1656,7 @@
       <argument type="service" id=".service_locator.PvoQzFT.router.default"/>
       <argument>kernel::loadRoutes</argument>
       <argument type="collection">
-        <argument key="cache_dir">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev</argument>
+        <argument key="cache_dir">C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev</argument>
         <argument key="debug">true</argument>
         <argument key="generator_class">Symfony\Component\Routing\Generator\CompiledUrlGenerator</argument>
         <argument key="generator_dumper_class">Symfony\Component\Routing\Generator\Dumper\CompiledUrlGeneratorDumper</argument>
@@ -1679,7 +1694,7 @@
       <argument type="service" id="request_stack"/>
       <argument type="service" id="router.request_context" on-invalid="ignore"/>
       <argument type="service" id="logger" on-invalid="ignore"/>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend</argument>
       <argument>true</argument>
     </service>
     <service id="Symfony\Bundle\FrameworkBundle\Controller\RedirectController" class="Symfony\Bundle\FrameworkBundle\Controller\RedirectController" public="true">
@@ -1707,7 +1722,7 @@
     </service>
     <service id="secrets.vault" class="Symfony\Bundle\FrameworkBundle\Secrets\SodiumVault">
       <tag name="container.env_var_loader"/>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend/config/secrets/%env(default:kernel.environment:APP_RUNTIME_ENV)%</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend/config/secrets/%env(default:kernel.environment:APP_RUNTIME_ENV)%</argument>
       <argument type="service" id="secrets.decryption_key" on-invalid="ignore"/>
     </service>
     <service id="secrets.decryption_key" class="Symfony\Component\String\LazyString" constructor="fromCallable">
@@ -1715,7 +1730,7 @@
       <argument>base64:default::SYMFONY_DECRYPTION_SECRET</argument>
     </service>
     <service id="secrets.local_vault" class="Symfony\Bundle\FrameworkBundle\Secrets\DotenvVault">
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend/.env.dev.local</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend/.env.dev.local</argument>
     </service>
     <service id="property_info" class="Symfony\Component\PropertyInfo\PropertyInfoExtractor">
       <argument type="iterator">
@@ -1787,7 +1802,7 @@
       <argument>true</argument>
     </service>
     <service id="session.storage.factory.mock_file" class="Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorageFactory">
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/sessions</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/sessions</argument>
       <argument>MOCKSESSID</argument>
       <argument type="service">
         <service class="Symfony\Component\HttpFoundation\Session\Storage\MetadataBag">
@@ -1850,7 +1865,7 @@
       <argument type="service" id="form.registry"/>
     </service>
     <service id="form.extension" class="Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension">
-      <argument type="service" id=".service_locator.JKIl8NV"/>
+      <argument type="service" id=".service_locator.bXT5T8E"/>
       <argument type="collection">
         <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="iterator">
           <argument type="service" id="form.type_extension.form.transformation_failure_handling"/>
@@ -1948,7 +1963,7 @@
       </call>
       <call method="addXmlMappings">
         <argument type="collection">
-          <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\symfony\form/Resources/config/validation.xml</argument>
+          <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\symfony\form/Resources/config/validation.xml</argument>
         </argument>
       </call>
       <call method="enableAnnotationMapping">
@@ -1973,10 +1988,10 @@
     <service id="validator.mapping.cache_warmer" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\ValidatorCacheWarmer">
       <tag name="kernel.cache_warmer"/>
       <argument type="service" id="validator.builder"/>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/validation.php</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/validation.php</argument>
     </service>
     <service id="validator.mapping.cache.adapter" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" constructor="create">
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/validation.php</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/validation.php</argument>
       <argument type="service" id="cache.validator"/>
     </service>
     <service id="validator.validator_factory" class="Symfony\Component\Validator\ContainerConstraintValidatorFactory">
@@ -2236,10 +2251,10 @@
     <service id="cache.validator_expression_language" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="true">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>dffnQj8wuN</argument>
+      <argument>gyN0X5voxi</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/pools/system</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -2269,7 +2284,7 @@
       <argument type="service" id="property_info"/>
       <argument>null</argument>
     </service>
-    <service id=".1_ServiceLocator~oTDBTVU" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".1_ServiceLocator~TkYLJdK" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="webpack_encore.entrypoint_lookup_collection" type="service_closure" id="webpack_encore.entrypoint_lookup_collection"/>
@@ -2293,27 +2308,27 @@
     </service>
     <service id="webpack_encore.twig_entry_files_extension" class="Symfony\WebpackEncoreBundle\Twig\EntryFilesTwigExtension">
       <tag name="twig.extension"/>
-      <argument type="service" id=".1_ServiceLocator~oTDBTVU"/>
+      <argument type="service" id=".1_ServiceLocator~TkYLJdK"/>
     </service>
     <service id="webpack_encore.entrypoint_lookup.cache_warmer" class="Symfony\WebpackEncoreBundle\CacheWarmer\EntrypointCacheWarmer">
       <tag name="kernel.cache_warmer"/>
       <argument type="collection">
-        <argument key="_default">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend/public/build/entrypoints.json</argument>
+        <argument key="_default">C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend/public/build/entrypoints.json</argument>
       </argument>
       <argument>null</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/webpack_encore.cache.php</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/webpack_encore.cache.php</argument>
     </service>
     <service id="webpack_encore.cache" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" constructor="create">
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/webpack_encore.cache.php</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/webpack_encore.cache.php</argument>
       <argument type="service" id="cache.webpack_encore"/>
     </service>
     <service id="cache.webpack_encore" class="Symfony\Component\Cache\Adapter\AdapterInterface">
       <tag name="cache.pool"/>
       <tag name="kernel.reset" method="reset"/>
-      <argument>g4Vnkzy0kc</argument>
+      <argument>OFx5dTGBwy</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/pools/system</argument>
+      <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/pools/system</argument>
       <argument type="service" id="logger" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
@@ -2334,7 +2349,7 @@
     </service>
     <service id="webpack_encore.entrypoint_lookup[_default]" class="Symfony\WebpackEncoreBundle\Asset\EntrypointLookup">
       <tag name="kernel.reset" method="reset"/>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend/public/build/entrypoints.json</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend/public/build/entrypoints.json</argument>
       <argument>null</argument>
       <argument>_default</argument>
       <argument>true</argument>
@@ -2518,7 +2533,7 @@
       <argument type="service" id="doctrine.debug_data_holder"/>
       <argument type="service" id="debug.stopwatch" on-invalid="null"/>
     </service>
-    <service id=".1_ServiceLocator~OPNY19a" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".1_ServiceLocator~FmlBq0_" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <argument type="collection"/>
     </service>
     <service id="doctrine.orm.proxy_cache_warmer" class="Symfony\Bridge\Doctrine\CacheWarmer\ProxyCacheWarmer">
@@ -2537,7 +2552,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.dO6Y791"/>
+      <argument type="service" id=".service_locator.1Rlg9Uu"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -2712,7 +2727,7 @@
         <argument type="service" id=".doctrine.orm.default_metadata_driver"/>
       </call>
       <call method="setProxyDir">
-        <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/doctrine/orm/Proxies</argument>
+        <argument>C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/doctrine/orm/Proxies</argument>
       </call>
       <call method="setProxyNamespace">
         <argument>Proxies</argument>
@@ -2753,7 +2768,7 @@
     </service>
     <service id="doctrine.orm.default_attribute_metadata_driver" class="Doctrine\ORM\Mapping\Driver\AttributeDriver">
       <argument type="collection">
-        <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\src\Entity</argument>
+        <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\src\Entity</argument>
       </argument>
       <argument>true</argument>
     </service>
@@ -2815,7 +2830,7 @@
     <service id="doctrine.migrations.configuration" class="Doctrine\Migrations\Configuration\Configuration">
       <call method="addMigrationsDirectory">
         <argument>DoctrineMigrations</argument>
-        <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend/migrations</argument>
+        <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend/migrations</argument>
       </call>
       <call method="setAllOrNothing">
         <argument>false</argument>
@@ -3002,8 +3017,8 @@
       <argument type="service" id="filesystem"/>
       <argument type="service" id="maker.autoloader_util"/>
       <argument type="service" id="maker.file_link_formatter"/>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend/templates</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend/templates</argument>
     </service>
     <service id="maker.autoloader_finder" class="Symfony\Bundle\MakerBundle\Util\ComposerAutoloaderFinder">
       <argument>App</argument>
@@ -3173,7 +3188,7 @@
     </service>
     <service id="maker.maker.make_migration" class="Symfony\Bundle\MakerBundle\Maker\MakeMigration">
       <tag name="maker.command"/>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend</argument>
       <argument type="service" id="maker.file_link_formatter"/>
     </service>
     <service id="maker.maker.make_stimulus_controller" class="Symfony\Bundle\MakerBundle\Maker\MakeStimulusController">
@@ -3223,7 +3238,7 @@
       <argument type="service" id="twig.loader.native_filesystem"/>
       <argument type="collection">
         <argument key="autoescape">name</argument>
-        <argument key="cache">C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\var\cache\dev/twig</argument>
+        <argument key="cache">C:/Users/rescue123/Desktop/Taskforce/TaskForce-backend/var/cache/dev/twig</argument>
         <argument key="charset">UTF-8</argument>
         <argument key="debug">true</argument>
         <argument key="strict_variables">true</argument>
@@ -3293,9 +3308,9 @@
     <service id="twig.template_iterator" class="Symfony\Bundle\TwigBundle\TemplateIterator">
       <argument type="service" id="kernel"/>
       <argument type="collection">
-        <argument key="C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\symfony\twig-bridge/Resources/views/Form">null</argument>
+        <argument key="C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\symfony\twig-bridge/Resources/views/Form">null</argument>
       </argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend/templates</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend/templates</argument>
       <argument type="collection"/>
     </service>
     <service id="twig.template_cache_warmer" class="Symfony\Bundle\TwigBundle\CacheWarmer\TemplateCacheWarmer">
@@ -3307,28 +3322,28 @@
     <service id="twig.loader.native_filesystem" class="Twig\Loader\FilesystemLoader">
       <tag name="twig.loader"/>
       <argument type="collection"/>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend</argument>
       <call method="addPath">
-        <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-bundle/templates</argument>
+        <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-bundle/templates</argument>
         <argument>Doctrine</argument>
       </call>
       <call method="addPath">
-        <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-bundle/templates</argument>
+        <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-bundle/templates</argument>
         <argument>!Doctrine</argument>
       </call>
       <call method="addPath">
-        <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-migrations-bundle/templates</argument>
+        <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-migrations-bundle/templates</argument>
         <argument>DoctrineMigrations</argument>
       </call>
       <call method="addPath">
-        <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-migrations-bundle/templates</argument>
+        <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\doctrine\doctrine-migrations-bundle/templates</argument>
         <argument>!DoctrineMigrations</argument>
       </call>
       <call method="addPath">
-        <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend/templates</argument>
+        <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend/templates</argument>
       </call>
       <call method="addPath">
-        <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend\vendor\symfony\twig-bridge/Resources/views/Form</argument>
+        <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend\vendor\symfony\twig-bridge/Resources/views/Form</argument>
       </call>
     </service>
     <service id="twig.loader.chain" class="Twig\Loader\ChainLoader"/>
@@ -3354,7 +3369,7 @@
     <service id="twig.extension.code" class="Symfony\Bridge\Twig\Extension\CodeExtension">
       <tag name="twig.extension"/>
       <argument type="service" id="debug.file_link_formatter" on-invalid="ignore"/>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend</argument>
       <argument>UTF-8</argument>
     </service>
     <service id="twig.extension.routing" class="Symfony\Bridge\Twig\Extension\RoutingExtension">
@@ -3438,9 +3453,9 @@
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
       <argument type="service" id="twig"/>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend</argument>
       <argument>%kernel.bundles_metadata%</argument>
-      <argument>C:\Users\vayk0\Desktop\Taskforce\TaskForce-backend/templates</argument>
+      <argument>C:\Users\rescue123\Desktop\Taskforce\TaskForce-backend/templates</argument>
       <argument type="service" id="debug.file_link_formatter" on-invalid="null"/>
       <call method="setName">
         <argument>debug:twig</argument>
@@ -3499,6 +3514,9 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\CollaborateurController" class="App\Controller\CollaborateurController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\CollaborateurController" class="App\Controller\CollaborateurController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\CollaborateurController" class="App\Controller\CollaborateurController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\CompetenceController" class="App\Controller\CompetenceController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\CompetenceController" class="App\Controller\CompetenceController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\CompetenceController" class="App\Controller\CompetenceController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\HomeController" class="App\Controller\HomeController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -3511,12 +3529,16 @@
     <service id=".abstract.instanceof.App\Form\AffectationType" class="App\Form\AffectationType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\CollaborateurType" class="App\Form\CollaborateurType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\CollaborateurType" class="App\Form\CollaborateurType" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\CompetenceType" class="App\Form\CompetenceType" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Form\CompetenceType" class="App\Form\CompetenceType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Component\Form\FormTypeInterface.0.App\Form\MissionType" class="App\Form\MissionType" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Form\MissionType" class="App\Form\MissionType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\AffectationRepository" class="App\Repository\AffectationRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\AffectationRepository" class="App\Repository\AffectationRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CollaborateurRepository" class="App\Repository\CollaborateurRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\CollaborateurRepository" class="App\Repository\CollaborateurRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CompetenceRepository" class="App\Repository\CompetenceRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\CompetenceRepository" class="App\Repository\CompetenceRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\MissionRepository" class="App\Repository\MissionRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\MissionRepository" class="App\Repository\MissionRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.7nzbL4K" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -3997,6 +4019,25 @@
         <argument key="entityManager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
       </argument>
     </service>
+    <service id=".service_locator.mOufrFG" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="competenceRepository" type="service_closure" id="App\Repository\CompetenceRepository"/>
+      </argument>
+    </service>
+    <service id=".service_locator.9Uxl6IF" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="competence" type="service_closure" id=".errored..service_locator.9Uxl6IF.App\Entity\Competence"/>
+      </argument>
+    </service>
+    <service id=".service_locator.4jAglVv" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="competence" type="service_closure" id=".errored..service_locator.4jAglVv.App\Entity\Competence"/>
+        <argument key="entityManager" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+      </argument>
+    </service>
     <service id=".service_locator.skfIa3W" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -4016,7 +4057,7 @@
         <argument key="mission" type="service_closure" id=".errored..service_locator.fiqNNQC.App\Entity\Mission"/>
       </argument>
     </service>
-    <service id=".service_locator.nQbTcqh" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator..4HAyD2" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AffectationController::delete" type="service_closure" id=".service_locator.dOY9ozk"/>
@@ -4040,6 +4081,11 @@
         <argument key="App\Controller\CollaborateurController::index" type="service_closure" id=".service_locator.YiuYd7T"/>
         <argument key="App\Controller\CollaborateurController::new" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\CollaborateurController::show" type="service_closure" id=".service_locator.Yb3Rv_S"/>
+        <argument key="App\Controller\CompetenceController::delete" type="service_closure" id=".service_locator.4jAglVv"/>
+        <argument key="App\Controller\CompetenceController::edit" type="service_closure" id=".service_locator.4jAglVv"/>
+        <argument key="App\Controller\CompetenceController::index" type="service_closure" id=".service_locator.mOufrFG"/>
+        <argument key="App\Controller\CompetenceController::new" type="service_closure" id=".service_locator.CsMkqUa"/>
+        <argument key="App\Controller\CompetenceController::show" type="service_closure" id=".service_locator.9Uxl6IF"/>
         <argument key="App\Controller\MissionController::delete" type="service_closure" id=".service_locator.fiqNNQC"/>
         <argument key="App\Controller\MissionController::edit" type="service_closure" id=".service_locator.fiqNNQC"/>
         <argument key="App\Controller\MissionController::index" type="service_closure" id=".service_locator.skfIa3W"/>
@@ -4070,6 +4116,11 @@
         <argument key="App\Controller\CollaborateurController:index" type="service_closure" id=".service_locator.YiuYd7T"/>
         <argument key="App\Controller\CollaborateurController:new" type="service_closure" id=".service_locator.CsMkqUa"/>
         <argument key="App\Controller\CollaborateurController:show" type="service_closure" id=".service_locator.Yb3Rv_S"/>
+        <argument key="App\Controller\CompetenceController:delete" type="service_closure" id=".service_locator.4jAglVv"/>
+        <argument key="App\Controller\CompetenceController:edit" type="service_closure" id=".service_locator.4jAglVv"/>
+        <argument key="App\Controller\CompetenceController:index" type="service_closure" id=".service_locator.mOufrFG"/>
+        <argument key="App\Controller\CompetenceController:new" type="service_closure" id=".service_locator.CsMkqUa"/>
+        <argument key="App\Controller\CompetenceController:show" type="service_closure" id=".service_locator.9Uxl6IF"/>
         <argument key="App\Controller\MissionController:delete" type="service_closure" id=".service_locator.fiqNNQC"/>
         <argument key="App\Controller\MissionController:edit" type="service_closure" id=".service_locator.fiqNNQC"/>
         <argument key="App\Controller\MissionController:index" type="service_closure" id=".service_locator.skfIa3W"/>
@@ -4146,11 +4197,12 @@
       <argument type="service" id="argument_resolver.query_parameter_value_resolver"/>
       <argument type="service" id="debug.stopwatch"/>
     </service>
-    <service id=".service_locator.JKIl8NV" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.bXT5T8E" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Form\AffectationType" type="service_closure" id="App\Form\AffectationType"/>
         <argument key="App\Form\CollaborateurType" type="service_closure" id="App\Form\CollaborateurType"/>
+        <argument key="App\Form\CompetenceType" type="service_closure" id="App\Form\CompetenceType"/>
         <argument key="App\Form\MissionType" type="service_closure" id="App\Form\MissionType"/>
         <argument key="Symfony\Bridge\Doctrine\Form\Type\EntityType" type="service_closure" id="form.type.entity"/>
         <argument key="Symfony\Component\Form\Extension\Core\Type\ChoiceType" type="service_closure" id="form.type.choice"/>
@@ -4169,11 +4221,12 @@
         <argument key="doctrine.orm.listeners.pdo_session_handler_schema_listener" type="service_closure" id="doctrine.orm.listeners.pdo_session_handler_schema_listener"/>
       </argument>
     </service>
-    <service id=".service_locator.dO6Y791" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.1Rlg9Uu" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AffectationRepository" type="service_closure" id="App\Repository\AffectationRepository"/>
         <argument key="App\Repository\CollaborateurRepository" type="service_closure" id="App\Repository\CollaborateurRepository"/>
+        <argument key="App\Repository\CompetenceRepository" type="service_closure" id="App\Repository\CompetenceRepository"/>
         <argument key="App\Repository\MissionRepository" type="service_closure" id="App\Repository\MissionRepository"/>
       </argument>
     </service>
@@ -4246,6 +4299,12 @@
     <service id=".service_locator.O2p6Lk7.App\Controller\CollaborateurController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\CollaborateurController"/>
       <argument>App\Controller\CollaborateurController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.O2p6Lk7" method="withContext"/>
+    </service>
+    <service id=".service_locator.O2p6Lk7.App\Controller\CompetenceController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\CompetenceController"/>
+      <argument>App\Controller\CompetenceController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.O2p6Lk7" method="withContext"/>
     </service>
@@ -4402,6 +4461,12 @@
     </service>
     <service id=".errored..service_locator.gv8l6lm.App\Entity\Collaborateur" class="App\Entity\Collaborateur">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.gv8l6lm&quot;: it needs an instance of &quot;App\Entity\Collaborateur&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
+    <service id=".errored..service_locator.9Uxl6IF.App\Entity\Competence" class="App\Entity\Competence">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.9Uxl6IF&quot;: it needs an instance of &quot;App\Entity\Competence&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
+    </service>
+    <service id=".errored..service_locator.4jAglVv.App\Entity\Competence" class="App\Entity\Competence">
+      <tag name="container.error" message="Cannot autowire service &quot;.service_locator.4jAglVv&quot;: it needs an instance of &quot;App\Entity\Competence&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
     </service>
     <service id=".errored..service_locator.DzSeb2e.App\Entity\Mission" class="App\Entity\Mission">
       <tag name="container.error" message="Cannot autowire service &quot;.service_locator.DzSeb2e&quot;: it needs an instance of &quot;App\Entity\Mission&quot; but this type has been excluded in &quot;config/services.yaml&quot;."/>
@@ -5144,16 +5209,16 @@
     <service id="Twig\Environment" alias="twig"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.7nzbL4K" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.nQbTcqh"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator..4HAyD2"/>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
-    <service id=".service_locator.XDGmiR3" alias=".1_ServiceLocator~oTDBTVU"/>
+    <service id=".service_locator.XDGmiR3" alias=".1_ServiceLocator~TkYLJdK"/>
     <service id=".service_locator.o.uf2zi" alias=".service_locator.7nzbL4K"/>
     <service id=".service_locator.ETjrRyM" alias=".service_locator.fiqNNQC"/>
-    <service id=".service_locator.WsNo6qt" alias=".service_locator.nQbTcqh"/>
+    <service id=".service_locator.6nFqdgy" alias=".service_locator..4HAyD2"/>
     <service id=".service_locator.zOrwI6F" alias=".service_locator.nrgc8tJ"/>
-    <service id=".service_locator.wvJy2cV" alias=".service_locator.JKIl8NV"/>
+    <service id=".service_locator.AdK6zT6" alias=".service_locator.bXT5T8E"/>
     <service id=".service_locator.LMuqDDe" alias=".service_locator.VHsrTPK"/>
     <service id=".service_locator.jUv.zyj" alias=".service_locator.O2p6Lk7"/>
     <service id="event_dispatcher" alias="debug.event_dispatcher" public="true"/>
@@ -5178,6 +5243,9 @@
     <service id=".service_locator.3R0nXfc" alias=".service_locator.YiuYd7T"/>
     <service id=".service_locator.AxH89vZ" alias=".service_locator.Yb3Rv_S"/>
     <service id=".service_locator.HEGKygs" alias=".service_locator.gv8l6lm"/>
+    <service id=".service_locator.gvCNacY" alias=".service_locator.mOufrFG"/>
+    <service id=".service_locator.iJ29bFN" alias=".service_locator.9Uxl6IF"/>
+    <service id=".service_locator.Q0aqi7I" alias=".service_locator.4jAglVv"/>
     <service id=".service_locator.oaGSL0j" alias=".service_locator.skfIa3W"/>
     <service id=".service_locator.OckUIYl" alias=".service_locator.DzSeb2e"/>
     <service id=".service_locator.piMRuQQ" alias=".service_locator.fiqNNQC"/>

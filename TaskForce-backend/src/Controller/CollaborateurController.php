@@ -51,23 +51,25 @@ class CollaborateurController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_collaborateur_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Collaborateur $collaborateur, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(CollaborateurType::class, $collaborateur);
-        $form->handleRequest($request);
+#[Route('/{id}/edit', name: 'app_collaborateur_edit', methods: ['GET', 'POST'])]
+public function edit(Request $request, Collaborateur $collaborateur, EntityManagerInterface $entityManager): Response
+{
+    $form = $this->createForm(CollaborateurType::class, $collaborateur);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->flush();
 
-            return $this->redirectToRoute('app_collaborateur_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('collaborateur/edit.html.twig', [
-            'collaborateur' => $collaborateur,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('app_collaborateur_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->render('collaborateur/edit.html.twig', [
+        'collaborateur' => $collaborateur,
+        'form' => $form,
+    ]);
+}
+
+
 
     #[Route('/{id}', name: 'app_collaborateur_delete', methods: ['POST'])]
     public function delete(Request $request, Collaborateur $collaborateur, EntityManagerInterface $entityManager): Response
@@ -79,6 +81,4 @@ class CollaborateurController extends AbstractController
 
         return $this->redirectToRoute('app_collaborateur_index', [], Response::HTTP_SEE_OTHER);
     }
-
-
 }

@@ -33,6 +33,14 @@
             </tr>
         </tbody>
     </table>
+    <h2>Compétences requises</h2>
+<ul>
+    {% for competence in mission.competences %}
+        <li>{{ competence.nom }}</li>
+    {% else %}
+        <li>Aucune compétence requise</li>
+    {% endfor %}
+</ul>
 
     <a href="{{ path('app_mission_index') }}">back to list</a>
 

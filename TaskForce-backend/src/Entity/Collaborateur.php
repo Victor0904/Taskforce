@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Competence;
 
 #[ORM\Entity(repositoryClass: CollaborateurRepository::class)]
 class Collaborateur
@@ -34,12 +35,17 @@ class Collaborateur
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $dateNaissance = null;
 
-    #[ORM\OneToMany(targetEntity: Affectation::class, mappedBy: 'collaborateur')]
+    #[ORM\OneToMany(mappedBy: 'collaborateur', targetEntity: Affectation::class, cascade: ['persist', 'remove'])]
     private Collection $affectations;
+
+    #[ORM\ManyToMany(targetEntity: Competence::class, inversedBy: 'collaborateurs', cascade: ['persist'])]
+    #[ORM\JoinTable(name: 'collaborateur_competence')]
+    private Collection $competences;
 
     public function __construct()
     {
         $this->affectations = new ArrayCollection();
+        $this->competences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -55,7 +61,6 @@ class Collaborateur
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -67,7 +72,6 @@ class Collaborateur
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
-
         return $this;
     }
 
@@ -79,7 +83,6 @@ class Collaborateur
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -91,7 +94,6 @@ class Collaborateur
     public function setPoste(string $poste): static
     {
         $this->poste = $poste;
-
         return $this;
     }
 
@@ -103,7 +105,6 @@ class Collaborateur
     public function setActif(bool $actif): static
     {
         $this->actif = $actif;
-
         return $this;
     }
 
@@ -111,11 +112,6 @@ class Collaborateur
     {
         return $this->dateNaissance;
     }
-        public function getNomComplet(): string
-    {
-        return $this->prenom . ' ' . $this->nom;
-    }
-
 
     public function setDateNaissance(?\DateTimeInterface $dateNaissance): static
     {
@@ -144,10 +140,36 @@ class Collaborateur
     public function removeAffectation(Affectation $affectation): static
     {
         if ($this->affectations->removeElement($affectation)) {
-            // set the owning side to null (unless already changed)
             if ($affectation->getCollaborateur() === $this) {
                 $affectation->setCollaborateur(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Competence>
+     */
+    public function getCompetences(): Collection
+    {
+        return $this->competences;
+    }
+
+    public function addCompetence(Competence $competence): static
+    {
+        if (!$this->competences->contains($competence)) {
+            $this->competences->add($competence);
+            $competence->addCollaborateur($this); // maintenir la relation bidirectionnelle
+        }
+
+        return $this;
+    }
+
+    public function removeCompetence(Competence $competence): static
+    {
+        if ($this->competences->removeElement($competence)) {
+            $competence->removeCollaborateur($this); // maintenir la relation bidirectionnelle
         }
 
         return $this;

@@ -14,6 +14,7 @@
                 <th>Date_debut</th>
                 <th>Date_fin</th>
                 <th>Nom</th>
+                <th>Compétences</th> {# Nouvelle colonne #}
                 <th>actions</th>
             </tr>
         </thead>
@@ -27,17 +28,29 @@
                 <td>{{ mission.dateFin ? mission.dateFin|date('Y-m-d') : '' }}</td>
                 <td>{{ mission.nom }}</td>
                 <td>
+                    {% if mission.competences is not empty %}
+                        <ul>
+                            {% for comp in mission.competences %}
+                                <li>{{ comp.nom }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <em>Aucune compétence</em>
+                    {% endif %}
+                </td>
+                <td>
                     <a href="{{ path('app_mission_show', {'id': mission.id}) }}">show</a>
                     <a href="{{ path('app_mission_edit', {'id': mission.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="7">no records found</td>
+                <td colspan="8">no records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    
 
     <a href="{{ path('app_mission_new') }}">Create new</a>
 {% endblock %}

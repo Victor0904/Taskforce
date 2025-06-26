@@ -37,6 +37,14 @@
             </tr>
         </tbody>
     </table>
+    <h2>Compétences</h2>
+<ul>
+    {% for competence in collaborateur.competences %}
+        <li>{{ competence.nom }}</li>
+    {% else %}
+        <li>Aucune compétence</li>
+    {% endfor %}
+</ul>
 
     <a href="{{ path('app_collaborateur_index') }}">back to list</a>
 

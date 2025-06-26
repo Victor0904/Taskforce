@@ -24,6 +24,8 @@ return [
         ],
         '/collaborateur' => [[['_route' => 'app_collaborateur_index', '_controller' => 'App\\Controller\\CollaborateurController::index'], null, ['GET' => 0], null, true, false, null]],
         '/collaborateur/new' => [[['_route' => 'app_collaborateur_new', '_controller' => 'App\\Controller\\CollaborateurController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        '/competence' => [[['_route' => 'app_competence_index', '_controller' => 'App\\Controller\\CompetenceController::index'], null, ['GET' => 0], null, true, false, null]],
+        '/competence/new' => [[['_route' => 'app_competence_new', '_controller' => 'App\\Controller\\CompetenceController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
         '/' => [[['_route' => 'home', '_controller' => 'App\\Controller\\HomeController::index'], null, null, null, false, false, null]],
         '/mission' => [[['_route' => 'app_mission_index', '_controller' => 'App\\Controller\\MissionController::index'], null, ['GET' => 0], null, true, false, null]],
         '/mission/new' => [[['_route' => 'app_mission_new', '_controller' => 'App\\Controller\\MissionController::new'], null, ['GET' => 0, 'POST' => 1], null, false, false, null]],
@@ -46,15 +48,22 @@ return [
                         .')'
                     .')'
                 .')'
-                .'|/collaborateur/([^/]++)(?'
-                    .'|(*:198)'
-                    .'|/edit(*:211)'
-                    .'|(*:219)'
+                .'|/co(?'
+                    .'|llaborateur/([^/]++)(?'
+                        .'|(*:201)'
+                        .'|/edit(*:214)'
+                        .'|(*:222)'
+                    .')'
+                    .'|mpetence/([^/]++)(?'
+                        .'|(*:251)'
+                        .'|/edit(*:264)'
+                        .'|(*:272)'
+                    .')'
                 .')'
                 .'|/mission/([^/]++)(?'
-                    .'|(*:248)'
-                    .'|/edit(*:261)'
-                    .'|(*:269)'
+                    .'|(*:302)'
+                    .'|/edit(*:315)'
+                    .'|(*:323)'
                 .')'
             .')/?$}sDu',
     ],
@@ -73,12 +82,15 @@ return [
             [['_route' => 'api_collaborateurs_update', '_controller' => 'App\\Controller\\Api\\CollaborateurApiController::update'], ['id'], ['PUT' => 0], null, false, true, null],
             [['_route' => 'api_collaborateurs_delete', '_controller' => 'App\\Controller\\Api\\CollaborateurApiController::delete'], ['id'], ['DELETE' => 0], null, false, true, null],
         ],
-        198 => [[['_route' => 'app_collaborateur_show', '_controller' => 'App\\Controller\\CollaborateurController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        211 => [[['_route' => 'app_collaborateur_edit', '_controller' => 'App\\Controller\\CollaborateurController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        219 => [[['_route' => 'app_collaborateur_delete', '_controller' => 'App\\Controller\\CollaborateurController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
-        248 => [[['_route' => 'app_mission_show', '_controller' => 'App\\Controller\\MissionController::show'], ['id'], ['GET' => 0], null, false, true, null]],
-        261 => [[['_route' => 'app_mission_edit', '_controller' => 'App\\Controller\\MissionController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
-        269 => [
+        201 => [[['_route' => 'app_collaborateur_show', '_controller' => 'App\\Controller\\CollaborateurController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        214 => [[['_route' => 'app_collaborateur_edit', '_controller' => 'App\\Controller\\CollaborateurController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        222 => [[['_route' => 'app_collaborateur_delete', '_controller' => 'App\\Controller\\CollaborateurController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        251 => [[['_route' => 'app_competence_show', '_controller' => 'App\\Controller\\CompetenceController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        264 => [[['_route' => 'app_competence_edit', '_controller' => 'App\\Controller\\CompetenceController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        272 => [[['_route' => 'app_competence_delete', '_controller' => 'App\\Controller\\CompetenceController::delete'], ['id'], ['POST' => 0], null, false, true, null]],
+        302 => [[['_route' => 'app_mission_show', '_controller' => 'App\\Controller\\MissionController::show'], ['id'], ['GET' => 0], null, false, true, null]],
+        315 => [[['_route' => 'app_mission_edit', '_controller' => 'App\\Controller\\MissionController::edit'], ['id'], ['GET' => 0, 'POST' => 1], null, false, false, null]],
+        323 => [
             [['_route' => 'app_mission_delete', '_controller' => 'App\\Controller\\MissionController::delete'], ['id'], ['POST' => 0], null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
