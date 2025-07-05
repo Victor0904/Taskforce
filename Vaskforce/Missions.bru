@@ -1,0 +1,24 @@
+meta {
+  name: Missions
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:8000/api/missions
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "titre": "Refonte du site web",
+    "description": "Amélioration de l'UX/UI sur le site existant.",
+    "priorite": 2,
+    "dateDebut": "2025-07-01T09:00:00",
+    "dateFinPrevue": "2025-07-10T18:00:00",
+    "responsable": 5,
+    "statut": "à_planifier"
+  }
+  
+}
