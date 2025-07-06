@@ -1,0 +1,19 @@
+meta {
+  name: Alterte
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:8000/api/alertes
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "type": "surcharge",
+    "message": "Charge trop élevée",
+    "collaborateur_id": 7
+  }
+}

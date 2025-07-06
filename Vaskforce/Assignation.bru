@@ -1,0 +1,19 @@
+meta {
+  name: Assignation
+  type: http
+  seq: 10
+}
+
+post {
+  url: http://localhost:8000/api/taches/assigner
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: Content-Type
+}
+
+body:json {
+  { "tache": 2 }
+}

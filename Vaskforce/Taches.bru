@@ -1,0 +1,32 @@
+meta {
+  name: Taches
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:8000/api/taches
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "titre": "Corriger les bugs critiques",
+    "description": "Résoudre les tickets bloquants avant la mise en prod.",
+    "chargeEstimee": 6.0,
+    "chargeReelle": 0,
+    "dateDebut": "2025-07-08T09:00:00",
+    "dateFinPrevue": "2025-07-10T18:00:00",
+    "statut": "à_faire",
+    "mission": 2,
+    "collaborateur": 5,          // ou null si tu veux tester l’assignation plus tard
+    "priorite": 1,
+    "competenceRequise": 5
+  }
+  
+}

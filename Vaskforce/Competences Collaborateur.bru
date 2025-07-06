@@ -1,0 +1,23 @@
+meta {
+  name: Competences Collaborateur
+  type: http
+  seq: 9
+}
+
+post {
+  url: http://localhost:8000/api/collaborateur-competences
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "collaborateur": 7,   // ID du collaborateur
+    "competence": 4,      // ID de la compétence
+    "niveau": 8           // 0 – 10 (ou ton barème)
+  }
+}

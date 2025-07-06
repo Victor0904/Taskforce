@@ -1,0 +1,43 @@
+meta {
+  name: Auth
+  type: http
+  seq: 12
+}
+
+post {
+  url: http://127.0.0.1:8000/api/login
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "admin@test.local",
+    "password": "Admin123!"
+  }
+  
+}
+
+tests {
+  test("Statut 200 ou 201", ({ expect, response }) => {
+    expect(response.status).toBeOneOf([200, 201]);
+  });
+  
+  test("Stocker le JWT", ({ response, setEnv, expect }) => {
+    // body est soit déjà un objet, soit une string JSON
+    let data = response.body;
+    if (typeof data === "string" && data.trim() !== "") {
+      try { data = JSON.parse(data); } catch { /* pas du JSON valide */ }
+    }
+  
+    expect(typeof data).toBe("object");        // vérif qu’on a bien un objet
+    expect(data).toHaveProperty("token");      // le token est présent
+  
+    setEnv("JWT", data.token);                 // variable d’environnement
+  });
+  
+}

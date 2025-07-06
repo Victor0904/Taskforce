@@ -1,0 +1,37 @@
+meta {
+  name: GET collaborateur
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8000/api/collaborateurs
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NTE3MjIwMTYsImV4cCI6MTc1MTcyNTYxNiwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImFkbWluQHRlc3QubG9jYWwifQ.UPX1E7dH-WhXa9MUtljdvFiaI0tSsdAffrVMcBu98TjW7wMwNjENXeIFarqTEwgLADFzXDeOMwzg5qxzTYE3-3rAhSv5GOHq3hhPf4JuAph94knUzUE9Dc-npAemzxQtcVbQu_d5lE3yYKXS4lIXkE2EV-BryswHOzv304Hm4k8vvtXlfTMhbg7PgtZ13UZOFxcp9aW2dS0ZvBBy4BVAPWEtCdS-i_UQR9IkBl3ggp4pU39v-lANPuSdBRiREWxFOft9sGqJLmw7TaEf1zNcGknEN7ngmJuyjb9dBbs4EcTYQ_cqrO3wXF1OZnLEmSz8x56WiJaGlikLfENKbZ3Hi_wgWJbvgNj_l68LiN2v-WuzvM232gpeC6oQKs-KWOYBJx01M6ZF85V4D14pzK4lLpfZdnWsmzBE5IBjIVI76sTR__4LHXOl34J5pcJfCidYqGWbhcp2xpTE8OWmz4wkyEl4-nz1uIWxs4Z_7J8BKQlwYrZ74tHaxuOPUf3eUX1R6tcqePEOt8XMtOr6Qcsrv5CVNT5ugHKGYnRfZBxUKT3RQ4HH1SWLNFXC40vEa1supZSYEBuC4KbJ0_xw8_0-UTUxwQHgn1mhauEmiEvkDeOoS4i1Ec6dUY4AST-_ivuVdkm5Z4xpl2Rgw3IMtSbiLdyBI3tJrlpOApL-0LvkWwY
+}
+
+body:json {
+  {
+    "nom": "Dupdeont",
+    "prenom": "Jedean",
+    "email": "jean.dupont@exdeample.com",
+    "role": "Dévelodeppeur",
+    "chargeActuelle": 0.4,
+    "disponible": true,
+  
+    "competences": [
+      {
+        "competence": "/api/competences/3",   // IRI ou id selon ta config
+        "niveau": 8
+      },
+      {
+        "competence": "/api/competences/4",
+        "niveau": 7
+      }
+    ]
+  }
+}
