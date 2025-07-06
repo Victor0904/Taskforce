@@ -1,0 +1,79 @@
+# config/packages/monolog.yaml
+monolog:
+    channels:
+        - deprecation     # canal dédié aux dépréciations
+        - security        # ➜ crée le canal “security”
+
+#####################################################################
+# ENV = dev
+#####################################################################
+when@dev:
+    monolog:
+        handlers:
+            # Log général
+            main:
+                type: stream
+                path: '%kernel.logs_dir%/dev.log'
+                level: debug
+                channels: ['!event']
+
+            # Console (affichage en temps réel)
+            console:
+                type: console
+                process_psr_3_messages: false
+                channels: ['!event', '!doctrine', '!console']
+
+            # ➜ Log dédié sécurité
+            security:
+                type: stream
+                path: '%kernel.logs_dir%/security_dev.log'
+                level: debug
+                channels: ['security']
+
+#####################################################################
+# ENV = test
+#####################################################################
+when@test:
+    monolog:
+        handlers:
+            main:
+                type: fingers_crossed
+                action_level: error
+                handler: nested
+                excluded_http_codes: [404, 405]
+                channels: ['!event']
+
+            nested:
+                type: stream
+                path: '%kernel.logs_dir%/test.log'
+                level: debug
+
+#####################################################################
+# ENV = prod
+#####################################################################
+when@prod:
+    monolog:
+        handlers:
+            main:
+                type: fingers_crossed
+                action_level: error
+                handler: nested
+                excluded_http_codes: [404, 405]
+                buffer_size: 50
+
+            nested:
+                type: stream
+                path: php://stderr
+                level: debug
+                formatter: monolog.formatter.json
+
+            console:
+                type: console
+                process_psr_3_messages: false
+                channels: ['!event', '!doctrine']
+
+            deprecation:
+                type: stream
+                path: php://stderr
+                formatter: monolog.formatter.json
+                channels: [deprecation]

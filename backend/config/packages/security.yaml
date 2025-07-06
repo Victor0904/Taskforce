@@ -1,0 +1,48 @@
+security:
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: auto
+
+  providers:
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: email
+
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    # ---------- /api/login ----------
+    login:
+      pattern: ^/api/login$
+      stateless: true
+      provider: app_user_provider
+      json_login:
+        check_path: api_login          # <- nom de la route
+        username_path: email
+        password_path: password
+        success_handler: lexik_jwt_authentication.handler.authentication_success
+        failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+    # ---------- tout le reste de /api ----------
+    api:
+      pattern: ^/api
+      stateless: true
+      provider: app_user_provider
+      jwt: ~
+
+    # ---------- site Web hors /api ----------
+    main:
+      pattern: ^/
+      lazy: true
+      provider: app_user_provider
+
+  role_hierarchy:
+    ROLE_ADMIN:   [ROLE_MANAGER]
+    ROLE_MANAGER: [ROLE_USER]
+
+  access_control:
+    - { path: ^/api/login$, roles: PUBLIC_ACCESS }
+    - { path: ^/api/users,  roles: ROLE_ADMIN }
+    - { path: ^/api,        roles: ROLE_USER }

@@ -1,0 +1,17 @@
+monolog:
+    handlers:
+        main:
+            type: stream
+            path: '%kernel.logs_dir%/dev.log'
+            level: debug
+            channels: ['!event']
+
+        console:
+            type: console
+            channels: ['!event', '!doctrine']
+
+        security:                 # ← handler dédié
+            type: stream
+            path: '%kernel.logs_dir%/security_dev.log'
+            level: debug
+            channels: ['security']
