@@ -22,38 +22,44 @@ class Collaborateur
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['collab:read', 'alerte:read', 'mission:read', 'tache:read'])]
+    #[Groups([
+        'collab:read', 'alerte:read', 'mission:read', 'tache:read'
+    ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['collab:read', 'collab:write', 'alerte:read', 'mission:read', 'tache:read'])]
+    #[Groups([
+        'collab:read', 'collab:write', 'alerte:read', 'mission:read', 'tache:read'
+    ])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['collab:read', 'collab:write', 'alerte:read', 'mission:read', 'tache:read'])]
+    #[Groups([
+        'collab:read', 'collab:write', 'alerte:read', 'mission:read', 'tache:read'
+    ])]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Groups(['collab:read', 'collab:write', 'alerte:read', 'mission:read', 'tache:read'])]
+    #[Groups(['collab:read', 'collab:write', 'alerte:read', 'mission:read'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['collab:read', 'collab:write', 'alerte:read', 'mission:read', 'tache:read'])]
+    #[Groups(['collab:read', 'collab:write'])]
     private ?string $role = null;
 
     #[ORM\Column(type: 'float')]
-    #[Groups(['collab:read', 'collab:write', 'alerte:read', 'mission:read', 'tache:read'])]
+    #[Groups(['collab:read', 'collab:write'])]
     private ?float $chargeActuelle = 0;
 
     #[ORM\Column(type: 'boolean')]
-    #[Groups(['collab:read', 'collab:write', 'alerte:read', 'mission:read', 'tache:read'])]
+    #[Groups(['collab:read', 'collab:write'])]
     private ?bool $disponible = true;
 
     #[ORM\Column]
-    #[Groups(['collab:read', 'alerte:read', 'mission:read', 'tache:read'])]
+    #[Groups(['collab:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
-    // ─────────── Relation inverse vers CollaborateurCompetence ───────────
+    // ─────────── Relations ───────────
 
     #[ORM\OneToMany(
         mappedBy: 'collaborateur',
@@ -61,7 +67,7 @@ class Collaborateur
         orphanRemoval: true,
         cascade: ['persist', 'remove']
     )]
-    #[Groups(['collab:read'])]          // on ne l’expose pas dans tache:read pour garder la réponse légère
+    #[Groups(['collab:read'])] // ❌ pas exposé dans tache:read pour garder les tâches légères
     private Collection $competences;
 
     // ─────────── Getters / setters ───────────
@@ -87,8 +93,6 @@ class Collaborateur
     public function setDisponible(bool $d): static { $this->disponible = $d; return $this; }
 
     public function getCreatedAt(): ?\DateTimeImmutable { return $this->createdAt; }
-
-    // ─────────── Collection competences ───────────
 
     /** @return Collection<int, CollaborateurCompetence> */
     public function getCompetences(): Collection { return $this->competences; }

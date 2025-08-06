@@ -5,13 +5,7 @@ namespace App\Entity;
 use App\Repository\TacheRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Mission;
-use App\Entity\Collaborateur;
-use App\Entity\Competence;
 use Symfony\Component\Serializer\Annotation\Groups;
-
-
-
 
 #[ORM\Entity(repositoryClass: TacheRepository::class)]
 class Tache
@@ -69,128 +63,72 @@ class Tache
     #[Groups(['tache:read', 'tache:write'])]
     private ?Competence $competenceRequise = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    // ───── GETTERS / SETTERS ─────
 
-    public function getTitre(): ?string
-    {
-        return $this->titre;
-    }
+    public function getId(): ?int { return $this->id; }
 
-    public function setTitre(string $titre): static
-    {
+    public function getTitre(): ?string { return $this->titre; }
+    public function setTitre(string $titre): static {
         $this->titre = $titre;
         return $this;
     }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
+    public function getDescription(): ?string { return $this->description; }
+    public function setDescription(string $description): static {
         $this->description = $description;
         return $this;
     }
 
-    public function getChargeEstimee(): ?float
-    {
-        return $this->chargeEstimee;
-    }
-
-    public function setChargeEstimee(float $chargeEstimee): static
-    {
+    public function getChargeEstimee(): ?float { return $this->chargeEstimee; }
+    public function setChargeEstimee(float $chargeEstimee): static {
         $this->chargeEstimee = $chargeEstimee;
         return $this;
     }
 
-    public function getChargeReelle(): ?float
-    {
-        return $this->chargeReelle;
-    }
-
-    public function setChargeReelle(?float $chargeReelle): static
-    {
+    public function getChargeReelle(): ?float { return $this->chargeReelle; }
+    public function setChargeReelle(?float $chargeReelle): static {
         $this->chargeReelle = $chargeReelle;
         return $this;
     }
 
-    public function getDateDebut(): ?\DateTimeInterface
-    {
-        return $this->dateDebut;
-    }
-
-    public function setDateDebut(\DateTimeInterface $dateDebut): static
-    {
+    public function getDateDebut(): ?\DateTimeInterface { return $this->dateDebut; }
+    public function setDateDebut(\DateTimeInterface $dateDebut): static {
         $this->dateDebut = $dateDebut;
         return $this;
     }
 
-    public function getDateFinPrevue(): ?\DateTimeInterface
-    {
-        return $this->dateFinPrevue;
-    }
-
-    public function setDateFinPrevue(\DateTimeInterface $dateFinPrevue): static
-    {
+    public function getDateFinPrevue(): ?\DateTimeInterface { return $this->dateFinPrevue; }
+    public function setDateFinPrevue(\DateTimeInterface $dateFinPrevue): static {
         $this->dateFinPrevue = $dateFinPrevue;
         return $this;
     }
 
-    public function getStatut(): ?string
-    {
-        return $this->statut;
-    }
-
-    public function setStatut(string $statut): static
-    {
+    public function getStatut(): ?string { return $this->statut; }
+    public function setStatut(string $statut): static {
         $this->statut = $statut;
         return $this;
     }
 
-    public function getPriorite(): ?int
-    {
-        return $this->priorite;
-    }
-
-    public function setPriorite(int $priorite): static
-    {
+    public function getPriorite(): ?int { return $this->priorite; }
+    public function setPriorite(int $priorite): static {
         $this->priorite = $priorite;
         return $this;
     }
 
-    public function getMission(): ?Mission
-    {
-        return $this->mission;
-    }
-
-    public function setMission(?Mission $mission): static
-    {
+    public function getMission(): ?Mission { return $this->mission; }
+    public function setMission(?Mission $mission): static {
         $this->mission = $mission;
         return $this;
     }
 
-    public function getCollaborateur(): ?Collaborateur
-    {
-        return $this->collaborateur;
-    }
-
-    public function setCollaborateur(?Collaborateur $collaborateur): static
-    {
+    public function getCollaborateur(): ?Collaborateur { return $this->collaborateur; }
+    public function setCollaborateur(?Collaborateur $collaborateur): static {
         $this->collaborateur = $collaborateur;
         return $this;
     }
 
-    public function getCompetenceRequise(): ?Competence
-    {
-        return $this->competenceRequise;
-    }
-
-    public function setCompetenceRequise(?Competence $competenceRequise): static
-    {
+    public function getCompetenceRequise(): ?Competence { return $this->competenceRequise; }
+    public function setCompetenceRequise(?Competence $competenceRequise): static {
         $this->competenceRequise = $competenceRequise;
         return $this;
     }

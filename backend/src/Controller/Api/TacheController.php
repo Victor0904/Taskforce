@@ -16,6 +16,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/api/taches')]
 class TacheController extends AbstractController
 {
+    // ───────────────── GET tâches par projet (⚠️ bien placée DANS la classe)
+    #[Route('/projet/{id}', name: 'taches_par_projet', methods: ['GET'])]
+    public function getByProjet(int $id, TacheRepository $tacheRepo): JsonResponse
+    {
+        $taches = $tacheRepo->findBy(['mission' => $id]);
+
+        return $this->json($taches, 200, [], ['groups' => 'tache:read']);
+    }
+
     // ───────────────── GET liste
     #[Route('', methods: ['GET'])]
     public function index(TacheRepository $repo): JsonResponse
@@ -43,23 +52,17 @@ class TacheController extends AbstractController
         try {
             $data = json_decode($request->getContent(), true);
 
-            // Champs obligatoires
             $required = [
-                'titre', 'description',
-                'chargeEstimee', 'dateDebut',
-                'dateFinPrevue', 'statut',
-                'mission', 'competenceRequise', 'priorite'
+                'titre', 'description', 'chargeEstimee', 'dateDebut',
+                'dateFinPrevue', 'statut', 'mission', 'competenceRequise', 'priorite'
             ];
+
             foreach ($required as $field) {
                 if (!isset($data[$field])) {
-                    return $this->json(
-                        ['message' => "Champ obligatoire manquant : $field"],
-                        422
-                    );
+                    return $this->json(['message' => "Champ obligatoire manquant : $field"], 422);
                 }
             }
 
-            // Récupération des entités liées
             $mission = $em->getRepository(Mission::class)->find($data['mission']);
             $compet  = $em->getRepository(Competence::class)->find($data['competenceRequise']);
             $collab  = isset($data['collaborateur'])
@@ -67,16 +70,12 @@ class TacheController extends AbstractController
                 : null;
 
             if (!$mission || !$compet) {
-                return $this->json(
-                    ['message' => 'Mission ou compétence introuvable.'],
-                    404
-                );
+                return $this->json(['message' => 'Mission ou compétence introuvable.'], 404);
             }
             if (isset($data['collaborateur']) && !$collab) {
                 return $this->json(['message' => 'Collaborateur introuvable.'], 404);
             }
 
-            // Création de la tâche
             $tache = (new Tache())
                 ->setTitre($data['titre'])
                 ->setDescription($data['description'])
@@ -93,62 +92,49 @@ class TacheController extends AbstractController
             $em->persist($tache);
             $em->flush();
 
-            return $this->json(
-                ['message' => 'Tâche créée avec succès.', 'data' => $tache],
-                201,
-                [],
-                ['groups' => 'tache:read']
-            );
+            return $this->json([
+                'message' => 'Tâche créée avec succès.',
+                'data' => $tache
+            ], 201, [], ['groups' => 'tache:read']);
+
         } catch (\Throwable $e) {
-            return $this->json(
-                ['message' => 'Erreur lors de la création de la tâche : ' . $e->getMessage()],
-                500
-            );
+            return $this->json(['message' => 'Erreur : ' . $e->getMessage()], 500);
         }
     }
 
     // ───────────────── PUT mise à jour
     #[Route('/{id}', methods: ['PUT'])]
-    public function update(
-        Request $request,
-        Tache $tache,
-        EntityManagerInterface $em
-    ): JsonResponse {
+    public function update(Request $request, Tache $tache, EntityManagerInterface $em): JsonResponse
+    {
         try {
             $data = json_decode($request->getContent(), true);
 
-            // Mise à jour des champs simples s’ils sont présents
-            foreach (
-                ['titre', 'description', 'chargeEstimee', 'chargeReelle',
-                 'dateDebut', 'dateFinPrevue', 'statut', 'priorite'] as $field
-            ) {
+            foreach ([
+                'titre', 'description', 'chargeEstimee', 'chargeReelle',
+                'dateDebut', 'dateFinPrevue', 'statut', 'priorite'
+            ] as $field) {
                 if (isset($data[$field])) {
                     $setter = 'set' . ucfirst($field);
-                    $value  = in_array($field, ['dateDebut', 'dateFinPrevue'])
+                    $value = in_array($field, ['dateDebut', 'dateFinPrevue'])
                         ? new \DateTime($data[$field])
                         : $data[$field];
                     $tache->$setter($value);
                 }
             }
 
-            // Relations (mission, competence, collaborateur)
             if (isset($data['mission'])) {
                 $mission = $em->getRepository(Mission::class)->find($data['mission']);
-                if (!$mission) {
-                    return $this->json(['message' => 'Mission introuvable'], 404);
-                }
+                if (!$mission) return $this->json(['message' => 'Mission introuvable'], 404);
                 $tache->setMission($mission);
             }
 
             if (isset($data['competenceRequise'])) {
                 $compet = $em->getRepository(Competence::class)->find($data['competenceRequise']);
-                if (!$compet) {
-                    return $this->json(['message' => 'Compétence introuvable'], 404);
-                }
+                if (!$compet) return $this->json(['message' => 'Compétence introuvable'], 404);
                 $tache->setCompetenceRequise($compet);
             }
 
-            if (array_key_exists('collaborateur', $data)) { // peut être null
+            if (array_key_exists('collaborateur', $data)) {
                 $collab = $data['collaborateur'] !== null
                     ? $em->getRepository(Collaborateur::class)->find($data['collaborateur'])
                     : null;
@@ -160,17 +146,13 @@ class TacheController extends AbstractController
 
             $em->flush();
 
-            return $this->json(
-                ['message' => 'Tâche mise à jour.', 'data' => $tache],
-                200,
-                [],
-                ['groups' => 'tache:read']
-            );
+            return $this->json([
+                'message' => 'Tâche mise à jour.',
+                'data' => $tache
+            ], 200, [], ['groups' => 'tache:read']);
+
         } catch (\Throwable $e) {
-            return $this->json(
-                ['message' => 'Erreur lors de la mise à jour : ' . $e->getMessage()],
-                500
-            );
+            return $this->json(['message' => 'Erreur lors de la mise à jour : ' . $e->getMessage()], 500);
         }
     }
 

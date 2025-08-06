@@ -6,32 +6,52 @@
       </RouterLink>
     </div>
     
-    <nav class="navbar-nav">
-      <RouterLink to="/" class="nav-link">
-        <i class="icon">🏠</i>
-        Dashboard
-      </RouterLink>
+      <nav class="navbar-nav">
+  <RouterLink to="/" class="nav-link">
+    <i class="icon">🏠</i>
+    Dashboard
+  </RouterLink>
 
-      <!-- Affiche le lien User uniquement si ROLE_USER et PAS admin -->
-      <RouterLink
-        to="/user"
-        v-if="hasRoleUserOnly"
-        class="nav-link"
-      >
-        <i class="icon">👤</i>
-        User
-      </RouterLink>
+  <RouterLink
+    to="/projets"
+    v-if="isLoggedIn"
+    class="nav-link"
+  >
+    <i class="icon">📁</i>
+    Projets
+  </RouterLink>
 
-      <!-- Affiche Admin uniquement pour ROLE_ADMIN -->
-      <RouterLink
-        to="/admin"
-        v-if="hasRole('ROLE_ADMIN').value"
-        class="nav-link admin-link"
-      >
-        <i class="icon">⚙️</i>
-        Admin
-      </RouterLink>
-    </nav>
+  <!-- Seulement pour les utilisateurs non-admin -->
+  <RouterLink
+    to="/user"
+    v-if="hasRoleUserOnly"
+    class="nav-link"
+  >
+    <i class="icon">🧑‍💻</i>
+    utilisateurs
+  </RouterLink>
+  
+  <!-- Seulement pour les admins -->
+  <RouterLink
+    to="/admin"
+    v-if="hasRole('ROLE_ADMIN').value"
+    class="nav-link admin-link"
+  >
+    <i class="icon">⚙️</i>
+    Admin
+  </RouterLink>
+<RouterLink
+  to="/alertes"
+  v-if="hasRole('ROLE_ADMIN').value || hasRole('ROLE_MANAGER').value"
+  class="nav-link"
+>
+  <i class="icon">🚨</i>
+  Alertes
+</RouterLink>
+
+
+</nav>
+
 
     <div class="navbar-actions">
       <div v-if="isLoggedIn" :class="userRoleClass" class="user-info">

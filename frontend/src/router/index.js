@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Dashboard from '../views/Dashboard.vue'
 import Admin from '../views/Admin.vue'
-import User from '../views/User.vue'
+import Taches from '@/views/Taches.vue'
 import Login from '../views/Login.vue'
 import { jwtDecode } from 'jwt-decode'
 
@@ -18,16 +18,36 @@ const routes = [
     meta: { requiresAuth: true, roles: ['ROLE_ADMIN'] }
   },
   {
-    path: '/user',
-    name: 'User',
-    component: User,
-    meta: { requiresAuth: true, roles: ['ROLE_USER', 'ROLE_ADMIN'] }
-  },
-  {
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/projets',
+    name: 'Projets',
+    component: () => import('../views/Projet.vue'),
+    meta: { requiresAuth: true, roles: ['ROLE_ADMIN'] }
+  },
+  {
+    path: '/projets/:id/taches',
+    name: 'TachesParProjet',
+    component: Taches
+  },
+  {
+    path: '/user',
+    name: 'User',
+    component: () => import('../views/User.vue'),
+    meta: { requiresAuth: true, roles: ['ROLE_USER', 'ROLE_ADMIN'] }
+  },
+  {
+    path: '/alertes',
+    name: 'Alertes',
+    component: () => import('../views/Alertes.vue'),
+    meta: { requiresAuth: true, roles: ['ROLE_ADMIN', 'ROLE_MANAGER'] }
   }
+
+
+
 ]
 
 const router = createRouter({
