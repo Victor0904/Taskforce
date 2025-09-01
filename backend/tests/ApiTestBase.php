@@ -1,5 +1,5 @@
 <?php
-// tests/ApiTestCase.php
+// tests/ApiTestBase.php
 namespace App\Tests;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
