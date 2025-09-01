@@ -88,7 +88,6 @@ const fetchTaches = async () => {
     const res = await axios.get(`http://127.0.0.1:8000/api/taches/projet/${projetId.value}`, config)
     taches.value = Array.isArray(res.data.data) ? res.data.data : res.data
   } catch (e) {
-    console.error("Erreur chargement tâches :", e)
     alert("Erreur lors du chargement des tâches")
   }
 }
@@ -107,7 +106,6 @@ const fetchProjet = async () => {
     })
     projet.value = res.data
   } catch (e) {
-    console.error("Erreur chargement projet :", e)
     alert("Projet introuvable")
   }
 }
@@ -118,7 +116,7 @@ onMounted(() => {
 })
 
 // ⚠️ Ces méthodes doivent être implémentées si tu veux la création/modification
-const ouvrirModalAjout = () => alert("Modal d'ajout à implémenter")
-const ouvrirModalModification = (tache) => alert("Modal de modification à implémenter")
-const supprimerTache = (id) => alert("Suppression de tâche à implémenter")
+const ouvrirModalAjout = () => {}
+const ouvrirModalModification = (tache) => {}
+const supprimerTache = (id) => {}
 </script>

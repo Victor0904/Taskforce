@@ -47,18 +47,23 @@ const fetchMesTaches = async () => {
   try {
     const token = localStorage.getItem('token')
     const decoded = jwtDecode(token)
-    const userId = decoded.id // ou decoded.sub selon ton backend
+    const userEmail = decoded.username || decoded.email // L'email est stocké dans 'username' dans notre cas
 
-    const res = await axios.get(`http://127.0.0.1:8000/api/taches/collaborateur/${userId}`, {
+    if (!userEmail) {
+      return
+    }
+
+    // Utiliser le nouvel endpoint qui accepte l'email
+    const res = await axios.get(`http://127.0.0.1:8000/api/taches/collaborateur/email/${encodeURIComponent(userEmail)}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     })
 
-    taches.value = res.data.data
+    taches.value = res.data.data || res.data
   } catch (e) {
-    console.error("Erreur chargement des tâches personnelles :", e)
-    alert("Impossible de charger vos tâches")
+    // En cas d'erreur, on met un tableau vide
+    taches.value = []
   }
 }
 

@@ -17,10 +17,17 @@ class CompetenceController extends AbstractController
     #[Route('', methods: ['GET'])]
     public function index(CompetenceRepository $repo): JsonResponse
     {
-        return $this->json([
-            'message' => 'Liste des compétences.',
-            'data' => $repo->findAll()
-        ], 200, [], ['groups' => 'competence:read']);
+        try {
+            $competences = $repo->findAll();
+            return $this->json([
+                'message' => 'Liste des compétences.',
+                'data' => $competences
+            ], 200, [], ['groups' => 'competence:read']);
+        } catch (\Exception $e) {
+            return $this->json([
+                'message' => 'Erreur lors du chargement des compétences: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
         #[Route('/{id}', methods: ['GET'])]

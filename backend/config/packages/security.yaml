@@ -39,10 +39,21 @@ security:
       provider: app_user_provider
 
   role_hierarchy:
-    ROLE_ADMIN:   [ROLE_MANAGER]
-    ROLE_MANAGER: [ROLE_USER]
+    ROLE_CHEF_PROJET: [ROLE_ADMIN, ROLE_MANAGER]
+    ROLE_ADMIN:       [ROLE_MANAGER]
+    ROLE_MANAGER:     [ROLE_USER]
 
   access_control:
-    - { path: ^/api/login$, roles: PUBLIC_ACCESS } #remettre PUBLIC_ACCESS si on utilise JWT
-    - { path: ^/api/users,  roles: ROLE_USER } #remettre ROLE_USER si on utilise JWT sinon mettre PUBLIC_ACCESS
-    - { path: ^/api,        roles: ROLE_USER } #remettre ROLE_USER si on utilise JWT sinon mettre PUBLIC_ACCESS
+    - { path: ^/api/login$, roles: PUBLIC_ACCESS }
+    - { path: ^/api/register$, roles: PUBLIC_ACCESS }
+    - { path: ^/api/users/reset-password$, roles: ROLE_USER }
+    - { path: ^/api/competences, roles: PUBLIC_ACCESS }
+    - { path: ^/api/collaborateurs, roles: PUBLIC_ACCESS }
+    - { path: ^/api/taches/assigner, roles: [ROLE_ADMIN, ROLE_MANAGER, ROLE_CHEF_PROJET] }
+    - { path: ^/api/taches/.*/reassigner, roles: [ROLE_ADMIN, ROLE_MANAGER, ROLE_CHEF_PROJET] }
+    - { path: ^/api/taches, roles: PUBLIC_ACCESS }
+    - { path: ^/api/missions, roles: PUBLIC_ACCESS }
+    - { path: ^/api/users/profile, roles: ROLE_USER }
+    - { path: ^/api/users/change-password, roles: ROLE_USER }
+    - { path: ^/api/users, roles: [ROLE_ADMIN, ROLE_MANAGER] }
+    - { path: ^/api, roles: PUBLIC_ACCESS }

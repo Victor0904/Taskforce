@@ -21,6 +21,7 @@ class TacheAssignController extends AbstractController
         TaskAssignmentService $service,
         EntityManagerInterface $em
     ): JsonResponse {
+        try {
         $payload = json_decode($request->getContent(), true) ?: [];
         $tasks   = [];
 
@@ -38,20 +39,58 @@ class TacheAssignController extends AbstractController
         }
 
         $resultats = [];
+        $erreurs = [];
+        
         foreach ($tasks as $tache) {
-            $collab = $service->assign($tache);
-            if ($collab) {
-                $resultats[] = [
-                    'tache'        => $tache->getId(),
-                    'collaborateur'=> $collab->getId()
-                ];
+            try {
+                // Vérifier que la tâche a une compétence requise
+                if (!$tache->getCompetenceRequise()) {
+                    $erreurs[] = "Tâche {$tache->getId()} ({$tache->getTitre()}): Pas de compétence requise définie";
+                    continue;
+                }
+                
+                $collab = $service->assignTaskAutomatically($tache);
+                if ($collab) {
+                    $resultats[] = [
+                        'tache'        => $tache->getId(),
+                        'collaborateur'=> $collab->getId(),
+                        'nom'          => $collab->getPrenom() . ' ' . $collab->getNom()
+                    ];
+                }
+            } catch (\Exception $e) {
+                $erreurs[] = "Tâche {$tache->getId()} ({$tache->getTitre()}): " . $e->getMessage();
+                error_log("Erreur assignation tâche {$tache->getId()}: " . $e->getMessage());
             }
         }
         $em->flush();
 
+        $message = 'Assignation effectuée.';
+        if (!empty($erreurs)) {
+            $message .= ' Certaines tâches n\'ont pas pu être assignées.';
+        }
+        
         return $this->json([
-            'message' => 'Assignation effectuée.',
-            'data'    => $resultats
+            'message' => $message,
+            'data'    => $resultats,
+            'erreurs' => $erreurs,
+            'totalTraitees' => count($tasks),
+            'totalAssignees' => count($resultats),
+            'totalErreurs' => count($erreurs)
         ], 200);
+        } catch (\Exception $e) {
+            return $this->json([
+                'message' => 'Erreur lors de l\'assignation en lot',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    #[Route('/test', methods: ['GET'])]
+    public function test(): JsonResponse
+    {
+        return $this->json([
+            'message' => 'API TacheAssign fonctionne correctement',
+            'status' => 'ok'
+        ]);
     }
 }

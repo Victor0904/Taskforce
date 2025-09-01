@@ -48,7 +48,7 @@ class Tache
     #[Groups(['tache:read', 'tache:write'])]
     private ?int $priorite = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'taches')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['tache:read', 'tache:write'])]
     private ?Mission $mission = null;

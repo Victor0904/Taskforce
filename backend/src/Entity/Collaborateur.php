@@ -7,14 +7,16 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CollaborateurRepository::class)]
 class Collaborateur
 {
     public function __construct()
     {
-        $this->createdAt   = new \DateTimeImmutable();
+        // $this->createdAt   = new \DateTimeImmutable();
         $this->competences = new ArrayCollection();
+
     }
 
     // ─────────── Champs simples ───────────
@@ -23,28 +25,30 @@ class Collaborateur
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups([
-        'collab:read', 'alerte:read', 'mission:read', 'tache:read'
+        'collab:read', 'mission:read', 'tache:read'
     ])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     #[Groups([
-        'collab:read', 'collab:write', 'alerte:read', 'mission:read', 'tache:read'
+        'collab:read', 'collab:write', 'mission:read', 'tache:read'
     ])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
     #[Groups([
-        'collab:read', 'collab:write', 'alerte:read', 'mission:read', 'tache:read'
+        'collab:read', 'collab:write', 'mission:read', 'tache:read'
     ])]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Groups(['collab:read', 'collab:write', 'alerte:read', 'mission:read'])]
+    #[Groups(['collab:read', 'collab:write', 'mission:read'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 50)]
     #[Groups(['collab:read', 'collab:write'])]
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['Collaborateur', 'Manager', 'Chef de projet'])]
     private ?string $role = null;
 
     #[ORM\Column(type: 'float')]
@@ -55,9 +59,9 @@ class Collaborateur
     #[Groups(['collab:read', 'collab:write'])]
     private ?bool $disponible = true;
 
-    #[ORM\Column]
-    #[Groups(['collab:read'])]
-    private ?\DateTimeImmutable $createdAt = null;
+    // #[ORM\Column]
+    // #[Groups(['collab:read'])]
+    // private ?\DateTimeImmutable $createdAt = null;
 
     // ─────────── Relations ───────────
 
@@ -69,6 +73,8 @@ class Collaborateur
     )]
     #[Groups(['collab:read'])] // ❌ pas exposé dans tache:read pour garder les tâches légères
     private Collection $competences;
+
+
 
     // ─────────── Getters / setters ───────────
 
@@ -92,7 +98,7 @@ class Collaborateur
     public function isDisponible(): ?bool { return $this->disponible; }
     public function setDisponible(bool $d): static { $this->disponible = $d; return $this; }
 
-    public function getCreatedAt(): ?\DateTimeImmutable { return $this->createdAt; }
+    // public function getCreatedAt(): ?\DateTimeImmutable { return $this->createdAt; }
 
     /** @return Collection<int, CollaborateurCompetence> */
     public function getCompetences(): Collection { return $this->competences; }
@@ -113,4 +119,6 @@ class Collaborateur
         }
         return $this;
     }
+
+
 }

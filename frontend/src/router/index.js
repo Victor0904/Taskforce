@@ -3,30 +3,44 @@ import Dashboard from '../views/Dashboard.vue'
 import Admin from '../views/Admin.vue'
 import Taches from '@/views/Taches.vue'
 import Login from '../views/Login.vue'
+import Parametres from '../views/Parametres.vue'
 import { jwtDecode } from 'jwt-decode'
 
 const routes = [
   {
     path: '/',
+    name: 'Home',
+    redirect: '/dashboard'
+  },
+  {
+    path: '/dashboard',
     name: 'Dashboard',
-    component: Dashboard
+    component: Dashboard,
+    meta: { requiresAuth: true, roles: ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN', 'ROLE_CHEF_PROJET'] }
   },
   {
     path: '/admin',
     name: 'Admin',
     component: Admin,
-    meta: { requiresAuth: true, roles: ['ROLE_ADMIN'] }
+    meta: { requiresAuth: true, roles: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CHEF_PROJET'] }
   },
   {
     path: '/login',
     name: 'Login',
     component: Login
   },
+
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: () => import('../views/ResetPassword.vue'),
+    meta: { requiresAuth: true, roles: ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN', 'ROLE_CHEF_PROJET'] }
+  },
   {
     path: '/projets',
-    name: 'Projets',
+    name: 'Projet',
     component: () => import('../views/Projet.vue'),
-    meta: { requiresAuth: true, roles: ['ROLE_ADMIN'] }
+    meta: { requiresAuth: true, roles: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_CHEF_PROJET', 'ROLE_USER'] }
   },
   {
     path: '/projets/:id/taches',
@@ -40,12 +54,11 @@ const routes = [
     meta: { requiresAuth: true, roles: ['ROLE_USER', 'ROLE_ADMIN'] }
   },
   {
-    path: '/alertes',
-    name: 'Alertes',
-    component: () => import('../views/Alertes.vue'),
-    meta: { requiresAuth: true, roles: ['ROLE_ADMIN', 'ROLE_MANAGER'] }
-  }
-
+    path: '/parametres',
+    name: 'Parametres',
+    component: Parametres,
+    meta: { requiresAuth: true, roles: ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN', 'ROLE_CHEF_PROJET'] }
+  },
 
 
 ]
@@ -71,7 +84,7 @@ router.beforeEach((to, from, next) => {
       const isAuthorized = to.meta.roles.some(role => userRoles.includes(role))
 
       if (!isAuthorized) {
-        return next('/') // ou rediriger vers une page 403 personnalisée
+        return next('/dashboard') // Rediriger vers dashboard au lieu de /
       }
 
       return next()

@@ -7,6 +7,7 @@ use App\Entity\Mission;
 use App\Entity\Collaborateur;
 use App\Entity\Competence;
 use App\Repository\TacheRepository;
+use App\Service\TaskAssignmentService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,13 +17,42 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/api/taches')]
 class TacheController extends AbstractController
 {
+    public function __construct(
+        private TaskAssignmentService $taskAssignmentService
+    ) {}
+
     // ───────────────── GET tâches par projet (⚠️ bien placée DANS la classe)
     #[Route('/projet/{id}', name: 'taches_par_projet', methods: ['GET'])]
     public function getByProjet(int $id, TacheRepository $tacheRepo): JsonResponse
     {
-        $taches = $tacheRepo->findBy(['mission' => $id]);
+        try {
+            $taches = $tacheRepo->findBy(['mission' => $id]);
+            return $this->json($taches, 200, [], ['groups' => 'tache:read']);
+        } catch (\Exception $e) {
+            return $this->json([
+                'message' => 'Erreur lors du chargement des tâches: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 
-        return $this->json($taches, 200, [], ['groups' => 'tache:read']);
+    // ───────────────── GET tâches par collaborateur (par email)
+    #[Route('/collaborateur/email/{email}', name: 'taches_par_collaborateur_email', methods: ['GET'])]
+    public function getByCollaborateurEmail(string $email, EntityManagerInterface $em): JsonResponse
+    {
+        // Trouver le collaborateur par email
+        $collaborateur = $em->getRepository(Collaborateur::class)->findOneBy(['email' => $email]);
+        
+        if (!$collaborateur) {
+            return $this->json(['message' => 'Collaborateur non trouvé'], 404);
+        }
+
+        // Récupérer toutes les tâches assignées à ce collaborateur
+        $taches = $em->getRepository(Tache::class)->findBy(['collaborateur' => $collaborateur]);
+
+        return $this->json([
+            'message' => 'Tâches du collaborateur récupérées.',
+            'data' => $taches
+        ], 200, [], ['groups' => 'tache:read']);
     }
 
     // ───────────────── GET liste
@@ -45,7 +75,7 @@ class TacheController extends AbstractController
         ], 200, [], ['groups' => 'tache:read']);
     }
 
-    // ───────────────── POST création
+    // ───────────────── POST création avec assignation automatique
     #[Route('', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
@@ -65,15 +95,9 @@ class TacheController extends AbstractController
 
             $mission = $em->getRepository(Mission::class)->find($data['mission']);
             $compet  = $em->getRepository(Competence::class)->find($data['competenceRequise']);
-            $collab  = isset($data['collaborateur'])
-                ? $em->getRepository(Collaborateur::class)->find($data['collaborateur'])
-                : null;
 
             if (!$mission || !$compet) {
                 return $this->json(['message' => 'Mission ou compétence introuvable.'], 404);
-            }
-            if (isset($data['collaborateur']) && !$collab) {
-                return $this->json(['message' => 'Collaborateur introuvable.'], 404);
             }
 
             $tache = (new Tache())
@@ -86,16 +110,41 @@ class TacheController extends AbstractController
                 ->setStatut($data['statut'])
                 ->setPriorite($data['priorite'])
                 ->setMission($mission)
-                ->setCompetenceRequise($compet)
-                ->setCollaborateur($collab);
+                ->setCompetenceRequise($compet);
 
+            // Persister la tâche d'abord pour avoir un ID
             $em->persist($tache);
             $em->flush();
 
-            return $this->json([
-                'message' => 'Tâche créée avec succès.',
-                'data' => $tache
-            ], 201, [], ['groups' => 'tache:read']);
+            // Assigner automatiquement la tâche au meilleur collaborateur
+            try {
+                $collaborateurAssigne = $this->taskAssignmentService->assignTaskAutomatically($tache);
+                
+                return $this->json([
+                    'message' => 'Tâche créée et assignée automatiquement à ' . $collaborateurAssigne->getPrenom() . ' ' . $collaborateurAssigne->getNom(),
+                    'data' => $tache,
+                    'collaborateurAssigne' => [
+                        'id' => $collaborateurAssigne->getId(),
+                        'nom' => $collaborateurAssigne->getNom(),
+                        'prenom' => $collaborateurAssigne->getPrenom(),
+                        'email' => $collaborateurAssigne->getEmail()
+                    ]
+                ], 201, [], ['groups' => 'tache:read']);
+
+            } catch (\Exception $e) {
+                // Si l'assignation automatique échoue, on supprime la tâche
+                $em->remove($tache);
+                $em->flush();
+                
+                // Récupérer un message d'erreur détaillé
+                $messageErreur = $this->taskAssignmentService->getAssignmentErrorMessage($tache);
+                
+                return $this->json([
+                    'message' => 'Impossible d\'assigner automatiquement la tâche',
+                    'details' => $messageErreur,
+                    'suggestion' => 'Vérifiez qu\'il y a des collaborateurs disponibles avec la compétence requise et une charge de travail acceptable'
+                ], 422);
+            }
 
         } catch (\Throwable $e) {
             return $this->json(['message' => 'Erreur : ' . $e->getMessage()], 500);
@@ -132,19 +181,28 @@ class TacheController extends AbstractController
                 $compet = $em->getRepository(Competence::class)->find($data['competenceRequise']);
                 if (!$compet) return $this->json(['message' => 'Compétence introuvable'], 404);
                 $tache->setCompetenceRequise($compet);
+                
+                // Si la compétence change, réassigner automatiquement la tâche
+                if ($tache->getCompetenceRequise() !== $compet) {
+                    try {
+                        $this->taskAssignmentService->assignTaskAutomatically($tache);
+                    } catch (\Exception $e) {
+                        return $this->json([
+                            'message' => 'Impossible de réassigner la tâche avec la nouvelle compétence : ' . $e->getMessage()
+                        ], 422);
+                    }
+                }
             }
 
-            if (array_key_exists('collaborateur', $data)) {
-                $collab = $data['collaborateur'] !== null
-                    ? $em->getRepository(Collaborateur::class)->find($data['collaborateur'])
-                    : null;
-                if ($data['collaborateur'] !== null && !$collab) {
-                    return $this->json(['message' => 'Collaborateur introuvable'], 404);
-                }
-                $tache->setCollaborateur($collab);
-            }
+            // Le collaborateur ne peut plus être modifié manuellement
+            // Il est géré automatiquement par le système
 
             $em->flush();
+
+            // Mettre à jour automatiquement la disponibilité du collaborateur assigné
+            if ($tache->getCollaborateur()) {
+                $this->taskAssignmentService->updateCollaborateurAvailability($tache->getCollaborateur());
+            }
 
             return $this->json([
                 'message' => 'Tâche mise à jour.',
@@ -160,9 +218,54 @@ class TacheController extends AbstractController
     #[Route('/{id}', methods: ['DELETE'])]
     public function delete(Tache $tache, EntityManagerInterface $em): JsonResponse
     {
+        // Sauvegarder le collaborateur avant de supprimer la tâche
+        $collaborateur = $tache->getCollaborateur();
+        
         $em->remove($tache);
         $em->flush();
 
+        // Mettre à jour automatiquement la disponibilité du collaborateur
+        if ($collaborateur) {
+            $this->taskAssignmentService->updateCollaborateurAvailability($collaborateur);
+        }
+
         return $this->json(['message' => 'Tâche supprimée avec succès.'], 204);
+    }
+
+    // ───────────────── POST réassignation manuelle (pour les cas d'urgence)
+    #[Route('/{id}/reassigner', methods: ['POST'])]
+    public function reassignTask(Tache $tache, EntityManagerInterface $em): JsonResponse
+    {
+        try {
+            // Vérifier que la tâche a une compétence requise
+            if (!$tache->getCompetenceRequise()) {
+                return $this->json(['message' => 'Impossible de réassigner une tâche sans compétence requise'], 422);
+            }
+
+            // Réassigner automatiquement la tâche
+            $nouveauCollaborateur = $this->taskAssignmentService->assignTaskAutomatically($tache);
+
+            // Mettre à jour automatiquement la disponibilité des collaborateurs concernés
+            if ($tache->getCollaborateur()) {
+                $this->taskAssignmentService->updateCollaborateurAvailability($tache->getCollaborateur());
+            }
+            $this->taskAssignmentService->updateCollaborateurAvailability($nouveauCollaborateur);
+
+            return $this->json([
+                'message' => 'Tâche réassignée à ' . $nouveauCollaborateur->getPrenom() . ' ' . $nouveauCollaborateur->getNom(),
+                'data' => $tache,
+                'nouveauCollaborateur' => [
+                    'id' => $nouveauCollaborateur->getId(),
+                    'nom' => $nouveauCollaborateur->getNom(),
+                    'prenom' => $nouveauCollaborateur->getPrenom(),
+                    'email' => $nouveauCollaborateur->getEmail()
+                ]
+            ], 200, [], ['groups' => 'tache:read']);
+
+        } catch (\Exception $e) {
+            return $this->json([
+                'message' => 'Impossible de réassigner la tâche : ' . $e->getMessage()
+            ], 422);
+        }
     }
 }

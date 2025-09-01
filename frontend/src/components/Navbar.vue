@@ -1,92 +1,75 @@
 <template>
-  <header class="navbar">
-    <div class="navbar-brand">
-      <RouterLink to="/" class="brand-link">
-        <span class="brand-text">Taskforce</span>
-      </RouterLink>
-    </div>
-    
-      <nav class="navbar-nav">
-  <RouterLink to="/" class="nav-link">
-    <i class="icon">🏠</i>
-    Dashboard
-  </RouterLink>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <router-link to="/" class="navbar-brand">
+        <i class="icon">🚀</i>
+        Taskforce
+      </router-link>
 
-  <RouterLink
-    to="/projets"
-    v-if="isLoggedIn"
-    class="nav-link"
-  >
-    <i class="icon">📁</i>
-    Projets
-  </RouterLink>
+      <ul class="navbar-nav" v-if="isLoggedIn">
+        <li>
+          <router-link to="/dashboard" class="nav-link" :class="{ active: $route.name === 'Dashboard' }">
+            <i class="icon">📊</i>
+            Dashboard
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/projets" class="nav-link" :class="{ active: $route.name === 'Projet' }">
+            <i class="icon">📋</i>
+            Projets
+          </router-link>
+        </li>
 
-  <!-- Seulement pour les utilisateurs non-admin -->
-  <RouterLink
-    to="/user"
-    v-if="hasRoleUserOnly"
-    class="nav-link"
-  >
-    <i class="icon">🧑‍💻</i>
-    utilisateurs
-  </RouterLink>
-  
-  <!-- Seulement pour les admins -->
-  <RouterLink
-    to="/admin"
-    v-if="hasRole('ROLE_ADMIN').value"
-    class="nav-link admin-link"
-  >
-    <i class="icon">⚙️</i>
-    Admin
-  </RouterLink>
-<RouterLink
-  to="/alertes"
-  v-if="hasRole('ROLE_ADMIN').value || hasRole('ROLE_MANAGER').value"
-  class="nav-link"
->
-  <i class="icon">🚨</i>
-  Alertes
-</RouterLink>
+        <li>
+          <router-link to="/admin" class="nav-link" :class="{ active: $route.name === 'Admin' }" v-if="hasRole('ROLE_ADMIN').value || hasRole('ROLE_MANAGER').value || hasRole('ROLE_CHEF_PROJET').value">
+            <i class="icon">⚙️</i>
+            Admin
+          </router-link>
+        </li>
 
-
-</nav>
-
-
-    <div class="navbar-actions">
-      <div v-if="isLoggedIn" :class="userRoleClass" class="user-info">
-        <div class="user-avatar">
-          {{ userEmail.charAt(0).toUpperCase() }}
-        </div>
-        <span class="user-email">{{ userEmail }}</span>
-      </div>
       
-      <RouterLink to="/login" v-if="!isLoggedIn" class="login-btn">
-        <i class="icon">🔐</i>
-        Login
-      </RouterLink>
-      <button v-if="isLoggedIn" @click="logout" class="logout-btn">
-        <i class="icon">🚪</i>
-        Déconnexion
-      </button>
+        <li class="user-info">
+          <router-link to="/parametres" class="user-email-link" :class="userRoleClass">
+            <span class="user-email">{{ userEmail }}</span>
+            <i class="icon">⚙️</i>
+          </router-link>
+        </li>
+        <li>
+          <button @click="logout" class="btn btn-secondary btn-small">
+            <i class="icon">🚪</i>
+            Déconnexion
+          </button>
+        </li>
+      </ul>
+
+      <div v-else class="navbar-nav">
+        <router-link to="/login" class="btn btn-primary">
+          <i class="icon">🔑</i>
+          Connexion
+        </router-link>
+      </div>
     </div>
-  </header>
+  </nav>
 </template>
 
 <script setup>
+import { computed, ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { jwtDecode } from 'jwt-decode'
-import { computed } from 'vue'
+import axios from 'axios'
 
 const router = useRouter()
 
-const isLoggedIn = computed(() => !!localStorage.getItem('token'))
+// Utiliser un ref pour forcer la réactivité
+const tokenRef = ref(localStorage.getItem('token'))
+
+
+const isLoggedIn = computed(() => !!tokenRef.value)
 
 const decodedToken = computed(() => {
-  const token = localStorage.getItem('token')
-  if (!token) return null
+  if (!tokenRef.value) return null
   try {
-    return jwtDecode(token)
+    return jwtDecode(tokenRef.value)
   } catch {
     return null
   }
@@ -99,248 +82,139 @@ function hasRole(role) {
   return computed(() => userRoles.value.includes(role))
 }
 
-// ✅ User uniquement s’il a ROLE_USER et pas ROLE_ADMIN
+// ✅ User uniquement s'il a ROLE_USER et pas ROLE_ADMIN
 const hasRoleUserOnly = computed(() => {
   return userRoles.value.includes('ROLE_USER') && !userRoles.value.includes('ROLE_ADMIN')
 })
 
 const userRoleClass = computed(() => {
   if (hasRole('ROLE_ADMIN').value) return 'admin'
+  if (hasRole('ROLE_MANAGER').value) return 'manager'
+  if (hasRole('ROLE_CHEF_PROJET').value) return 'chef-projet'
   if (hasRole('ROLE_USER').value) return 'user'
   return ''
 })
 
+
+
+// Fonction pour récupérer le rôle de l'utilisateur
+const getUserRole = () => {
+  const token = localStorage.getItem('token')
+  if (!token) return null
+  
+  try {
+    const decoded = JSON.parse(atob(token.split('.')[1]))
+    return decoded.roles?.[0] || null
+  } catch (e) {
+    return null
+  }
+}
+
+// Fonction pour vérifier automatiquement les surcharges
+
+
+
+
+// Écouter les changements de localStorage
+const handleStorageChange = (event) => {
+  if (event.key === 'token') {
+    const newToken = event.newValue
+    if (newToken !== tokenRef.value) {
+      tokenRef.value = newToken
+      if (newToken) {
+        // Démarrage des vérifications automatiques
+      } else {
+        // Arrêt des vérifications automatiques
+      }
+    }
+  }
+}
+
+// Écouter les événements personnalisés de l'application
+const handleTokenChange = () => {
+  const newToken = localStorage.getItem('token')
+  if (newToken !== tokenRef.value) {
+    tokenRef.value = newToken
+          if (newToken) {
+        // Démarrage des vérifications automatiques
+      } else {
+        // Arrêt des vérifications automatiques
+      }
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('storage', handleStorageChange)
+  window.addEventListener('token-changed', handleTokenChange)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('storage', handleStorageChange)
+  window.removeEventListener('token-changed', handleTokenChange)
+})
+
 const logout = () => {
   localStorage.removeItem('token')
+  localStorage.removeItem('mustChangePassword')
+  tokenRef.value = null
+
+
   router.push('/login')
 }
+
+
 </script>
 
-
 <style scoped>
-.navbar {
-  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-  padding: 0.75rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.navbar-brand .brand-link {
-  text-decoration: none;
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 700;
-  transition: all 0.3s ease;
-}
-
-.brand-text {
-  background: linear-gradient(45deg, #ffffff, #e2e8f0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.5px;
-}
-
-.navbar-nav {
-  display: flex;
-  gap: 0.25rem;
-  align-items: center;
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-  color: #cbd5e1;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  font-weight: 500;
-  font-size: 0.9rem;
-  position: relative;
-}
-
-.nav-link:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: white;
-  transform: translateY(-1px);
-}
-
-.nav-link.router-link-exact-active {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.admin-link.router-link-exact-active {
-  background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
-}
-
-.navbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
 .user-info {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.4rem 0.8rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-right: 1rem;
 }
 
-.user-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  background: #3b82f6;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 600;
-  font-size: 0.85rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.user-email {
-  color: #e2e8f0;
-  font-weight: 500;
-  font-size: 0.85rem;
-}
-
-.user .user-avatar {
-  background: #059669;
-}
-
-.admin .user-avatar {
-  background: #dc2626;
-}
-
-.admin .user-email {
-  color: #fecaca;
-}
-
-.login-btn {
+.user-email-link {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   text-decoration: none;
-  color: white;
-  background: #3b82f6;
-  padding: 0.5rem 1.25rem;
-  border-radius: 6px;
+  color: #ffffff;
   font-weight: 600;
-  font-size: 0.85rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.login-btn:hover {
-  background: #2563eb;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.logout-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: #dc2626;
-  border: none;
-  color: white;
-  padding: 0.5rem 1.25rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 0.85rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.logout-btn:hover {
-  background: #b91c1c;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
-}
-
-.icon {
   font-size: 0.9rem;
-  opacity: 0.9;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
-.hidden {
-  display: none;
+.user-email-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .navbar {
-    padding: 0.5rem 1rem;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-  
-  .navbar-nav {
-    order: 3;
-    width: 100%;
-    justify-content: center;
-    margin-top: 0.5rem;
-    background: rgba(0, 0, 0, 0.1);
-    padding: 0.5rem;
-    border-radius: 6px;
-  }
-  
-  .nav-link {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
-  }
-  
-  .user-info {
-    padding: 0.3rem 0.6rem;
-  }
-  
-  .user-email {
-    display: none;
-  }
-  
-  .brand-text {
-    font-size: 1.2rem;
-  }
-  
-  .login-btn, .logout-btn {
-    padding: 0.4rem 1rem;
-    font-size: 0.8rem;
-  }
+.user-email {
+  color: inherit;
 }
 
-@media (max-width: 480px) {
-  .navbar-nav {
-    gap: 0.1rem;
-  }
-  
-  .nav-link {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.75rem;
-  }
-  
-  .nav-link span:not(.icon) {
-    display: none;
-  }
-  
-  .icon {
-    font-size: 1rem;
-  }
+.user-email-link .icon {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+/* Couleurs selon le rôle */
+.user-email-link.admin {
+  background-color: #dc2626; /* Rouge pour admin */
+}
+
+.user-email-link.manager {
+  background-color: #2563eb; /* Bleu pour manager */
+}
+
+.user-email-link.chef-projet {
+  background-color: #16a34a; /* Vert pour chef de projet */
+}
+
+.user-email-link.user {
+  background-color: #6b7280; /* Gris pour collaborateur */
 }
 </style>

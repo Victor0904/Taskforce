@@ -1,18 +1,26 @@
 <template>
-  <div>
-    <h1>Connexion</h1>
-    <form @submit.prevent="login">
-      <label>
-        Email :
-        <input type="email" v-model="email" required />
-      </label>
-      <label>
-        Mot de passe :
-        <input type="password" v-model="password" required />
-      </label>
-      <button type="submit">Se connecter</button>
-    </form>
-    <p v-if="error" style="color: red;">{{ error }}</p>
+  <div class="login-container">
+    <div class="login-card">
+      <h1 class="login-title">Connexion</h1>
+      <form @submit.prevent="login">
+        <div class="form-group">
+          <label class="form-label">
+            Email :
+            <input type="email" v-model="email" class="form-input" required />
+          </label>
+        </div>
+        <div class="form-group">
+          <label class="form-label">
+            Mot de passe :
+            <input type="password" v-model="password" class="form-input" required />
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary btn-large">
+          Se connecter
+        </button>
+      </form>
+      <p v-if="error" class="alert alert-error">{{ error }}</p>
+    </div>
   </div>
 </template>
 
@@ -34,21 +42,37 @@ const login = async () => {
       password: password.value
     })
 
-    const token = response.data.token
-    localStorage.setItem('token', token)
+    const serverToken = response.data.token
+    const mustChangePassword = response.data.mustChangePassword === true
+    
+    const decoded = jwtDecode(serverToken)
+    localStorage.setItem('token', serverToken)
+    localStorage.setItem('userEmail', email.value)
+    localStorage.setItem('mustChangePassword', mustChangePassword.toString())
+    window.dispatchEvent(new CustomEvent('token-changed'))
+
     error.value = ''
 
-    const decoded = jwtDecode(token)
-    console.log('Rôles décodés :', decoded.roles)
+    // Temporairement, on ne redirige jamais vers ResetPassword pour éviter l'erreur
+    // if (mustChangePassword) {
+    //   return router.push({ name: 'ResetPassword' })
+    // }
 
-    if (decoded.roles.includes('ROLE_ADMIN')) {
-      router.push('/admin')
-    } else {
-      router.push('/user')
-    }
+    // Afficher le splash pendant 5s
+    window.dispatchEvent(new CustomEvent('show-splash'))
+
+    // Décaler la navigation pour laisser le splash s'afficher
+    setTimeout(() => {
+      if (decoded.roles.includes('ROLE_ADMIN') || decoded.roles.includes('ROLE_CHEF_PROJET')) {
+        router.push('/admin')
+      } else if (decoded.roles.includes('ROLE_MANAGER')) {
+        router.push('/admin')
+      } else {
+        router.push('/dashboard')
+      }
+    }, 100) // Augmenter le délai pour éviter les conflits
   } catch (err) {
     error.value = 'Identifiants invalides'
-    console.error(err)
   }
 }
 </script>

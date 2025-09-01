@@ -30,6 +30,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private string $password = '';
 
+    #[ORM\Column(type: 'datetime')]
+    private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $expiresAt = null;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $isActive = true;
+
+    #[ORM\Column(type: 'boolean')]
+    private bool $mustChangePassword = true;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+        $this->expiresAt = (new \DateTime())->modify('+3 days');
+        $this->mustChangePassword = true;
+    }
+
     /* ----------  GETTERS / SETTERS  ---------- */
 
     public function getId(): ?int
@@ -111,11 +130,67 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /* ---- Gestion des accès temporaires ---- */
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getExpiresAt(): ?\DateTimeInterface
+    {
+        return $this->expiresAt;
+    }
+
+    public function setExpiresAt(?\DateTimeInterface $expiresAt): self
+    {
+        $this->expiresAt = $expiresAt;
+        return $this;
+    }
+
+    public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+
+    public function getMustChangePassword(): bool
+    {
+        return $this->mustChangePassword;
+    }
+
+    public function setMustChangePassword(bool $mustChangePassword): self
+    {
+        $this->mustChangePassword = $mustChangePassword;
+        return $this;
+    }
+
+    public function isExpired(): bool
+    {
+        return $this->expiresAt && $this->expiresAt < new \DateTime();
+    }
+
+    public function isTemporaryAccess(): bool
+    {
+        return $this->mustChangePassword && !$this->isExpired();
+    }
+
     /* ---- UserInterface ---- */
 
     public function eraseCredentials(): void
     {
-        // Si tu ajoutes un plainPassword, c’est ici qu’il faudra le remettre à null
+        // Si tu ajoutes un plainPassword, c'est ici qu'il faudra le remettre à null
     }
 
     /* ---- Utilitaire ---- */
