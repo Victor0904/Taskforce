@@ -19,17 +19,14 @@ final class Version20250826172400 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // Vérifier si les colonnes existent déjà
-        $this->addSql('ALTER TABLE user ADD COLUMN IF NOT EXISTS created_at DATETIME DEFAULT NULL');
-        $this->addSql('ALTER TABLE user ADD COLUMN IF NOT EXISTS expires_at DATETIME DEFAULT NULL');
-        $this->addSql('ALTER TABLE user ADD COLUMN IF NOT EXISTS is_active TINYINT(1) DEFAULT 1');
-        $this->addSql('ALTER TABLE user ADD COLUMN IF NOT EXISTS must_change_password TINYINT(1) DEFAULT 1');
+        // Ajouter les colonnes si elles n'existent pas déjà
+        $this->addSql('ALTER TABLE user ADD COLUMN created_at DATETIME DEFAULT NULL');
+        $this->addSql('ALTER TABLE user ADD COLUMN expires_at DATETIME DEFAULT NULL');
+        $this->addSql('ALTER TABLE user ADD COLUMN is_active BOOLEAN DEFAULT 1');
+        $this->addSql('ALTER TABLE user ADD COLUMN must_change_password BOOLEAN DEFAULT 1');
         
         // Mettre à jour les enregistrements existants
-        $this->addSql('UPDATE user SET created_at = NOW(), expires_at = DATE_ADD(NOW(), INTERVAL 3 DAY), is_active = 1, must_change_password = 1 WHERE created_at IS NULL');
-        
-        // Rendre les colonnes NOT NULL après la mise à jour
-        $this->addSql('ALTER TABLE user MODIFY created_at DATETIME NOT NULL, MODIFY is_active TINYINT(1) NOT NULL, MODIFY must_change_password TINYINT(1) NOT NULL');
+        $this->addSql('UPDATE user SET created_at = datetime("now"), expires_at = datetime("now", "+3 days"), is_active = 1, must_change_password = 1 WHERE created_at IS NULL');
     }
 
     public function down(Schema $schema): void
