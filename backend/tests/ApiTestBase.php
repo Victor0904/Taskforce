@@ -16,7 +16,6 @@ abstract class ApiTestBase extends ApiTestCase
 
     protected function jwt(string $email, string $password = 'Admin123!'): string
     {
-        /** @var HttpClientInterface $client */
         $client = static::getClient();
         $response = $client->request('POST', '/api/login', [
             'headers' => ['Content-Type' => 'application/json'],
@@ -27,6 +26,6 @@ abstract class ApiTestBase extends ApiTestCase
         ]);
 
         self::assertResponseIsSuccessful();
-        return $response->toArray()['token'];
+        return json_decode($response->getContent(), true)['token'];
     }
 }
