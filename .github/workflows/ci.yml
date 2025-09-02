@@ -34,8 +34,9 @@ jobs:
           DATABASE_URL: "sqlite:///%kernel.project_dir%/var/tests.sqlite"
         run: |
           rm -f var/tests.sqlite
-          php bin/console doctrine:database:create --if-not-exists --env=test
-          php bin/console doctrine:schema:create --env=test
+          mkdir -p var
+          php bin/console --env=test doctrine:migrations:migrate --no-interaction || \
+          php bin/console --env=test doctrine:schema:create
 
       # Run PHPUnit avec le MÊME DATABASE_URL
       - name: Run PHPUnit
