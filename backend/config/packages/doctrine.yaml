@@ -26,9 +26,7 @@ doctrine:
 when@test:
     doctrine:
         dbal:
-            url: 'sqlite:///:memory:'
-            driver: 'pdo_sqlite'
-            server_version: '3.0'
+            url: '%env(resolve:DATABASE_URL)%'
 
 when@prod:
     doctrine:

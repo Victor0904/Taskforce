@@ -21,15 +21,12 @@ class ApiIntegrationTest extends ApiTestBase
         parent::setUp();
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
         
-        // Créer le schéma de base de données
-        $this->createDatabaseSchema();
-        
         // Créer des utilisateurs de test
         $this->createTestUsers();
         
         // Obtenir les tokens d'authentification
-        $this->adminToken = $this->jwt('admin@example.com');
-        $this->userToken = $this->jwt('user@example.com');
+        $this->adminToken = $this->jwt('admin@test.com', 'secret123');
+        $this->userToken = $this->jwt('user@test.com', 'user123');
     }
 
     public function testCompleteTacheWorkflow(): void
@@ -313,15 +310,5 @@ class ApiIntegrationTest extends ApiTestBase
         $this->entityManager->flush();
     }
 
-    private function createDatabaseSchema(): void
-    {
-        $schemaManager = $this->entityManager->getConnection()->createSchemaManager();
-        $schema = $schemaManager->introspectSchema();
-        
-        // Créer toutes les tables
-        $sql = $schema->toSql($this->entityManager->getConnection()->getDatabasePlatform());
-        foreach ($sql as $query) {
-            $this->entityManager->getConnection()->executeStatement($query);
-        }
-    }
+
 }

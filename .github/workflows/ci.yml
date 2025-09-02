@@ -26,14 +26,15 @@ jobs:
         working-directory: backend
         run: composer install --no-interaction --no-progress --prefer-dist
 
-      # Prepare test schema (SQLite fichier partagé)
-      - name: Prepare test schema
+      # Prepare test DB (SQLite file)
+      - name: Prepare test DB
         working-directory: backend
         env:
           APP_ENV: test
           DATABASE_URL: "sqlite:///%kernel.project_dir%/var/tests.sqlite"
         run: |
           rm -f var/tests.sqlite
+          php bin/console doctrine:database:create --if-not-exists --env=test
           php bin/console doctrine:schema:create --env=test
 
       # Run PHPUnit avec le MÊME DATABASE_URL
