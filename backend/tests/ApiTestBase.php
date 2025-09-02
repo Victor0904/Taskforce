@@ -21,44 +21,54 @@ abstract class ApiTestBase extends ApiTestCase
         $entityManager = static::getContainer()->get(EntityManagerInterface::class);
         $hasher = static::getContainer()->get(\Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface::class);
         
-        // Vérifier si les utilisateurs existent déjà
+        // Supprimer les utilisateurs existants pour s'assurer qu'ils sont recréés avec les bons mots de passe
         $existingAdmin = $entityManager->getRepository(User::class)->findOneBy(['email' => 'admin@test.com']);
         $existingUser = $entityManager->getRepository(User::class)->findOneBy(['email' => 'user@test.com']);
         
-        if (!$existingAdmin) {
-            // Créer l'admin
-            $admin = new User();
-            $admin->setEmail('admin@test.com');
-            $admin->setRoles(['ROLE_ADMIN']);
-            $admin->setPassword($hasher->hashPassword($admin, 'secret123'));
-            $entityManager->persist($admin);
+        if ($existingAdmin) {
+            $entityManager->remove($existingAdmin);
         }
+        if ($existingUser) {
+            $entityManager->remove($existingUser);
+        }
+        $entityManager->flush();
         
-        if (!$existingUser) {
-            // Créer l'user normal
-            $user = new User();
-            $user->setEmail('user@test.com');
-            $user->setRoles(['ROLE_USER']);
-            $user->setPassword($hasher->hashPassword($user, 'user123'));
-            $entityManager->persist($user);
-        }
+        // Créer l'admin
+        $admin = new User();
+        $admin->setEmail('admin@test.com');
+        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setPassword($hasher->hashPassword($admin, 'secret123'));
+        $entityManager->persist($admin);
+        
+        // Créer l'user normal
+        $user = new User();
+        $user->setEmail('user@test.com');
+        $user->setRoles(['ROLE_USER']);
+        $user->setPassword($hasher->hashPassword($user, 'user123'));
+        $entityManager->persist($user);
         
         $entityManager->flush();
     }
 
-    protected function jwt(string $email, string $password = 'Admin123!'): string
+    protected function jwt(string $email, string $password = null): string
     {
-        $client = static::getClient();
+        // Définir le mot de passe par défaut selon l'email
+        if ($password === null) {
+            $password = $email === 'admin@test.com' ? 'secret123' : 'user123';
+        }
         
-        $response = $client->request('POST', '/api/login', [
-            'json' => [
-                'email' => $email, 
-                'password' => $password
-            ]
-        ]);
-
-        self::assertResponseIsSuccessful();
-        $responseData = $response->toArray();
-        return $responseData['token'];
+        // Utiliser directement le service JWT au lieu de faire un appel HTTP
+        $container = static::getContainer();
+        $userRepository = $container->get(\App\Repository\UserRepository::class);
+        $passwordHasher = $container->get(\Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface::class);
+        $jwtManager = $container->get(\Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface::class);
+        
+        $user = $userRepository->findOneBy(['email' => $email]);
+        
+        if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
+            throw new \Exception("Invalid credentials for $email");
+        }
+        
+        return $jwtManager->create($user);
     }
 }

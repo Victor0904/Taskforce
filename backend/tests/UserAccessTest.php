@@ -12,7 +12,7 @@ final class UserAccessTest extends ApiTestBase
 
         static::getClient()->request('POST', '/api/users', [
             'headers' => [
-                'HTTP_AUTHORIZATION' => "Bearer $token"
+                'Authorization' => "Bearer $token"
             ],
             'json' => [
                 'email'         => 'new@test.local',
@@ -30,7 +30,7 @@ final class UserAccessTest extends ApiTestBase
 
         static::getClient()->request('POST', '/api/users', [
             'headers' => [
-                'HTTP_AUTHORIZATION' => "Bearer $token"
+                'Authorization' => "Bearer $token"
             ],
             'json' => [
                 'email' => 'hack@test.local', 
