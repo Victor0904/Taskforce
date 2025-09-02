@@ -10,12 +10,11 @@ final class UserAccessTest extends ApiTestBase
     {
         $token = $this->jwt('admin@test.local');
 
-        static::getClient()->request('POST', '/api/users', [
-            'headers' => ['Authorization' => "Bearer $token", 'Content-Type' => 'application/json'],
-            'body'    => json_encode([
-                'email'         => 'new@test.local',
-                'plainPassword' => 'Pass1234!'
-            ]),
+        static::getClient()->jsonRequest('POST', '/api/users', [
+            'email'         => 'new@test.local',
+            'plainPassword' => 'Pass1234!'
+        ], [
+            'HTTP_AUTHORIZATION' => "Bearer $token"
         ]);
 
         self::assertResponseStatusCodeSame(201);
@@ -23,12 +22,14 @@ final class UserAccessTest extends ApiTestBase
 
     public function testUserCannotCreateUser(): void
     {
-        // on suppose qu’un simple user existe (fixtures)
+        // on suppose qu'un simple user existe (fixtures)
         $token = $this->jwt('user@test.local', 'User123!');
 
-        static::getClient()->request('POST', '/api/users', [
-            'headers' => ['Authorization' => "Bearer $token", 'Content-Type' => 'application/json'],
-            'body'    => json_encode(['email' => 'hack@test.local', 'plainPassword' => 'Hack1234!']),
+        static::getClient()->jsonRequest('POST', '/api/users', [
+            'email' => 'hack@test.local', 
+            'plainPassword' => 'Hack1234!'
+        ], [
+            'HTTP_AUTHORIZATION' => "Bearer $token"
         ]);
 
         self::assertResponseStatusCodeSame(403);

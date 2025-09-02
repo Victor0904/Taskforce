@@ -26,21 +26,22 @@ jobs:
         working-directory: backend
         run: composer install --no-interaction --no-progress --prefer-dist
 
-      # SQLite en mémoire = zéro service externe à gérer
-      - name: Prepare test schema (SQLite in-memory)
+      # Prepare test schema (SQLite fichier partagé)
+      - name: Prepare test schema
         working-directory: backend
         env:
           APP_ENV: test
-          DATABASE_URL: "sqlite:///:memory:"
+          DATABASE_URL: "sqlite:///%kernel.project_dir%/var/tests.sqlite"
         run: |
+          rm -f var/tests.sqlite
           php bin/console doctrine:schema:create --env=test
-          php bin/console doctrine:migrations:migrate --no-interaction --env=test
 
+      # Run PHPUnit avec le MÊME DATABASE_URL
       - name: Run PHPUnit
         working-directory: backend
         env:
           APP_ENV: test
-          DATABASE_URL: "sqlite:///:memory:"
+          DATABASE_URL: "sqlite:///%kernel.project_dir%/var/tests.sqlite"
           SYMFONY_DEPRECATIONS_HELPER: disabled
         run: php bin/phpunit --testdox
 
