@@ -28,6 +28,9 @@ class RepositoryTest extends KernelTestCase
         $this->collaborateurRepository = $container->get('doctrine')->getRepository(Collaborateur::class);
         $this->competenceRepository = $container->get('doctrine')->getRepository(Competence::class);
         $this->missionRepository = $container->get('doctrine')->getRepository(Mission::class);
+        
+        // Créer le schéma de base de données
+        $this->createDatabaseSchema($container);
     }
 
     public function testTacheRepositoryFindByMission(): void
@@ -283,5 +286,18 @@ class RepositoryTest extends KernelTestCase
         $this->tacheRepository->getEntityManager()->flush();
 
         return $tache;
+    }
+
+    private function createDatabaseSchema($container): void
+    {
+        $entityManager = $container->get('doctrine')->getManager();
+        $schemaManager = $entityManager->getConnection()->createSchemaManager();
+        $schema = $schemaManager->introspectSchema();
+        
+        // Créer toutes les tables
+        $sql = $schema->toSql($entityManager->getConnection()->getDatabasePlatform());
+        foreach ($sql as $query) {
+            $entityManager->getConnection()->executeStatement($query);
+        }
     }
 }

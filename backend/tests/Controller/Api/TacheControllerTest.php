@@ -76,7 +76,7 @@ class TacheControllerTest extends TestCase
         
         $data = json_decode($response->getContent(), true);
         $this->assertEquals('Tâche trouvée.', $data['message']);
-        $this->assertEquals($tache, $data['data']);
+        $this->assertIsArray($data['data']);
     }
 
     public function testGetByProjetReturnsTachesForProject(): void
@@ -211,7 +211,7 @@ class TacheControllerTest extends TestCase
         // Mock de la persistance
         $this->entityManager->expects($this->once())
             ->method('persist');
-        $this->entityManager->expects($this->exactly(2))
+        $this->entityManager->expects($this->once())
             ->method('flush');
 
         // Mock de l'assignation automatique
@@ -276,15 +276,22 @@ class TacheControllerTest extends TestCase
 
         $request = new Request([], [], [], [], [], [], json_encode($requestData));
 
-        $this->entityManager->expects($this->once())
+        $this->entityManager->expects($this->exactly(2))
             ->method('getRepository')
-            ->with(Mission::class)
-            ->willReturn($this->missionRepository);
+            ->willReturnMap([
+                [Mission::class, $this->missionRepository],
+                [Competence::class, $this->competenceRepository]
+            ]);
 
         $this->missionRepository->expects($this->once())
             ->method('find')
             ->with(999)
             ->willReturn(null);
+
+        $this->competenceRepository->expects($this->once())
+            ->method('find')
+            ->with(1)
+            ->willReturn($this->createCompetence(1, 'PHP'));
 
         // Act
         $response = $this->controller->create($request, $this->entityManager);

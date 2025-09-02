@@ -19,7 +19,8 @@ abstract class ApiTestBase extends ApiTestCase
         /** @var HttpClientInterface $client */
         $client = static::getClient();
         $response = $client->request('POST', '/api/login', [
-            'json' => ['email' => $email, 'password' => $password],
+            'headers' => ['Content-Type' => 'application/json'],
+            'body' => json_encode(['email' => $email, 'password' => $password]),
         ]);
 
         self::assertResponseIsSuccessful();
