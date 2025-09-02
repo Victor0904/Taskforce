@@ -14,6 +14,17 @@
       </div>
     </div>
 
+    <!-- Composant d'alerte pour les erreurs -->
+    <AlertComponent
+      :show="showAlert"
+      :type="alertType"
+      :title="alertTitle"
+      :message="alertMessage"
+      :details="alertDetails"
+      :suggestion="alertSuggestion"
+      @close="closeAlert"
+    />
+
           <div class="projets-grid">
         <div v-for="projet in projets" :key="projet.id" class="projet-card">
           <div class="projet-actions-top">
@@ -58,7 +69,7 @@
               </div>
               <div class="tache-dates">
                 <span>Début: {{ formatDate(tache.dateDebut) }}</span>
-                <span>Fin: {{ formatDate(tache.dateFin) }}</span>
+                <span>Fin: {{ formatDate(tache.dateFinPrevue) }}</span>
                 <span>Charge: <strong>{{ tache.chargeEstimee }}h</strong></span>
               </div>
               <div class="tache-assign" v-if="tache.collaborateur">
@@ -173,7 +184,7 @@
             </div>
             <div class="tache-dates">
               <span>Début: {{ formatDate(tache.dateDebut) }}</span>
-              <span>Fin: {{ formatDate(tache.dateFin) }}</span>
+              <span>Fin: {{ formatDate(tache.dateFinPrevue) }}</span>
               <span>Charge: <strong>{{ tache.chargeEstimee }}h</strong></span>
             </div>
             <div class="tache-assign" v-if="tache.collaborateur">
@@ -228,8 +239,8 @@
                 <input v-model="formTache.date_debut" type="date" class="form-input" required />
               </div>
               <div class="form-group">
-                <label class="form-label">Date de fin :</label>
-                <input v-model="formTache.date_fin" type="date" class="form-input" required />
+                <label class="form-label">Date de fin prévue :</label>
+                <input v-model="formTache.date_fin_prevue" type="date" class="form-input" required />
               </div>
               <div class="form-group">
                 <label class="form-label">Charge estimée (heures) :</label>
@@ -260,6 +271,7 @@
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
+import AlertComponent from '../components/AlertComponent.vue'
 
 /* ======= State ======= */
 const projets = ref([])
@@ -290,12 +302,20 @@ const formTache = ref({
   priorite: 1,
   statut: 'en_attente',
   date_debut: '',
-  date_fin: '',
+  date_fin_prevue: '',
   charge_estimee: 0,
   competence: ''
 })
 
 const showFormTache = ref(false)
+
+// ✅ Variables pour les alertes
+const showAlert = ref(false)
+const alertType = ref('error')
+const alertTitle = ref('Erreur')
+const alertMessage = ref('')
+const alertDetails = ref('')
+const alertSuggestion = ref('')
 
 // ✅ Système de cache persistant avec localStorage
 const CACHE_KEY = 'projet_cache'
@@ -598,7 +618,7 @@ const ouvrirFormTache = (tache = null) => {
       priorite: tache.priorite ?? 1,
       statut: tache.statut || 'en_attente',
       date_debut: tache.dateDebut?.slice(0,10) || '',
-      date_fin: tache.dateFin?.slice(0,10) || '',
+      date_fin_prevue: tache.dateFinPrevue?.slice(0,10) || '',
       charge_estimee: tache.chargeEstimee || 0,
       competence: tache.competenceRequise?.id || ''
     }
@@ -609,7 +629,7 @@ const ouvrirFormTache = (tache = null) => {
       priorite: 1,
       statut: 'en_attente',
       date_debut: '',
-      date_fin: '',
+      date_fin_prevue: '',
       charge_estimee: 0,
       competence: ''
     }
@@ -625,7 +645,7 @@ const fermerFormTache = () => {
 const sauvegarderTache = async () => {
   try {
     if (!formTache.value.titre || !formTache.value.description || !formTache.value.date_debut || 
-        !formTache.value.date_fin || !formTache.value.charge_estimee || !formTache.value.competence) {
+        !formTache.value.date_fin_prevue || !formTache.value.charge_estimee || !formTache.value.competence) {
       return
     }
 
@@ -635,7 +655,7 @@ const sauvegarderTache = async () => {
       priorite: parseInt(formTache.value.priorite),
       statut: formTache.value.statut,
       dateDebut: formTache.value.date_debut,
-      dateFinPrevue: formTache.value.date_fin,
+      dateFinPrevue: formTache.value.date_fin_prevue,
       chargeEstimee: parseFloat(formTache.value.charge_estimee),
       mission: projetSelectionne.value.id,
       competenceRequise: formTache.value.competence
@@ -656,21 +676,23 @@ const sauvegarderTache = async () => {
   } catch (error) {
     if (error.response?.status === 422) {
       const errorData = error.response.data
-      let errorMessage = 'Erreur de validation :\n'
       
-      if (errorData.message) {
-        errorMessage += errorData.message + '\n'
-      }
-      if (errorData.details) {
-        errorMessage += '\nDétails : ' + errorData.details
-      }
-      if (errorData.suggestion) {
-        errorMessage += '\n\nSuggestion : ' + errorData.suggestion
-      }
-      
+      // ✅ Afficher une alerte détaillée pour les erreurs d'assignation
+      showAlert.value = true
+      alertType.value = 'error'
+      alertTitle.value = 'Impossible d\'assigner la tâche'
+      alertMessage.value = errorData.message || 'Aucun collaborateur disponible pour cette tâche'
+      alertDetails.value = errorData.details || ''
+      alertSuggestion.value = errorData.suggestion || 'Vérifiez qu\'il y a des collaborateurs disponibles avec la compétence requise et une charge de travail acceptable'
 
     } else {
-
+      // ✅ Afficher une alerte pour les autres erreurs
+      showAlert.value = true
+      alertType.value = 'error'
+      alertTitle.value = 'Erreur lors de la sauvegarde'
+      alertMessage.value = error.response?.data?.message || 'Une erreur inattendue s\'est produite'
+      alertDetails.value = ''
+      alertSuggestion.value = 'Veuillez réessayer ou contacter l\'administrateur'
     }
   }
 }
@@ -712,6 +734,24 @@ const formatRole = (role) => {
     'ROLE_USER': 'Collaborateur'
   }
   return roleMap[role] || role
+}
+
+// ✅ Fonction pour fermer l'alerte
+const closeAlert = () => {
+  showAlert.value = false
+  alertMessage.value = ''
+  alertDetails.value = ''
+  alertSuggestion.value = ''
+}
+
+// ✅ Fonction utilitaire pour afficher des alertes
+const showAlertMessage = (type, title, message, details = '', suggestion = '') => {
+  showAlert.value = true
+  alertType.value = type
+  alertTitle.value = title
+  alertMessage.value = message
+  alertDetails.value = details
+  alertSuggestion.value = suggestion
 }
 </script>
 

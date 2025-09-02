@@ -10,6 +10,17 @@
       </div>
     </div>
 
+    <!-- Composant d'alerte pour les erreurs -->
+    <AlertComponent
+      :show="showAlert"
+      :type="alertType"
+      :title="alertTitle"
+      :message="alertMessage"
+      :details="alertDetails"
+      :suggestion="alertSuggestion"
+      @close="closeAlert"
+    />
+
     <div class="tabs">
       <button 
         @click="activeTab = 'collaborateurs'" 
@@ -322,6 +333,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
+import AlertComponent from '../components/AlertComponent.vue'
 
 const activeTab = ref('collaborateurs')
 const collaborateurs = ref([])
@@ -336,6 +348,14 @@ const messageAssignation = ref('')
 const typeMessage = ref('')
 const analyseCompetences = ref([])
 const taches = ref([])
+
+// ✅ Variables pour les alertes
+const showAlert = ref(false)
+const alertType = ref('error')
+const alertTitle = ref('Erreur')
+const alertMessage = ref('')
+const alertDetails = ref('')
+const alertSuggestion = ref('')
 
 // ✅ Système de cache persistant avec localStorage
 const CACHE_KEY = 'admin_cache'
@@ -589,9 +609,21 @@ const sauvegarderCollaborateur = async (collaborateurDirect = null) => {
     
   } catch (error) {
     if (error.response?.status === 422) {
-      alert('Erreur de validation: ' + (error.response.data.message || 'Données invalides'))
+      // ✅ Afficher une alerte détaillée pour les erreurs de validation
+      showAlert.value = true
+      alertType.value = 'error'
+      alertTitle.value = 'Erreur de validation'
+      alertMessage.value = error.response.data.message || 'Données invalides'
+      alertDetails.value = ''
+      alertSuggestion.value = 'Vérifiez les informations saisies et réessayez'
     } else {
-      alert('Erreur lors de la sauvegarde: ' + (error.message || 'Erreur inconnue'))
+      // ✅ Afficher une alerte pour les autres erreurs
+      showAlert.value = true
+      alertType.value = 'error'
+      alertTitle.value = 'Erreur lors de la sauvegarde'
+      alertMessage.value = error.message || 'Erreur inconnue'
+      alertDetails.value = ''
+      alertSuggestion.value = 'Veuillez réessayer ou contacter l\'administrateur'
     }
   }
 }
@@ -611,7 +643,13 @@ const supprimerCollaborateur = async (id) => {
     fetchCollaborateurs()
   } catch (error) {
     console.error('Erreur lors de la suppression:', error)
-    alert('Erreur lors de la suppression')
+    // ✅ Afficher une alerte pour les erreurs de suppression
+    showAlert.value = true
+    alertType.value = 'error'
+    alertTitle.value = 'Erreur lors de la suppression'
+    alertMessage.value = 'Impossible de supprimer le collaborateur'
+    alertDetails.value = ''
+    alertSuggestion.value = 'Vérifiez que le collaborateur n\'est pas assigné à des tâches en cours'
   }
 }
 
@@ -681,9 +719,21 @@ const sauvegarderCompetence = async () => {
     
   } catch (error) {
     if (error.response?.status === 422) {
-      alert('Erreur de validation: ' + (error.response.data.message || 'Données invalides'))
+      // ✅ Afficher une alerte détaillée pour les erreurs de validation
+      showAlert.value = true
+      alertType.value = 'error'
+      alertTitle.value = 'Erreur de validation'
+      alertMessage.value = error.response.data.message || 'Données invalides'
+      alertDetails.value = ''
+      alertSuggestion.value = 'Vérifiez les informations saisies et réessayez'
     } else {
-      alert('Erreur lors de la sauvegarde: ' + (error.message || 'Erreur inconnue'))
+      // ✅ Afficher une alerte pour les autres erreurs
+      showAlert.value = true
+      alertType.value = 'error'
+      alertTitle.value = 'Erreur lors de la sauvegarde'
+      alertMessage.value = error.message || 'Erreur inconnue'
+      alertDetails.value = ''
+      alertSuggestion.value = 'Veuillez réessayer ou contacter l\'administrateur'
     }
   }
 }
@@ -703,7 +753,13 @@ const supprimerCompetence = async (id) => {
     fetchCompetences()
   } catch (error) {
     console.error('Erreur lors de la suppression:', error)
-    alert('Erreur lors de la suppression')
+    // ✅ Afficher une alerte pour les erreurs de suppression
+    showAlert.value = true
+    alertType.value = 'error'
+    alertTitle.value = 'Erreur lors de la suppression'
+    alertMessage.value = 'Impossible de supprimer le collaborateur'
+    alertDetails.value = ''
+    alertSuggestion.value = 'Vérifiez que le collaborateur n\'est pas assigné à des tâches en cours'
   }
 }
 
@@ -735,7 +791,13 @@ const sauvegarderCompetenceCollaborateur = async () => {
     fermerModalCompetenceCollaborateur()
     fetchCollaborateurs()
   } catch (error) {
-    alert('Erreur lors de la sauvegarde')
+    // ✅ Afficher une alerte pour les erreurs de sauvegarde
+    showAlert.value = true
+    alertType.value = 'error'
+    alertTitle.value = 'Erreur lors de la sauvegarde'
+    alertMessage.value = 'Impossible d\'ajouter la compétence au collaborateur'
+    alertDetails.value = ''
+    alertSuggestion.value = 'Vérifiez que la compétence n\'est pas déjà assignée à ce collaborateur'
   }
 }
 
@@ -750,7 +812,13 @@ const supprimerCompetenceCollaborateur = async (collaborateurId, competenceId) =
     fetchCollaborateurs()
   } catch (error) {
     console.error('Erreur lors de la suppression:', error)
-    alert('Erreur lors de la suppression')
+    // ✅ Afficher une alerte pour les erreurs de suppression
+    showAlert.value = true
+    alertType.value = 'error'
+    alertTitle.value = 'Erreur lors de la suppression'
+    alertMessage.value = 'Impossible de supprimer le collaborateur'
+    alertDetails.value = ''
+    alertSuggestion.value = 'Vérifiez que le collaborateur n\'est pas assigné à des tâches en cours'
   }
 }
 
@@ -977,6 +1045,24 @@ watch(activeTab, (newTab) => {
     chargerDonnees() // Utiliser le cache par défaut
   }
 })
+
+// ✅ Fonction pour fermer l'alerte
+const closeAlert = () => {
+  showAlert.value = false
+  alertMessage.value = ''
+  alertDetails.value = ''
+  alertSuggestion.value = ''
+}
+
+// ✅ Fonction utilitaire pour afficher des alertes
+const showAlertMessage = (type, title, message, details = '', suggestion = '') => {
+  showAlert.value = true
+  alertType.value = type
+  alertTitle.value = title
+  alertMessage.value = message
+  alertDetails.value = details
+  alertSuggestion.value = suggestion
+}
 </script>
 
 <style scoped>

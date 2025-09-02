@@ -16,10 +16,7 @@
             <label class="info-label">Adresse email :</label>
             <div class="info-value">{{ userInfo.email }}</div>
           </div>
-          <div class="info-group">
-            <label class="info-label">Nom complet :</label>
-            <div class="info-value">{{ userInfo.nomComplet }}</div>
-          </div>
+     
           <div class="info-group">
             <label class="info-label">Rôle :</label>
             <div class="info-value">{{ userInfo.role }}</div>

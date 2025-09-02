@@ -163,7 +163,6 @@
            <div class="member-status">
              <div class="status-indicator" :class="collab.disponible ? 'status-online' : 'status-offline'"></div>
              <span class="status-text">{{ collab.disponible ? 'Disponible' : 'Indisponible' }}</span>
-             <span class="member-tasks member-tasks-blue">{{ collab.computedChargeHours || 0 }}h</span>
            </div>
          </div>
          
@@ -217,71 +216,10 @@
        </div>
     </div>
 
-    <!-- Section 5: Activité récente -->
-    <div class="dashboard-section">
-      <div class="section-header">
-        <div class="section-title-wrapper">
-          <div class="section-icon section-icon-purple">
-            <svg class="icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-          </div>
-          <h3 class="section-title">Activité récente</h3>
-        </div>
-                 <button @click="refreshData" class="btn-refresh">🔄 Actualiser</button>
-       </div>
-       <div class="activity-grid">
-         <div class="activity-card">
-           <div class="activity-icon activity-icon-blue">
-             <svg class="icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-             </svg>
-           </div>
-           <div class="activity-content">
-             <p class="activity-text">{{ stats.tachesEnCours }} tâches en cours</p>
-             <p class="activity-time">Mise à jour récente</p>
-           </div>
-         </div>
 
-         <div class="activity-card">
-           <div class="activity-icon activity-icon-green">
-             <svg class="icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-             </svg>
-           </div>
-           <div class="activity-content">
-             <p class="activity-text">{{ stats.tachesTerminees }} tâches terminées</p>
-             <p class="activity-time">Ce mois</p>
-           </div>
-         </div>
-
-         <div class="activity-card">
-           <div class="activity-icon activity-icon-yellow">
-             <svg class="icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
-             </svg>
-           </div>
-           <div class="activity-content">
-             <p class="activity-text">{{ stats.tachesEnRetard }} tâches en retard</p>
-             <p class="activity-time">Attention requise</p>
-           </div>
-         </div>
-
-         <div class="activity-card">
-           <div class="activity-icon activity-icon-purple">
-             <svg class="icon-svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-             </svg>
-           </div>
-           <div class="activity-content">
-             <p class="activity-text">{{ stats.collaborateursDisponibles }} collaborateurs disponibles</p>
-             <p class="activity-time">Sur {{ stats.totalCollaborateurs }}</p>
-           </div>
-         </div>
-       </div>
     </div>
 
-  </div>
+
 </template>
 
 <script setup>
