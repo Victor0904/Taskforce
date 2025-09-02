@@ -30,12 +30,14 @@ npm run dev
 ## Tests
 
 ### Backend
+
 ```bash
 cd backend
 php bin/phpunit
 ```
 
 ### Frontend
+
 ```bash
 cd frontend
 npm run lint
@@ -47,6 +49,7 @@ npm run build
 ![CI](https://github.com/VOTRE_USERNAME/VOTRE_REPO/actions/workflows/ci.yml/badge.svg)
 
 Le workflow CI exécute automatiquement :
+
 - Tests PHPUnit pour le backend Symfony
 - Lint et build pour le frontend Vue.js
 - Tests sur les branches main, master, develop et les pull requests

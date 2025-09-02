@@ -18,7 +18,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'
           extensions: mbstring, intl, pdo_sqlite
           coverage: none
 
@@ -62,7 +62,7 @@ jobs:
       - name: Install deps
         env:
           CI: true
-        run: npm ci
+        run: npm ci --legacy-peer-deps
 
       - name: Lint (optionnel)
         env:
