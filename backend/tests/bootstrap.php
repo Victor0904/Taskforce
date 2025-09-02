@@ -29,25 +29,26 @@ try {
     /** @var \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface $hasher */
     $hasher = $container->get('security.user_password_hasher');
     
-    // Vérifier si l'admin existe déjà
-    $existingAdmin = $em->getRepository(\App\Entity\User::class)->findOneBy(['email' => 'admin@test.com']);
-    if (!$existingAdmin) {
-        $user = (new \App\Entity\User())
-            ->setEmail('admin@test.com')
-            ->setRoles(['ROLE_ADMIN']);
-        $user->setPassword($hasher->hashPassword($user, 'secret123'));
-        $em->persist($user);
+    // Supprimer tous les utilisateurs existants pour éviter les doublons
+    $existingUsers = $em->getRepository(\App\Entity\User::class)->findAll();
+    foreach ($existingUsers as $user) {
+        $em->remove($user);
     }
+    $em->flush();
     
-    // Vérifier si l'user normal existe déjà
-    $existingUser = $em->getRepository(\App\Entity\User::class)->findOneBy(['email' => 'user@test.com']);
-    if (!$existingUser) {
-        $userNormal = (new \App\Entity\User())
-            ->setEmail('user@test.com')
-            ->setRoles(['ROLE_USER']);
-        $userNormal->setPassword($hasher->hashPassword($userNormal, 'user123'));
-        $em->persist($userNormal);
-    }
+    // Créer l'admin
+    $user = (new \App\Entity\User())
+        ->setEmail('admin@test.com')
+        ->setRoles(['ROLE_ADMIN']);
+    $user->setPassword($hasher->hashPassword($user, 'secret123'));
+    $em->persist($user);
+    
+    // Créer l'user normal
+    $userNormal = (new \App\Entity\User())
+        ->setEmail('user@test.com')
+        ->setRoles(['ROLE_USER']);
+    $userNormal->setPassword($hasher->hashPassword($userNormal, 'user123'));
+    $em->persist($userNormal);
     
     $em->flush();
 } catch (Exception $e) {

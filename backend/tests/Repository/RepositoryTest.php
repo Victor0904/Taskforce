@@ -235,13 +235,18 @@ class RepositoryTest extends KernelTestCase
 
     private function createTestMission(string $nom = 'Mission Test', string $statut = 'en_cours'): Mission
     {
+        // Créer un collaborateur responsable par défaut avec un email unique
+        $uniqueEmail = 'responsable_' . uniqid() . '@test.com';
+        $responsable = $this->createTestCollaborateur($uniqueEmail, 'Manager');
+        
         $mission = new Mission();
         $mission->setTitre($nom)
                ->setDescription('Description de la mission de test')
                ->setPriorite(1)
                ->setDateDebut(new \DateTime())
                ->setDateFinPrevue(new \DateTime('+1 month'))
-               ->setStatut($statut);
+               ->setStatut($statut)
+               ->setResponsable($responsable);
 
         $this->missionRepository->getEntityManager()->persist($mission);
         $this->missionRepository->getEntityManager()->flush();

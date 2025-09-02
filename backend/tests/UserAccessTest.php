@@ -12,13 +12,12 @@ final class UserAccessTest extends ApiTestBase
 
         static::getClient()->request('POST', '/api/users', [
             'headers' => [
-                'Content-Type' => 'application/json',
                 'HTTP_AUTHORIZATION' => "Bearer $token"
             ],
-            'body' => json_encode([
+            'json' => [
                 'email'         => 'new@test.local',
                 'plainPassword' => 'Pass1234!'
-            ])
+            ]
         ]);
 
         self::assertResponseStatusCodeSame(201);
@@ -31,13 +30,12 @@ final class UserAccessTest extends ApiTestBase
 
         static::getClient()->request('POST', '/api/users', [
             'headers' => [
-                'Content-Type' => 'application/json',
                 'HTTP_AUTHORIZATION' => "Bearer $token"
             ],
-            'body' => json_encode([
+            'json' => [
                 'email' => 'hack@test.local', 
                 'plainPassword' => 'Hack1234!'
-            ])
+            ]
         ]);
 
         self::assertResponseStatusCodeSame(403);
