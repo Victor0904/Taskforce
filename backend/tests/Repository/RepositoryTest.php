@@ -24,10 +24,10 @@ class RepositoryTest extends KernelTestCase
         $kernel = self::bootKernel();
         $container = $kernel->getContainer();
         
-        $this->tacheRepository = $container->get(TacheRepository::class);
-        $this->collaborateurRepository = $container->get(CollaborateurRepository::class);
-        $this->competenceRepository = $container->get(CompetenceRepository::class);
-        $this->missionRepository = $container->get(MissionRepository::class);
+        $this->tacheRepository = $container->get('doctrine')->getRepository(Tache::class);
+        $this->collaborateurRepository = $container->get('doctrine')->getRepository(Collaborateur::class);
+        $this->competenceRepository = $container->get('doctrine')->getRepository(Competence::class);
+        $this->missionRepository = $container->get('doctrine')->getRepository(Mission::class);
     }
 
     public function testTacheRepositoryFindByMission(): void

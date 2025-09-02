@@ -34,6 +34,7 @@ jobs:
           DATABASE_URL: "sqlite:///:memory:"
         run: |
           php bin/console doctrine:schema:create --env=test
+          php bin/console doctrine:migrations:migrate --no-interaction --env=test
 
       - name: Run PHPUnit
         working-directory: backend

@@ -27,9 +27,9 @@ class TacheController extends AbstractController
     {
         try {
             $taches = $tacheRepo->findBy(['mission' => $id]);
-            return $this->json($taches, 200, [], ['groups' => 'tache:read']);
+            return new JsonResponse($taches, 200);
         } catch (\Exception $e) {
-            return $this->json([
+            return new JsonResponse([
                 'message' => 'Erreur lors du chargement des tâches: ' . $e->getMessage()
             ], 500);
         }
@@ -43,36 +43,36 @@ class TacheController extends AbstractController
         $collaborateur = $em->getRepository(Collaborateur::class)->findOneBy(['email' => $email]);
         
         if (!$collaborateur) {
-            return $this->json(['message' => 'Collaborateur non trouvé'], 404);
+            return new JsonResponse(['message' => 'Collaborateur non trouvé'], 404);
         }
 
         // Récupérer toutes les tâches assignées à ce collaborateur
         $taches = $em->getRepository(Tache::class)->findBy(['collaborateur' => $collaborateur]);
 
-        return $this->json([
+        return new JsonResponse([
             'message' => 'Tâches du collaborateur récupérées.',
             'data' => $taches
-        ], 200, [], ['groups' => 'tache:read']);
+        ], 200);
     }
 
     // ───────────────── GET liste
     #[Route('', methods: ['GET'])]
     public function index(TacheRepository $repo): JsonResponse
     {
-        return $this->json([
+        return new JsonResponse([
             'message' => 'Liste des tâches.',
             'data'    => $repo->findAll()
-        ], 200, [], ['groups' => 'tache:read']);
+        ], 200);
     }
 
     // ───────────────── GET détail
     #[Route('/{id}', methods: ['GET'])]
     public function show(Tache $tache): JsonResponse
     {
-        return $this->json([
+        return new JsonResponse([
             'message' => 'Tâche trouvée.',
             'data'    => $tache
-        ], 200, [], ['groups' => 'tache:read']);
+        ], 200);
     }
 
     // ───────────────── POST création avec assignation automatique
@@ -89,7 +89,7 @@ class TacheController extends AbstractController
 
             foreach ($required as $field) {
                 if (!isset($data[$field])) {
-                    return $this->json(['message' => "Champ obligatoire manquant : $field"], 422);
+                    return new JsonResponse(['message' => "Champ obligatoire manquant : $field"], 422);
                 }
             }
 
@@ -97,7 +97,7 @@ class TacheController extends AbstractController
             $compet  = $em->getRepository(Competence::class)->find($data['competenceRequise']);
 
             if (!$mission || !$compet) {
-                return $this->json(['message' => 'Mission ou compétence introuvable.'], 404);
+                return new JsonResponse(['message' => 'Mission ou compétence introuvable.'], 404);
             }
 
             $tache = (new Tache())
@@ -120,7 +120,7 @@ class TacheController extends AbstractController
             try {
                 $collaborateurAssigne = $this->taskAssignmentService->assignTaskAutomatically($tache);
                 
-                return $this->json([
+                return new JsonResponse([
                     'message' => 'Tâche créée et assignée automatiquement à ' . $collaborateurAssigne->getPrenom() . ' ' . $collaborateurAssigne->getNom(),
                     'data' => $tache,
                     'collaborateurAssigne' => [
@@ -129,7 +129,7 @@ class TacheController extends AbstractController
                         'prenom' => $collaborateurAssigne->getPrenom(),
                         'email' => $collaborateurAssigne->getEmail()
                     ]
-                ], 201, [], ['groups' => 'tache:read']);
+                ], 201);
 
             } catch (\Exception $e) {
                 // Si l'assignation automatique échoue, on supprime la tâche
@@ -139,7 +139,7 @@ class TacheController extends AbstractController
                 // Récupérer un message d'erreur détaillé
                 $messageErreur = $this->taskAssignmentService->getAssignmentErrorMessage($tache);
                 
-                return $this->json([
+                return new JsonResponse([
                     'message' => 'Impossible d\'assigner automatiquement la tâche',
                     'details' => $messageErreur,
                     'suggestion' => 'Vérifiez qu\'il y a des collaborateurs disponibles avec la compétence requise et une charge de travail acceptable'
@@ -147,7 +147,7 @@ class TacheController extends AbstractController
             }
 
         } catch (\Throwable $e) {
-            return $this->json(['message' => 'Erreur : ' . $e->getMessage()], 500);
+            return new JsonResponse(['message' => 'Erreur : ' . $e->getMessage()], 500);
         }
     }
 
@@ -173,13 +173,13 @@ class TacheController extends AbstractController
 
             if (isset($data['mission'])) {
                 $mission = $em->getRepository(Mission::class)->find($data['mission']);
-                if (!$mission) return $this->json(['message' => 'Mission introuvable'], 404);
+                if (!$mission) return new JsonResponse(['message' => 'Mission introuvable'], 404);
                 $tache->setMission($mission);
             }
 
             if (isset($data['competenceRequise'])) {
                 $compet = $em->getRepository(Competence::class)->find($data['competenceRequise']);
-                if (!$compet) return $this->json(['message' => 'Compétence introuvable'], 404);
+                if (!$compet) return new JsonResponse(['message' => 'Compétence introuvable'], 404);
                 $tache->setCompetenceRequise($compet);
                 
                 // Si la compétence change, réassigner automatiquement la tâche
@@ -187,7 +187,7 @@ class TacheController extends AbstractController
                     try {
                         $this->taskAssignmentService->assignTaskAutomatically($tache);
                     } catch (\Exception $e) {
-                        return $this->json([
+                        return new JsonResponse([
                             'message' => 'Impossible de réassigner la tâche avec la nouvelle compétence : ' . $e->getMessage()
                         ], 422);
                     }
@@ -204,13 +204,13 @@ class TacheController extends AbstractController
                 $this->taskAssignmentService->updateCollaborateurAvailability($tache->getCollaborateur());
             }
 
-            return $this->json([
+            return new JsonResponse([
                 'message' => 'Tâche mise à jour.',
                 'data' => $tache
-            ], 200, [], ['groups' => 'tache:read']);
+            ], 200);
 
         } catch (\Throwable $e) {
-            return $this->json(['message' => 'Erreur lors de la mise à jour : ' . $e->getMessage()], 500);
+            return new JsonResponse(['message' => 'Erreur lors de la mise à jour : ' . $e->getMessage()], 500);
         }
     }
 
@@ -229,7 +229,7 @@ class TacheController extends AbstractController
             $this->taskAssignmentService->updateCollaborateurAvailability($collaborateur);
         }
 
-        return $this->json(['message' => 'Tâche supprimée avec succès.'], 204);
+        return new JsonResponse(['message' => 'Tâche supprimée avec succès.'], 204);
     }
 
     // ───────────────── POST réassignation manuelle (pour les cas d'urgence)
@@ -239,7 +239,7 @@ class TacheController extends AbstractController
         try {
             // Vérifier que la tâche a une compétence requise
             if (!$tache->getCompetenceRequise()) {
-                return $this->json(['message' => 'Impossible de réassigner une tâche sans compétence requise'], 422);
+                return new JsonResponse(['message' => 'Impossible de réassigner une tâche sans compétence requise'], 422);
             }
 
             // Réassigner automatiquement la tâche
@@ -251,7 +251,7 @@ class TacheController extends AbstractController
             }
             $this->taskAssignmentService->updateCollaborateurAvailability($nouveauCollaborateur);
 
-            return $this->json([
+            return new JsonResponse([
                 'message' => 'Tâche réassignée à ' . $nouveauCollaborateur->getPrenom() . ' ' . $nouveauCollaborateur->getNom(),
                 'data' => $tache,
                 'nouveauCollaborateur' => [
@@ -260,10 +260,10 @@ class TacheController extends AbstractController
                     'prenom' => $nouveauCollaborateur->getPrenom(),
                     'email' => $nouveauCollaborateur->getEmail()
                 ]
-            ], 200, [], ['groups' => 'tache:read']);
+            ], 200);
 
         } catch (\Exception $e) {
-            return $this->json([
+            return new JsonResponse([
                 'message' => 'Impossible de réassigner la tâche : ' . $e->getMessage()
             ], 422);
         }
