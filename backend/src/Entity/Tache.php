@@ -59,7 +59,7 @@ class Tache
     private ?Collaborateur $collaborateur = null;
 
     #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[Groups(['tache:read', 'tache:write'])]
     private ?Competence $competenceRequise = null;
 

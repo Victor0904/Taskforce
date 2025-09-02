@@ -21,9 +21,6 @@ class ApiIntegrationTest extends ApiTestBase
         parent::setUp();
         $this->entityManager = static::getContainer()->get(EntityManagerInterface::class);
         
-        // Créer des utilisateurs de test
-        $this->createTestUsers();
-        
         // Obtenir les tokens d'authentification
         $this->adminToken = $this->jwt('admin@test.com', 'secret123');
         $this->userToken = $this->jwt('user@test.com', 'user123');
@@ -233,26 +230,8 @@ class ApiIntegrationTest extends ApiTestBase
 
     private function createTestUsers(): void
     {
-        // Créer un utilisateur admin
-        $admin = new User();
-        $admin->setEmail('admin@example.com');
-        $admin->setPassword('$2y$13$hashed_password'); // Mot de passe hashé
-        $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setIsActive(true);
-        $admin->setMustChangePassword(false);
-        
-        $this->entityManager->persist($admin);
-
-        // Créer un utilisateur normal
-        $user = new User();
-        $user->setEmail('user@example.com');
-        $user->setPassword('$2y$13$hashed_password'); // Mot de passe hashé
-        $user->setRoles(['ROLE_USER']);
-        $user->setIsActive(true);
-        $user->setMustChangePassword(false);
-        
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        // Les utilisateurs sont déjà créés dans bootstrap.php
+        // Pas besoin de les recréer ici
     }
 
     private function createTestCompetence(): Competence

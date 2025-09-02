@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class TacheControllerTest extends TestCase
 {
     private TacheController $controller;
-    private MockObject|TaskAssignmentService $taskAssignmentService;
+    private MockObject $taskAssignmentService;
     private MockObject|EntityManagerInterface $entityManager;
     private MockObject|TacheRepository $tacheRepository;
     private MockObject|EntityRepository $missionRepository;
@@ -41,9 +41,10 @@ class TacheControllerTest extends TestCase
     public function testIndexReturnsAllTaches(): void
     {
         // Arrange
+        $competence = $this->createCompetence(1, 'PHP');
         $taches = [
-            $this->createTache(1, 'Tâche 1'),
-            $this->createTache(2, 'Tâche 2')
+            $this->createTache(1, 'Tâche 1', null, $competence),
+            $this->createTache(2, 'Tâche 2', null, $competence)
         ];
 
         $this->tacheRepository->expects($this->once())
@@ -65,7 +66,8 @@ class TacheControllerTest extends TestCase
     public function testShowReturnsSpecificTache(): void
     {
         // Arrange
-        $tache = $this->createTache(1, 'Tâche test');
+        $competence = $this->createCompetence(1, 'PHP');
+        $tache = $this->createTache(1, 'Tâche test', null, $competence);
 
         // Act
         $response = $this->controller->show($tache);
@@ -83,9 +85,10 @@ class TacheControllerTest extends TestCase
     {
         // Arrange
         $projectId = 1;
+        $competence = $this->createCompetence(1, 'PHP');
         $taches = [
-            $this->createTache(1, 'Tâche projet 1'),
-            $this->createTache(2, 'Tâche projet 2')
+            $this->createTache(1, 'Tâche projet 1', null, $competence),
+            $this->createTache(2, 'Tâche projet 2', null, $competence)
         ];
 
         $this->tacheRepository->expects($this->once())
@@ -109,9 +112,10 @@ class TacheControllerTest extends TestCase
         // Arrange
         $email = 'jean.dupont@example.com';
         $collaborateur = $this->createCollaborateur(1, 'Jean', 'Dupont', $email);
+        $competence = $this->createCompetence(1, 'PHP');
         $taches = [
-            $this->createTache(1, 'Tâche 1', $collaborateur),
-            $this->createTache(2, 'Tâche 2', $collaborateur)
+            $this->createTache(1, 'Tâche 1', $collaborateur, $competence),
+            $this->createTache(2, 'Tâche 2', $collaborateur, $competence)
         ];
 
         $this->entityManager->expects($this->exactly(2))
@@ -308,7 +312,8 @@ class TacheControllerTest extends TestCase
     {
         // Arrange
         $collaborateur = $this->createCollaborateur(1, 'Jean', 'Dupont');
-        $tache = $this->createTache(1, 'Tâche à supprimer', $collaborateur);
+        $competence = $this->createCompetence(1, 'PHP');
+        $tache = $this->createTache(1, 'Tâche à supprimer', $collaborateur, $competence);
 
         $this->entityManager->expects($this->once())
             ->method('remove')
@@ -338,8 +343,7 @@ class TacheControllerTest extends TestCase
         $ancienCollaborateur = $this->createCollaborateur(1, 'Jean', 'Dupont');
         $nouveauCollaborateur = $this->createCollaborateur(2, 'Marie', 'Martin');
         
-        $tache = $this->createTache(1, 'Tâche à réassigner', $ancienCollaborateur);
-        $tache->setCompetenceRequise($competence);
+        $tache = $this->createTache(1, 'Tâche à réassigner', $ancienCollaborateur, $competence);
 
         $this->taskAssignmentService->expects($this->once())
             ->method('assignTaskAutomatically')
@@ -366,7 +370,7 @@ class TacheControllerTest extends TestCase
     {
         // Arrange
         $tache = $this->createTache(1, 'Tâche sans compétence');
-        // Pas de compétence requise définie
+        // Pas de compétence requise définie (null par défaut)
 
         // Act
         $response = $this->controller->reassignTask($tache, $this->entityManager);
@@ -380,7 +384,7 @@ class TacheControllerTest extends TestCase
     }
 
     // Méthodes utilitaires pour créer des objets de test
-    private function createTache(int $id, string $titre, ?Collaborateur $collaborateur = null): Tache
+    private function createTache(int $id, string $titre, ?Collaborateur $collaborateur = null, ?Competence $competence = null): Tache
     {
         $tache = new Tache();
         // Note: setId n'existe pas, l'ID est généré automatiquement par Doctrine
@@ -394,6 +398,10 @@ class TacheControllerTest extends TestCase
         
         if ($collaborateur) {
             $tache->setCollaborateur($collaborateur);
+        }
+        
+        if ($competence) {
+            $tache->setCompetenceRequise($competence);
         }
         
         return $tache;
