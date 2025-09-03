@@ -27,10 +27,10 @@ class TacheController extends AbstractController
     {
         try {
             $taches = $tacheRepo->findBy(['mission' => $id]);
-            return $this->json([
+            return new JsonResponse([
                 'message' => 'Tâches du projet récupérées.',
                 'data' => $taches
-            ], 200, [], ['groups' => 'tache:read']);
+            ], 200);
         } catch (\Exception $e) {
             return new JsonResponse([
                 'message' => 'Erreur lors du chargement des tâches: ' . $e->getMessage()

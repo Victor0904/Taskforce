@@ -80,4 +80,13 @@ class ApiIntegrationTest extends ApiTestBase
         $this->entityManager->persist($collabComp);
         $this->entityManager->flush();
     }
+
+    /**
+     * Test placeholder pour éviter l'avertissement PHPUnit
+     * Cette classe contient des méthodes utilitaires pour d'autres tests d'intégration
+     */
+    public function testPlaceholder(): void
+    {
+        $this->assertTrue(true);
+    }
 }
