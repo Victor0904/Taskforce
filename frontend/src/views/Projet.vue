@@ -391,8 +391,15 @@ const fetchProjets = async (forceRefresh = false) => {
       try {
         const tRes = await axios.get(`http://127.0.0.1:8000/api/taches/projet/${p.id}`, { headers: authHeaders() })
         const taches = Array.isArray(tRes.data.data) ? tRes.data.data : tRes.data
+        
+        // Debug: vérifier les tâches pour ce projet
+        if (taches.length > 0) {
+          console.log(`Tâches pour le projet ${p.id}:`, taches)
+        }
+        
         return { ...p, taches }
       } catch (error) {
+        console.error(`Erreur lors du chargement des tâches pour le projet ${p.id}:`, error)
         return { ...p, taches: [] }
       }
     }))
@@ -604,12 +611,26 @@ const fetchTachesProjet = async () => {
   try { 
     const res = await axios.get(`http://127.0.0.1:8000/api/taches/projet/${projetSelectionne.value.id}`, { headers: authHeaders() })
     tachesProjet.value = Array.isArray(res.data.data) ? res.data.data : res.data 
+    
+    // Debug: vérifier les données reçues
+    console.log('Tâches reçues:', tachesProjet.value)
+    if (tachesProjet.value.length > 0) {
+      console.log('Première tâche:', tachesProjet.value[0])
+    }
   } catch (e) { 
-    // Erreur silencieuse
+    console.error('Erreur lors du chargement des tâches:', e)
   }
 }
 
-const ouvrirFormTache = (tache = null) => {
+const ouvrirFormTache = async (tache = null) => {
+  // S'assurer que les compétences sont chargées
+  if (competences.value.length === 0) {
+    await fetchCompetences()
+  }
+  
+  // Debug: vérifier que les compétences sont chargées
+  console.log('Compétences disponibles:', competences.value)
+  
   tacheEnEdition.value = tache
   if (tache) {
     formTache.value = {
@@ -1179,3 +1200,4 @@ const showAlertMessage = (type, title, message, details = '', suggestion = '') =
   }
 }
 </style>
+
