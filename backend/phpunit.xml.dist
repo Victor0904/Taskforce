@@ -21,10 +21,10 @@
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
 
-            <!-- Exclure uniquement les tests qui posent problème -->
+            <!-- Exclure uniquement les tests qui posent problème 
             <exclude>tests/Integration/ApiIntegrationTest.php</exclude>
             <exclude>tests/UserAccessTest.php</exclude>
-            <exclude>tests/Repository/RepositoryTest.php</exclude>
+            <exclude>tests/Repository/RepositoryTest.php</exclude>-->
         </testsuite>
     </testsuites>
 
