@@ -72,7 +72,7 @@ jobs:
       - name: Unit Tests
         env:
           CI: true
-        run: npm test --if-present -- --ci
+        run: npm test --if-present:ci
 
       - name: Build (check)
         env:
