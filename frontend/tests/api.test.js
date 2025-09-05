@@ -146,4 +146,5 @@ describe('App.vue', () => {
             expect(style).toMatch(/center/)
         })
     })
+
 })
