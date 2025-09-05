@@ -11,6 +11,10 @@
           <i class="icon">🔄</i>
           Actualiser
         </button>
+        <button @click="goToDonate" class="btn btn-donate">
+          <i class="icon">💝</i>
+          Nous soutenir
+        </button>
       </div>
     </div>
 
@@ -224,7 +228,11 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
+
+// Router
+const router = useRouter()
 
 // Données réactives pour le dashboard
 const collaborateurs = ref([])
@@ -385,6 +393,11 @@ const loadDashboardData = async (forceRefresh = false) => {
 // Actualisation des données
 const refreshData = (forceRefresh = false) => {
   loadDashboardData(forceRefresh)
+}
+
+// Navigation vers la page de don
+const goToDonate = () => {
+  router.push('/donate')
 }
 
 
@@ -1134,5 +1147,31 @@ const getTeamColor = (color) => {
   background: var(--secondary-200);
   border-color: var(--secondary-400);
   color: var(--secondary-800);
+}
+
+/* Bouton Nous soutenir */
+.btn-donate {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.btn-donate:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+}
+
+.btn-donate .icon {
+  font-size: 1rem;
 }
 </style>

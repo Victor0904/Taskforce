@@ -59,7 +59,22 @@ const routes = [
     component: Parametres,
     meta: { requiresAuth: true, roles: ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN', 'ROLE_CHEF_PROJET'] }
   },
-
+  {
+    path: '/donate',
+    name: 'Donate',
+    component: () => import('../views/Donate.vue'),
+    meta: { requiresAuth: true, roles: ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN', 'ROLE_CHEF_PROJET'] }
+  },
+  {
+    path: '/payment/success',
+    name: 'PaymentSuccess',
+    component: () => import('../views/PaymentSuccess.vue')
+  },
+  {
+    path: '/payment/cancel',
+    name: 'PaymentCancel',
+    component: () => import('../views/PaymentCancel.vue')
+  }
 
 ]
 

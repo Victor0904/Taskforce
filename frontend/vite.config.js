@@ -44,6 +44,14 @@ export default defineConfig({
     middlewareMode: false,
     hmr: {
       overlay: false
+    },
+    // Proxy pour rediriger les appels API vers le backend Symfony
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        secure: false
+      }
     }
   },
   // Optimisations pour la production
