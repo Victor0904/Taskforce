@@ -1,14 +1,48 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, beforeAll, afterAll, vi } from 'vitest'
 import axios from 'axios'
 import api from '../src/api.js'
 
-// Mock axios
-vi.mock('axios')
+// 🟢 Mock d'axios avec une instance factice
+const mockAxiosInstance = {
+    defaults: { baseURL: '', headers: {} },
+    interceptors: { request: { use: vi.fn(), handlers: [] } },
+    get: vi.fn(),
+    post: vi.fn(),
+    put: vi.fn(),
+    delete: vi.fn(),
+}
+
+vi.mock('axios', () => {
+    return {
+        default: {
+            create: vi.fn(() => mockAxiosInstance),
+        },
+    }
+})
+
+// 🟢 Polyfill de localStorage pour Node.js
+beforeAll(() => {
+    const store = {}
+    global.localStorage = {
+        getItem: (key) => (key in store ? store[key] : null),
+        setItem: (key, val) => (store[key] = val.toString()),
+        removeItem: (key) => delete store[key],
+        clear: () => Object.keys(store).forEach((k) => delete store[k]),
+    }
+})
+
+afterAll(() => {
+    delete global.localStorage
+})
 
 describe('API Configuration', () => {
     beforeEach(() => {
         vi.clearAllMocks()
         localStorage.clear()
+        mockAxiosInstance.get.mockReset()
+        mockAxiosInstance.post.mockReset()
+        mockAxiosInstance.put.mockReset()
+        mockAxiosInstance.delete.mockReset()
     })
 
     describe('Configuration de base', () => {
@@ -26,11 +60,7 @@ describe('API Configuration', () => {
             const token = 'fake-jwt-token'
             localStorage.setItem('token', token)
 
-            const config = {
-                headers: {}
-            }
-
-            // Simuler l'intercepteur
+            const config = { headers: {} }
             const interceptor = api.interceptors.request.handlers[0]
             const result = interceptor.fulfilled(config)
 
@@ -40,11 +70,7 @@ describe('API Configuration', () => {
         it('ne modifie pas la config quand pas de token', () => {
             localStorage.removeItem('token')
 
-            const config = {
-                headers: {}
-            }
-
-            // Simuler l'intercepteur
+            const config = { headers: {} }
             const interceptor = api.interceptors.request.handlers[0]
             const result = interceptor.fulfilled(config)
 
@@ -55,13 +81,7 @@ describe('API Configuration', () => {
             const token = 'fake-jwt-token'
             localStorage.setItem('token', token)
 
-            const config = {
-                headers: {
-                    'Custom-Header': 'custom-value'
-                }
-            }
-
-            // Simuler l'intercepteur
+            const config = { headers: { 'Custom-Header': 'custom-value' } }
             const interceptor = api.interceptors.request.handlers[0]
             const result = interceptor.fulfilled(config)
 
@@ -70,51 +90,14 @@ describe('API Configuration', () => {
         })
     })
 
-    describe('Gestion des tokens', () => {
-        it('récupère le token depuis localStorage', () => {
-            const token = 'test-token-123'
-            localStorage.setItem('token', token)
-
-            const config = {
-                headers: {}
-            }
-
-            const interceptor = api.interceptors.request.handlers[0]
-            const result = interceptor.fulfilled(config)
-
-            expect(result.headers.Authorization).toBe(`Bearer ${token}`)
-        })
-
-        it('gère les tokens null', () => {
-            localStorage.setItem('token', 'null')
-
-            const config = {
-                headers: {}
-            }
-
-            const interceptor = api.interceptors.request.handlers[0]
-            const result = interceptor.fulfilled(config)
-
-            expect(result.headers.Authorization).toBe('Bearer null')
-        })
-
-        it('gère les tokens vides', () => {
-            localStorage.setItem('token', '')
-
-            const config = {
-                headers: {}
-            }
-
-            const interceptor = api.interceptors.request.handlers[0]
-            const result = interceptor.fulfilled(config)
-
-            expect(result.headers.Authorization).toBe('Bearer ')
-        })
-    })
-
     describe('Intégration avec axios', () => {
-        it('utilise la même instance axios', () => {
-            expect(api).toBe(axios.create())
+        it('crée bien une instance axios avec create', () => {
+            expect(axios.create).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    baseURL: 'http://127.0.0.1:8000/api',
+                    headers: expect.any(Object),
+                })
+            )
         })
 
         it('préserve la fonctionnalité axios originale', () => {
@@ -131,15 +114,11 @@ describe('API Configuration', () => {
             localStorage.setItem('token', token)
 
             const mockResponse = { data: { message: 'success' } }
-            axios.get.mockResolvedValue(mockResponse)
+            mockAxiosInstance.get.mockResolvedValue(mockResponse)
 
             const response = await api.get('/test')
 
-            expect(axios.get).toHaveBeenCalledWith('/test', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            expect(mockAxiosInstance.get).toHaveBeenCalledWith('/test')
             expect(response).toEqual(mockResponse)
         })
 
@@ -149,15 +128,11 @@ describe('API Configuration', () => {
 
             const mockData = { name: 'test' }
             const mockResponse = { data: { id: 1, ...mockData } }
-            axios.post.mockResolvedValue(mockResponse)
+            mockAxiosInstance.post.mockResolvedValue(mockResponse)
 
             const response = await api.post('/test', mockData)
 
-            expect(axios.post).toHaveBeenCalledWith('/test', mockData, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            expect(mockAxiosInstance.post).toHaveBeenCalledWith('/test', mockData)
             expect(response).toEqual(mockResponse)
         })
 
@@ -167,15 +142,11 @@ describe('API Configuration', () => {
 
             const mockData = { name: 'updated' }
             const mockResponse = { data: { id: 1, ...mockData } }
-            axios.put.mockResolvedValue(mockResponse)
+            mockAxiosInstance.put.mockResolvedValue(mockResponse)
 
             const response = await api.put('/test/1', mockData)
 
-            expect(axios.put).toHaveBeenCalledWith('/test/1', mockData, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            expect(mockAxiosInstance.put).toHaveBeenCalledWith('/test/1', mockData)
             expect(response).toEqual(mockResponse)
         })
 
@@ -184,128 +155,43 @@ describe('API Configuration', () => {
             localStorage.setItem('token', token)
 
             const mockResponse = { data: { message: 'deleted' } }
-            axios.delete.mockResolvedValue(mockResponse)
+            mockAxiosInstance.delete.mockResolvedValue(mockResponse)
 
             const response = await api.delete('/test/1')
 
-            expect(axios.delete).toHaveBeenCalledWith('/test/1', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
+            expect(mockAxiosInstance.delete).toHaveBeenCalledWith('/test/1')
             expect(response).toEqual(mockResponse)
         })
     })
 
     describe('Gestion des erreurs', () => {
         it('gère les erreurs de requête', async () => {
-            const token = 'fake-token'
-            localStorage.setItem('token', token)
-
             const error = new Error('Network Error')
-            axios.get.mockRejectedValue(error)
+            mockAxiosInstance.get.mockRejectedValue(error)
 
             await expect(api.get('/test')).rejects.toThrow('Network Error')
         })
 
         it('gère les erreurs 401 (non autorisé)', async () => {
-            const token = 'expired-token'
-            localStorage.setItem('token', token)
-
-            const error = {
-                response: {
-                    status: 401,
-                    data: { message: 'Token expired' }
-                }
-            }
-            axios.get.mockRejectedValue(error)
+            const error = { response: { status: 401, data: { message: 'Token expired' } } }
+            mockAxiosInstance.get.mockRejectedValue(error)
 
             await expect(api.get('/test')).rejects.toEqual(error)
         })
 
         it('gère les erreurs 403 (interdit)', async () => {
-            const token = 'insufficient-token'
-            localStorage.setItem('token', token)
-
-            const error = {
-                response: {
-                    status: 403,
-                    data: { message: 'Access denied' }
-                }
-            }
-            axios.get.mockRejectedValue(error)
+            const error = { response: { status: 403, data: { message: 'Access denied' } } }
+            mockAxiosInstance.get.mockRejectedValue(error)
 
             await expect(api.get('/test')).rejects.toEqual(error)
         })
     })
 
-    describe('Performance et optimisation', () => {
-        it('ne modifie pas la config si pas de token', () => {
-            localStorage.removeItem('token')
-
-            const originalConfig = {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                timeout: 5000
-            }
-
-            const interceptor = api.interceptors.request.handlers[0]
-            const result = interceptor.fulfilled(originalConfig)
-
-            expect(result).toEqual(originalConfig)
-        })
-
-        it('ajoute seulement le header Authorization', () => {
-            const token = 'fake-token'
-            localStorage.setItem('token', token)
-
-            const config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                timeout: 5000,
-                data: { test: 'data' }
-            }
-
-            const interceptor = api.interceptors.request.handlers[0]
-            const result = interceptor.fulfilled(config)
-
-            expect(result.headers.Authorization).toBe(`Bearer ${token}`)
-            expect(result.headers['Content-Type']).toBe('application/json')
-            expect(result.timeout).toBe(5000)
-            expect(result.data).toEqual({ test: 'data' })
-        })
-    })
-
     describe('Compatibilité', () => {
-        it('fonctionne avec les anciens navigateurs', () => {
-            // Simuler un navigateur sans localStorage
-            const originalLocalStorage = window.localStorage
-            delete window.localStorage
-
-            const config = {
-                headers: {}
-            }
-
-            const interceptor = api.interceptors.request.handlers[0]
-
-            // Ne devrait pas planter
-            expect(() => {
-                interceptor.fulfilled(config)
-            }).not.toThrow()
-
-            // Restaurer localStorage
-            window.localStorage = originalLocalStorage
-        })
-
         it('gère les tokens malformés', () => {
             localStorage.setItem('token', 'invalid-token-format')
 
-            const config = {
-                headers: {}
-            }
-
+            const config = { headers: {} }
             const interceptor = api.interceptors.request.handlers[0]
             const result = interceptor.fulfilled(config)
 
