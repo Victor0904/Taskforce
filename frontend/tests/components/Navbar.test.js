@@ -4,6 +4,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Navbar from '../../src/components/Navbar.vue'
 
 // Mock des dépendances
+import { jwtDecode } from 'jwt-decode'
+
 vi.mock('jwt-decode', () => ({
     jwtDecode: vi.fn()
 }))
@@ -102,14 +104,10 @@ describe('Navbar.vue', () => {
         })
 
         it('affiche le lien Admin pour ROLE_ADMIN', () => {
-            const mockDecode = vi.fn().mockReturnValue({
+            vi.mocked(jwtDecode).mockReturnValue({
                 roles: ['ROLE_ADMIN'],
                 username: 'admin@example.com'
             })
-
-            vi.doMock('jwt-decode', () => ({
-                jwtDecode: mockDecode
-            }))
 
             wrapper = createWrapper()
 
@@ -118,14 +116,10 @@ describe('Navbar.vue', () => {
         })
 
         it('affiche le lien Admin pour ROLE_MANAGER', () => {
-            const mockDecode = vi.fn().mockReturnValue({
+            vi.mocked(jwtDecode).mockReturnValue({
                 roles: ['ROLE_MANAGER'],
                 username: 'manager@example.com'
             })
-
-            vi.doMock('jwt-decode', () => ({
-                jwtDecode: mockDecode
-            }))
 
             wrapper = createWrapper()
 
@@ -134,14 +128,10 @@ describe('Navbar.vue', () => {
         })
 
         it('affiche le lien Admin pour ROLE_CHEF_PROJET', () => {
-            const mockDecode = vi.fn().mockReturnValue({
+            vi.mocked(jwtDecode).mockReturnValue({
                 roles: ['ROLE_CHEF_PROJET'],
                 username: 'chef@example.com'
             })
-
-            vi.doMock('jwt-decode', () => ({
-                jwtDecode: mockDecode
-            }))
 
             wrapper = createWrapper()
 
@@ -150,14 +140,10 @@ describe('Navbar.vue', () => {
         })
 
         it('masque le lien Admin pour ROLE_USER uniquement', () => {
-            const mockDecode = vi.fn().mockReturnValue({
+            vi.mocked(jwtDecode).mockReturnValue({
                 roles: ['ROLE_USER'],
                 username: 'user@example.com'
             })
-
-            vi.doMock('jwt-decode', () => ({
-                jwtDecode: mockDecode
-            }))
 
             wrapper = createWrapper()
 
@@ -172,14 +158,10 @@ describe('Navbar.vue', () => {
         })
 
         it('affiche l\'email de l\'utilisateur', () => {
-            const mockDecode = vi.fn().mockReturnValue({
+            vi.mocked(jwtDecode).mockReturnValue({
                 roles: ['ROLE_USER'],
                 username: 'user@example.com'
             })
-
-            vi.doMock('jwt-decode', () => ({
-                jwtDecode: mockDecode
-            }))
 
             wrapper = createWrapper()
 
@@ -188,14 +170,10 @@ describe('Navbar.vue', () => {
         })
 
         it('affiche "Utilisateur inconnu" si pas d\'email', () => {
-            const mockDecode = vi.fn().mockReturnValue({
+            vi.mocked(jwtDecode).mockReturnValue({
                 roles: ['ROLE_USER'],
                 username: null
             })
-
-            vi.doMock('jwt-decode', () => ({
-                jwtDecode: mockDecode
-            }))
 
             wrapper = createWrapper()
 
@@ -210,14 +188,10 @@ describe('Navbar.vue', () => {
         })
 
         it('applique la classe admin pour ROLE_ADMIN', () => {
-            const mockDecode = vi.fn().mockReturnValue({
+            vi.mocked(jwtDecode).mockReturnValue({
                 roles: ['ROLE_ADMIN'],
                 username: 'admin@example.com'
             })
-
-            vi.doMock('jwt-decode', () => ({
-                jwtDecode: mockDecode
-            }))
 
             wrapper = createWrapper()
 
@@ -226,14 +200,10 @@ describe('Navbar.vue', () => {
         })
 
         it('applique la classe manager pour ROLE_MANAGER', () => {
-            const mockDecode = vi.fn().mockReturnValue({
+            vi.mocked(jwtDecode).mockReturnValue({
                 roles: ['ROLE_MANAGER'],
                 username: 'manager@example.com'
             })
-
-            vi.doMock('jwt-decode', () => ({
-                jwtDecode: mockDecode
-            }))
 
             wrapper = createWrapper()
 
@@ -242,14 +212,10 @@ describe('Navbar.vue', () => {
         })
 
         it('applique la classe chef-projet pour ROLE_CHEF_PROJET', () => {
-            const mockDecode = vi.fn().mockReturnValue({
+            vi.mocked(jwtDecode).mockReturnValue({
                 roles: ['ROLE_CHEF_PROJET'],
                 username: 'chef@example.com'
             })
-
-            vi.doMock('jwt-decode', () => ({
-                jwtDecode: mockDecode
-            }))
 
             wrapper = createWrapper()
 
@@ -258,14 +224,10 @@ describe('Navbar.vue', () => {
         })
 
         it('applique la classe user pour ROLE_USER', () => {
-            const mockDecode = vi.fn().mockReturnValue({
+            vi.mocked(jwtDecode).mockReturnValue({
                 roles: ['ROLE_USER'],
                 username: 'user@example.com'
             })
-
-            vi.doMock('jwt-decode', () => ({
-                jwtDecode: mockDecode
-            }))
 
             wrapper = createWrapper()
 
@@ -339,13 +301,9 @@ describe('Navbar.vue', () => {
         })
 
         it('gère les tokens JWT invalides', () => {
-            const mockDecode = vi.fn().mockImplementation(() => {
+            vi.mocked(jwtDecode).mockImplementation(() => {
                 throw new Error('Invalid token')
             })
-
-            vi.doMock('jwt-decode', () => ({
-                jwtDecode: mockDecode
-            }))
 
             wrapper = createWrapper()
 

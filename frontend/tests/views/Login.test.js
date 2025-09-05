@@ -439,6 +439,36 @@ describe('Login.vue', () => {
             expect(axios.post).not.toHaveBeenCalled()
         })
 
+        it('affiche un message d\'erreur pour des champs vides côté client', async () => {
+            wrapper = createWrapper()
+
+            // Remplir seulement l'email
+            await wrapper.find('input[type="email"]').setValue('test@example.com')
+            await wrapper.find('input[type="password"]').setValue('')
+
+            await wrapper.find('form').trigger('submit.prevent')
+
+            const errorMessage = wrapper.find('.alert-error')
+            expect(errorMessage.exists()).toBe(true)
+            expect(errorMessage.text()).toBe('Veuillez remplir tous les champs')
+            expect(axios.post).not.toHaveBeenCalled()
+        })
+
+        it('affiche un message d\'erreur pour email vide côté client', async () => {
+            wrapper = createWrapper()
+
+            // Remplir seulement le mot de passe
+            await wrapper.find('input[type="email"]').setValue('')
+            await wrapper.find('input[type="password"]').setValue('password123')
+
+            await wrapper.find('form').trigger('submit.prevent')
+
+            const errorMessage = wrapper.find('.alert-error')
+            expect(errorMessage.exists()).toBe(true)
+            expect(errorMessage.text()).toBe('Veuillez remplir tous les champs')
+            expect(axios.post).not.toHaveBeenCalled()
+        })
+
         it('valide le format email', () => {
             wrapper = createWrapper()
 

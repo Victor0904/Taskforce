@@ -2,9 +2,9 @@
   <div>
     <div v-if="showSplash" class="splash-overlay">
       <div class="splash-content">
-        <div class="splash-title">Taskforce</div>
-        <div class="splash-subtitle">Chargement des données...</div>
         <div class="splash-spinner"></div>
+        <h1 class="splash-title">TaskForce</h1>
+        <p class="splash-subtitle">Chargement…</p>
       </div>
     </div>
 
@@ -21,33 +21,40 @@ import { ref, onMounted, onUnmounted } from 'vue'
 import Navbar from './components/Navbar.vue'
 import PasswordChangeAlert from './components/PasswordChangeAlert.vue'
 
-const showSplash = ref(false)
-let splashTimeoutId = null
+const showSplash = ref(false)         // accessible pour les tests
+let splashTimeoutId = null            // accessible pour les tests
 
-const triggerSplash = () => {
-  if (splashTimeoutId) {
-    clearTimeout(splashTimeoutId)
-    splashTimeoutId = null
-  }
-  showSplash.value = true
+const triggerSplash = (ms = 5000) => {
+  showSplash.value = true;
+  if (splashTimeoutId) clearTimeout(splashTimeoutId);
   splashTimeoutId = setTimeout(() => {
-    showSplash.value = false
-    splashTimeoutId = null
-  }, 5000)
+    showSplash.value = false;
+    splashTimeoutId = null;
+  }, ms);
 }
 
-const handleShowSplashEvent = () => {
-  triggerSplash()
+// Exposer pour les tests
+defineExpose({
+  showSplash,
+  splashTimeoutId,
+  triggerSplash
+})
+
+function handleShowSplashEvent() {
+  try { triggerSplash(); } catch { /* safe */ }
 }
 
 onMounted(() => {
-  window.addEventListener('show-splash', handleShowSplashEvent)
-})
+  window.addEventListener('show-splash', handleShowSplashEvent);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('show-splash', handleShowSplashEvent)
-  if (splashTimeoutId) clearTimeout(splashTimeoutId)
-})
+  window.removeEventListener('show-splash', handleShowSplashEvent);
+  if (splashTimeoutId) {
+    clearTimeout(splashTimeoutId);
+    splashTimeoutId = null;
+  }
+});
 </script>
 
 <style scoped>

@@ -20,8 +20,8 @@
           </router-link>
         </li>
 
-        <li>
-          <router-link to="/admin" class="nav-link" :class="{ active: $route.name === 'Admin' }" v-if="hasRole('ROLE_ADMIN').value || hasRole('ROLE_MANAGER').value || hasRole('ROLE_CHEF_PROJET').value">
+        <li v-if="showAdmin">
+          <router-link to="/admin" class="nav-link" :class="{ active: $route.name === 'Admin' }">
             <i class="icon">⚙️</i>
             Admin
           </router-link>
@@ -82,17 +82,23 @@ function hasRole(role) {
   return computed(() => userRoles.value.includes(role))
 }
 
+// Lien Admin pour plusieurs rôles
+const showAdmin = computed(() => {
+  const roles = userRoles.value || [];
+  return roles.includes('ROLE_ADMIN') || roles.includes('ROLE_MANAGER') || roles.includes('ROLE_CHEF_PROJET');
+});
+
 // ✅ User uniquement s'il a ROLE_USER et pas ROLE_ADMIN
 const hasRoleUserOnly = computed(() => {
   return userRoles.value.includes('ROLE_USER') && !userRoles.value.includes('ROLE_ADMIN')
 })
 
+// Classes CSS par rôle sur .user-email-link
 const userRoleClass = computed(() => {
-  if (hasRole('ROLE_ADMIN').value) return 'admin'
-  if (hasRole('ROLE_MANAGER').value) return 'manager'
-  if (hasRole('ROLE_CHEF_PROJET').value) return 'chef-projet'
-  if (hasRole('ROLE_USER').value) return 'user'
-  return ''
+  if (userRoles.value?.includes('ROLE_ADMIN')) return 'admin';
+  if (userRoles.value?.includes('ROLE_MANAGER')) return 'manager';
+  if (userRoles.value?.includes('ROLE_CHEF_PROJET')) return 'chef-projet';
+  return 'user';
 })
 
 

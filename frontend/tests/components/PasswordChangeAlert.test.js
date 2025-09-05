@@ -75,15 +75,15 @@ describe('PasswordChangeAlert.vue', () => {
         it('affiche le titre de l\'alerte', () => {
             wrapper = createWrapper()
 
-            const alertText = wrapper.find('.alert-text strong')
-            expect(alertText.text()).toBe('Changement de mot de passe requis')
+            const alertTitle = wrapper.find('.alert-title')
+            expect(alertTitle.text()).toBe('Changement de mot de passe requis')
         })
 
         it('affiche le message explicatif', () => {
             wrapper = createWrapper()
 
-            const alertText = wrapper.find('.alert-text p')
-            expect(alertText.text()).toContain('Votre compte utilise encore le mot de passe par défaut "admin"')
+            const alertMessage = wrapper.find('.alert-message')
+            expect(alertMessage.text()).toContain('Votre compte utilise encore le mot de passe par défaut "admin"')
         })
 
         it('affiche le bouton de changement de mot de passe', () => {
@@ -125,7 +125,7 @@ describe('PasswordChangeAlert.vue', () => {
 
             wrapper = createWrapper()
 
-            const link = wrapper.find('.alert-link')
+            const link = wrapper.find('.reset-link')
             await link.trigger('click')
 
             expect(pushSpy).toHaveBeenCalledWith('/reset-password')

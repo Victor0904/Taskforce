@@ -238,38 +238,21 @@ const showAllCollaborateurs = ref(false)
 const showAllTaches = ref(false)
 
 // ✅ Système de cache persistant avec localStorage
-const CACHE_KEY = 'dashboard_cache'
+const CACHE_KEY = 'dashboardCache'
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutes en millisecondes
 
-// Fonction pour charger le cache depuis localStorage
-const loadCache = () => {
+// ✅ Fonction pour normaliser les réponses API
+const unwrap = (res) => Array.isArray(res?.data) ? res.data : res?.data?.data || []
+
+// ✅ Fonction pour lire le cache avec vérification d'âge
+const readCache = (key, maxAgeMs) => {
+  const raw = localStorage.getItem(key)
+  if (!raw) return null
   try {
-    const cached = localStorage.getItem(CACHE_KEY)
-    return cached ? JSON.parse(cached) : null
-  } catch (error) {
-    return null
-  }
-}
-
-// Fonction pour sauvegarder le cache dans localStorage
-const saveCache = (data) => {
-  try {
-    localStorage.setItem(CACHE_KEY, JSON.stringify(data))
-  } catch (error) {
-    console.warn('Impossible de sauvegarder le cache:', error)
-  }
-}
-
-// Fonction pour vider le cache
-const clearCache = () => {
-  localStorage.removeItem(CACHE_KEY)
-}
-
-// Fonction pour vérifier si le cache est valide
-const isCacheValid = (cacheData) => {
-  if (!cacheData || !cacheData.timestamp) return false
-  const now = Date.now()
-  return (now - cacheData.timestamp) < CACHE_TTL
+    const { data, ts } = JSON.parse(raw)
+    if (Date.now() - ts <= maxAgeMs) return data
+  } catch {}
+  return null
 }
 
 // Statistiques calculées
@@ -296,7 +279,7 @@ const fetchCollaborateurs = async () => {
     const response = await axios.get('http://127.0.0.1:8000/api/collaborateurs', {
       headers: { Authorization: `Bearer ${token}` }
     })
-    collaborateurs.value = response.data.data || response.data || []
+    collaborateurs.value = unwrap(response)
   } catch (error) {
     collaborateurs.value = []
   }
@@ -309,7 +292,7 @@ const fetchProjets = async () => {
     const response = await axios.get('http://127.0.0.1:8000/api/missions', {
       headers: { Authorization: `Bearer ${token}` }
     })
-    const apiList = Array.isArray(response.data.data) ? response.data.data : response.data
+    const apiList = unwrap(response)
     
     // Récupérer les tâches pour chaque projet
     const projetsAvecTaches = await Promise.all(apiList.map(async (projet) => {
@@ -317,7 +300,7 @@ const fetchProjets = async () => {
         const tachesResponse = await axios.get(`http://127.0.0.1:8000/api/taches/projet/${projet.id}`, {
           headers: { Authorization: `Bearer ${token}` }
         })
-        const taches = Array.isArray(tachesResponse.data.data) ? tachesResponse.data.data : tachesResponse.data
+        const taches = unwrap(tachesResponse)
         return { ...projet, taches }
       } catch (error) {
         return { ...projet, taches: [] }
@@ -337,7 +320,7 @@ const fetchTaches = async () => {
     const response = await axios.get('http://127.0.0.1:8000/api/taches', {
       headers: { Authorization: `Bearer ${token}` }
     })
-    taches.value = response.data.data || response.data || []
+    taches.value = unwrap(response)
   } catch (error) {
     taches.value = []
   }
@@ -350,45 +333,48 @@ const fetchCompetences = async () => {
     const response = await axios.get('http://127.0.0.1:8000/api/competences', {
       headers: { Authorization: `Bearer ${token}` }
     })
-    competences.value = response.data.data || response.data || []
+    competences.value = unwrap(response)
   } catch (error) {
     competences.value = []
   }
 }
 
+// ✅ Chargement de toutes les données avec vérification du cache AVANT les appels API
+const initData = async () => {
+  const cache = readCache(CACHE_KEY, CACHE_TTL)
+  if (cache) {
+    ({ collaborateurs: collaborateurs.value, projets: projets.value, taches: taches.value, competences: competences.value } = cache)
+    return // <- IMPORTANT : ne pas appeler l'API si cache valide
+  }
+  await loadAll() // fera les axios.get
+  localStorage.setItem(CACHE_KEY, JSON.stringify({
+    data: { collaborateurs: collaborateurs.value, projets: projets.value, taches: taches.value, competences: competences.value },
+    ts: Date.now(),
+  }))
+}
+
 // Chargement de toutes les données
+const loadAll = async () => {
+  await Promise.all([
+    fetchCollaborateurs(),
+    fetchProjets(),
+    fetchTaches(),
+    fetchCompetences()
+  ])
+}
+
 const loadDashboardData = async (forceRefresh = false) => {
   loading.value = true
   try {
-    // ✅ Vérifier le cache d'abord
-    if (!forceRefresh) {
-      const cachedData = loadCache()
-      if (cachedData && isCacheValid(cachedData)) {
-        collaborateurs.value = cachedData.collaborateurs || []
-        projets.value = cachedData.projets || []
-        taches.value = cachedData.taches || []
-        competences.value = cachedData.competences || []
-        loading.value = false
-        return
-      }
+    if (forceRefresh) {
+      await loadAll()
+      localStorage.setItem(CACHE_KEY, JSON.stringify({
+        data: { collaborateurs: collaborateurs.value, projets: projets.value, taches: taches.value, competences: competences.value },
+        ts: Date.now(),
+      }))
+    } else {
+      await initData()
     }
-    await Promise.all([
-      fetchCollaborateurs(),
-      fetchProjets(),
-      fetchTaches(),
-      fetchCompetences()
-    ])
-    
-    // ✅ Sauvegarder dans le cache persistant
-    const cacheData = {
-      collaborateurs: collaborateurs.value,
-      projets: projets.value,
-      taches: taches.value,
-      competences: competences.value,
-      timestamp: Date.now()
-    }
-    saveCache(cacheData)
-    
   } catch (error) {
     // Erreur silencieuse
   } finally {
@@ -414,14 +400,12 @@ const formatDate = (dateString) => {
   })
 }
 
-// Calcul de la progression d'un projet
+// ✅ Calcul de la progression d'un projet - robuste
 const getProjectProgress = (projet) => {
-  if (!projet.taches || projet.taches.length === 0) return 0
-  
-  const totalTaches = projet.taches.length
-  const tachesTerminees = projet.taches.filter(t => t.statut === 'terminee').length
-  
-  return Math.round((tachesTerminees / totalTaches) * 100)
+  const list = Array.isArray(projet?.taches) ? projet.taches : []
+  if (list.length === 0) return 0
+  const done = list.filter(t => t.statut === 'TERMINEE' || t.status === 'DONE').length
+  return Math.round((done / list.length) * 100)
 }
 
 // Chargement initial

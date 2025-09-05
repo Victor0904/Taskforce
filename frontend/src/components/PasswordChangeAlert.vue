@@ -1,27 +1,18 @@
 <template>
   <div v-if="showAlert" class="password-change-alert">
-    <div class="alert-content">
-      <div class="alert-icon">🔒</div>
-      <div class="alert-text">
-        <strong>Changement de mot de passe requis</strong>
-        <p>Votre compte utilise encore le mot de passe par défaut "admin". 
-          <a href="#" @click.prevent="goToResetPassword" class="alert-link">
-            Cliquez ici pour changer votre mot de passe
-          </a> 
-          pour des raisons de sécurité.
-        </p>
-      </div>
-      <button @click="goToResetPassword" class="btn btn-primary btn-small">
-        Changer le mot de passe
-      </button>
-    </div>
+    <span class="alert-icon">🔒</span>
+    <h3 class="alert-title">Changement de mot de passe requis</h3>
+    <p class="alert-message">Votre compte utilise encore le mot de passe par défaut "admin". 
+      <a class="reset-link" @click.prevent="goToResetPassword">Aller à la page</a> 
+      pour des raisons de sécurité.
+    </p>
+    <button class="btn-primary" @click="goToResetPassword">Changer le mot de passe</button>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { jwtDecode } from 'jwt-decode'
 
 const router = useRouter()
 const showAlert = ref(false)
@@ -34,6 +25,7 @@ const checkPasswordStatus = () => {
   const token = localStorage.getItem('token')
   const mustChangePassword = localStorage.getItem('mustChangePassword') === 'true'
   
+  // Condition exacte : token && mustChangePassword === 'true'
   if (token && mustChangePassword) {
     showAlert.value = true
   } else {
@@ -41,18 +33,26 @@ const checkPasswordStatus = () => {
   }
 }
 
+const handleStorage = (event) => {
+  if (event.key === 'token' || event.key === 'mustChangePassword') {
+    checkPasswordStatus()
+  }
+}
+
+const handleTokenChanged = () => {
+  checkPasswordStatus()
+}
+
 onMounted(() => {
   checkPasswordStatus()
+  window.addEventListener('storage', handleStorage)
+  window.addEventListener('token-changed', handleTokenChanged)
 })
 
-// Écouter les changements de token (connexion/déconnexion)
-watch(() => localStorage.getItem('token'), () => {
-  checkPasswordStatus()
+onUnmounted(() => {
+  window.removeEventListener('storage', handleStorage)
+  window.removeEventListener('token-changed', handleTokenChanged)
 })
-
-// Écouter les événements de changement de token
-window.addEventListener('storage', checkPasswordStatus)
-window.addEventListener('token-changed', checkPasswordStatus)
 </script>
 
 <style scoped>
@@ -65,13 +65,10 @@ window.addEventListener('token-changed', checkPasswordStatus)
   color: white;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.alert-content {
+  padding: 1rem 2rem;
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -81,52 +78,62 @@ window.addEventListener('token-changed', checkPasswordStatus)
   flex-shrink: 0;
 }
 
-.alert-text {
-  flex: 1;
-}
-
-.alert-text strong {
-  display: block;
+.alert-title {
   font-size: 1.1rem;
-  margin-bottom: 0.25rem;
+  margin: 0 0 0.25rem 0;
+  font-weight: bold;
 }
 
-.alert-text p {
+.alert-message {
   margin: 0;
   font-size: 0.9rem;
   opacity: 0.9;
+  flex: 1;
 }
 
-.alert-link {
+.reset-link {
   color: #ffffff;
   text-decoration: underline;
   font-weight: 600;
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-.alert-link:hover {
+.reset-link:hover {
   color: #fbbf24;
   text-decoration: none;
 }
 
-.btn-small {
+.btn-primary {
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
   white-space: nowrap;
+  background: #ffffff;
+  color: #ff6b6b;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #f8f9fa;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {
-  .alert-content {
+  .password-change-alert {
     flex-direction: column;
     text-align: center;
     padding: 1rem;
   }
   
-  .alert-text {
+  .alert-message {
     order: 2;
   }
   
-  .btn-small {
+  .btn-primary {
     order: 3;
     width: 100%;
   }

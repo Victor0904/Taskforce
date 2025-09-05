@@ -438,7 +438,7 @@ describe('Dashboard.vue', () => {
             await wrapper.vm.loadDashboardData()
 
             expect(window.localStorage.setItem).toHaveBeenCalledWith(
-                'dashboard_cache',
+                'dashboardCache',
                 expect.stringContaining('"collaborateurs"')
             )
         })

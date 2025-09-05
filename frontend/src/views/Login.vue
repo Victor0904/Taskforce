@@ -36,6 +36,12 @@ const error = ref('')
 const router = useRouter()
 
 const login = async () => {
+  // Empêche la soumission avec des champs vides
+  if (!email.value || !password.value) {
+    error.value = 'Veuillez remplir tous les champs'
+    return
+  }
+
   try {
     const response = await axios.post('http://127.0.0.1:8000/api/login', {
       email: email.value,

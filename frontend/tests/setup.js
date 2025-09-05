@@ -1,27 +1,36 @@
 import { vi } from 'vitest'
+import { config } from '@vue/test-utils'
+
+// ========================================
+// 0. CORRECTION : Mock i18n pour éviter les textes vides
+// ========================================
+
+// renvoie la clé si pas de traduction (évite string vide)
+config.global.mocks = {
+    ...(config.global.mocks || {}),
+    $t: (key) => key.split('.').pop(), // "nav.dashboard" -> "dashboard"
+};
 
 // ========================================
 // 1. CORRECTION : Timers sans récursion infinie
 // ========================================
 
-// Sauvegarder les vrais timers AVANT toute manipulation
-const realSetTimeout = global.setTimeout.bind(global)
-const realClearTimeout = global.clearTimeout.bind(global)
+// Sauvegarde des vrais timers
+const realSetTimeout = globalThis.setTimeout?.bind(globalThis);
+const realClearTimeout = globalThis.clearTimeout?.bind(globalThis);
 
-// Option A : espionner seulement (pas de redéfinition récursive)
-vi.spyOn(global, 'setTimeout')
-vi.spyOn(global, 'clearTimeout')
-
-// Si on veut une implémentation custom, utiliser les "réels"
-Object.defineProperty(global, 'setTimeout', {
-    value: vi.fn((cb, delay) => realSetTimeout(cb, delay)),
+// Restaure/garantit l'existence des timers
+Object.defineProperty(globalThis, 'setTimeout', {
+    value: realSetTimeout,
     writable: true,
-})
-
-Object.defineProperty(global, 'clearTimeout', {
-    value: vi.fn((id) => realClearTimeout(id)),
+});
+Object.defineProperty(globalThis, 'clearTimeout', {
+    value: realClearTimeout,
     writable: true,
-})
+});
+
+// (Optionnel) dans les tests individuels seulement : vi.useFakeTimers(), vi.advanceTimersByTime(...)
+// Évite vi.useFakeTimers() globalement dans le setup ; utilise-le dans les tests qui en ont besoin.
 
 // ========================================
 // 2. CORRECTION : Mock axios complet avec create + interceptors
@@ -33,53 +42,14 @@ vi.mock('axios', () => {
         post: vi.fn(),
         put: vi.fn(),
         delete: vi.fn(),
-        patch: vi.fn(),
-        // Interceptors attendus par src/api.js
         interceptors: {
-            request: {
-                use: vi.fn(),
-                eject: vi.fn(),
-                handlers: []
-            },
-            response: {
-                use: vi.fn(),
-                eject: vi.fn(),
-                handlers: []
-            },
+            request: { use: vi.fn(), eject: vi.fn() },
+            response: { use: vi.fn(), eject: vi.fn() },
         },
-        // axios.create doit retourner "un client" qui a les mêmes props
-        create: vi.fn(function () {
-            return {
-                ...mock,
-                // Chaque instance a ses propres interceptors
-                interceptors: {
-                    request: {
-                        use: vi.fn(),
-                        eject: vi.fn(),
-                        handlers: []
-                    },
-                    response: {
-                        use: vi.fn(),
-                        eject: vi.fn(),
-                        handlers: []
-                    },
-                }
-            }
-        }),
-        // Méthodes statiques
-        defaults: {
-            headers: {
-                common: {},
-                get: {},
-                post: {},
-                put: {},
-                delete: {},
-                patch: {}
-            }
-        }
-    }
-    return { default: mock }
-})
+        create: vi.fn(function () { return mock; }), // <- IMPORTANT
+    };
+    return { default: mock };
+});
 
 // ========================================
 // 3. CORRECTION : Mock localStorage réaliste avec événements
