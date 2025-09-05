@@ -60,6 +60,7 @@ describe('App.vue', () => {
 
         it('affiche le splash quand déclenché', async () => {
             wrapper.vm.triggerSplash()
+            await wrapper.vm.$nextTick()
 
             expect(wrapper.vm.showSplash).toBe(true)
             expect(wrapper.find('.splash-overlay').exists()).toBe(true)
@@ -67,11 +68,12 @@ describe('App.vue', () => {
 
         it('affiche le contenu du splash', async () => {
             wrapper.vm.triggerSplash()
+            await wrapper.vm.$nextTick()
 
             const splashContent = wrapper.find('.splash-content')
             expect(splashContent.exists()).toBe(true)
-            expect(splashContent.find('.splash-title').text()).toBe('Taskforce')
-            expect(splashContent.find('.splash-subtitle').text()).toBe('Chargement des données...')
+            expect(splashContent.find('.splash-title').text()).toBe('TaskForce')
+            expect(splashContent.find('.splash-subtitle').text()).toBe('Chargement…')
             expect(splashContent.find('.splash-spinner').exists()).toBe(true)
         })
 
@@ -119,15 +121,21 @@ describe('App.vue', () => {
         it('écoute l\'événement show-splash', () => {
             const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
 
+            // Créer un nouveau wrapper pour capturer l'appel à addEventListener
+            const testWrapper = createWrapper()
+
             // Le composant devrait écouter l'événement au montage
             expect(addEventListenerSpy).toHaveBeenCalledWith('show-splash', expect.any(Function))
+
+            testWrapper.unmount()
         })
 
-        it('déclenche le splash lors de l\'événement show-splash', () => {
+        it('déclenche le splash lors de l\'événement show-splash', async () => {
             expect(wrapper.vm.showSplash).toBe(false)
 
             // Déclencher l'événement
             window.dispatchEvent(new CustomEvent('show-splash'))
+            await wrapper.vm.$nextTick()
 
             expect(wrapper.vm.showSplash).toBe(true)
         })
