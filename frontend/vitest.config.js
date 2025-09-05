@@ -10,6 +10,7 @@ export default defineConfig({
         setupFiles: ['./tests/setup.js'],
         include: ['tests/**/*.test.js'],
         exclude: ['node_modules', 'dist'],
+        reporters: ['verbose'],
         coverage: {
             provider: 'v8',
             reporter: ['text', 'json', 'html'],

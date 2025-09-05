@@ -8,6 +8,11 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<HistoriqueTache>
+ *
+ * @method HistoriqueTache|null find($id, $lockMode = null, $lockVersion = null)
+ * @method HistoriqueTache|null findOneBy(array $criteria, array $orderBy = null)
+ * @method HistoriqueTache[]    findAll()
+ * @method HistoriqueTache[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class HistoriqueTacheRepository extends ServiceEntityRepository
 {

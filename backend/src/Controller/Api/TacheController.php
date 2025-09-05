@@ -27,9 +27,42 @@ class TacheController extends AbstractController
     {
         try {
             $taches = $tacheRepo->findBy(['mission' => $id]);
+            
+            // Sérialiser les tâches avec les groupes appropriés pour inclure les relations
+            $serializedTaches = [];
+            foreach ($taches as $tache) {
+                $serializedTaches[] = [
+                    'id' => $tache->getId(),
+                    'titre' => $tache->getTitre(),
+                    'description' => $tache->getDescription(),
+                    'chargeEstimee' => $tache->getChargeEstimee(),
+                    'chargeReelle' => $tache->getChargeReelle(),
+                    'dateDebut' => $tache->getDateDebut()?->format('Y-m-d\TH:i:s\Z'),
+                    'dateFinPrevue' => $tache->getDateFinPrevue()?->format('Y-m-d\TH:i:s\Z'),
+                    'statut' => $tache->getStatut(),
+                    'priorite' => $tache->getPriorite(),
+                    'collaborateur' => $tache->getCollaborateur() ? [
+                        'id' => $tache->getCollaborateur()->getId(),
+                        'nom' => $tache->getCollaborateur()->getNom(),
+                        'prenom' => $tache->getCollaborateur()->getPrenom(),
+                        'email' => $tache->getCollaborateur()->getEmail(),
+                        'role' => $tache->getCollaborateur()->getRole()
+                    ] : null,
+                    'competenceRequise' => $tache->getCompetenceRequise() ? [
+                        'id' => $tache->getCompetenceRequise()->getId(),
+                        'nom' => $tache->getCompetenceRequise()->getNom(),
+                        'description' => $tache->getCompetenceRequise()->getDescription()
+                    ] : null,
+                    'mission' => $tache->getMission() ? [
+                        'id' => $tache->getMission()->getId(),
+                        'titre' => $tache->getMission()->getTitre()
+                    ] : null
+                ];
+            }
+            
             return new JsonResponse([
                 'message' => 'Tâches du projet récupérées.',
-                'data' => $taches
+                'data' => $serializedTaches
             ], 200);
         } catch (\Exception $e) {
             return new JsonResponse([
@@ -52,9 +85,41 @@ class TacheController extends AbstractController
         // Récupérer toutes les tâches assignées à ce collaborateur
         $taches = $em->getRepository(Tache::class)->findBy(['collaborateur' => $collaborateur]);
 
+        // Sérialiser les tâches avec les groupes appropriés pour inclure les relations
+        $serializedTaches = [];
+        foreach ($taches as $tache) {
+            $serializedTaches[] = [
+                'id' => $tache->getId(),
+                'titre' => $tache->getTitre(),
+                'description' => $tache->getDescription(),
+                'chargeEstimee' => $tache->getChargeEstimee(),
+                'chargeReelle' => $tache->getChargeReelle(),
+                'dateDebut' => $tache->getDateDebut()?->format('Y-m-d\TH:i:s\Z'),
+                'dateFinPrevue' => $tache->getDateFinPrevue()?->format('Y-m-d\TH:i:s\Z'),
+                'statut' => $tache->getStatut(),
+                'priorite' => $tache->getPriorite(),
+                'collaborateur' => $tache->getCollaborateur() ? [
+                    'id' => $tache->getCollaborateur()->getId(),
+                    'nom' => $tache->getCollaborateur()->getNom(),
+                    'prenom' => $tache->getCollaborateur()->getPrenom(),
+                    'email' => $tache->getCollaborateur()->getEmail(),
+                    'role' => $tache->getCollaborateur()->getRole()
+                ] : null,
+                'competenceRequise' => $tache->getCompetenceRequise() ? [
+                    'id' => $tache->getCompetenceRequise()->getId(),
+                    'nom' => $tache->getCompetenceRequise()->getNom(),
+                    'description' => $tache->getCompetenceRequise()->getDescription()
+                ] : null,
+                'mission' => $tache->getMission() ? [
+                    'id' => $tache->getMission()->getId(),
+                    'titre' => $tache->getMission()->getTitre()
+                ] : null
+            ];
+        }
+
         return new JsonResponse([
             'message' => 'Tâches du collaborateur récupérées.',
-            'data' => $taches
+            'data' => $serializedTaches
         ], 200);
     }
 
@@ -62,9 +127,43 @@ class TacheController extends AbstractController
     #[Route('', methods: ['GET'])]
     public function index(TacheRepository $repo): JsonResponse
     {
+        $taches = $repo->findAll();
+        
+        // Sérialiser les tâches avec les groupes appropriés pour inclure les relations
+        $serializedTaches = [];
+        foreach ($taches as $tache) {
+            $serializedTaches[] = [
+                'id' => $tache->getId(),
+                'titre' => $tache->getTitre(),
+                'description' => $tache->getDescription(),
+                'chargeEstimee' => $tache->getChargeEstimee(),
+                'chargeReelle' => $tache->getChargeReelle(),
+                'dateDebut' => $tache->getDateDebut()?->format('Y-m-d\TH:i:s\Z'),
+                'dateFinPrevue' => $tache->getDateFinPrevue()?->format('Y-m-d\TH:i:s\Z'),
+                'statut' => $tache->getStatut(),
+                'priorite' => $tache->getPriorite(),
+                'collaborateur' => $tache->getCollaborateur() ? [
+                    'id' => $tache->getCollaborateur()->getId(),
+                    'nom' => $tache->getCollaborateur()->getNom(),
+                    'prenom' => $tache->getCollaborateur()->getPrenom(),
+                    'email' => $tache->getCollaborateur()->getEmail(),
+                    'role' => $tache->getCollaborateur()->getRole()
+                ] : null,
+                'competenceRequise' => $tache->getCompetenceRequise() ? [
+                    'id' => $tache->getCompetenceRequise()->getId(),
+                    'nom' => $tache->getCompetenceRequise()->getNom(),
+                    'description' => $tache->getCompetenceRequise()->getDescription()
+                ] : null,
+                'mission' => $tache->getMission() ? [
+                    'id' => $tache->getMission()->getId(),
+                    'titre' => $tache->getMission()->getTitre()
+                ] : null
+            ];
+        }
+        
         return new JsonResponse([
             'message' => 'Liste des tâches.',
-            'data'    => $repo->findAll()
+            'data' => $serializedTaches
         ], 200);
     }
 
@@ -72,9 +171,37 @@ class TacheController extends AbstractController
     #[Route('/{id}', methods: ['GET'])]
     public function show(Tache $tache): JsonResponse
     {
+        $serializedTache = [
+            'id' => $tache->getId(),
+            'titre' => $tache->getTitre(),
+            'description' => $tache->getDescription(),
+            'chargeEstimee' => $tache->getChargeEstimee(),
+            'chargeReelle' => $tache->getChargeReelle(),
+            'dateDebut' => $tache->getDateDebut()?->format('Y-m-d\TH:i:s\Z'),
+            'dateFinPrevue' => $tache->getDateFinPrevue()?->format('Y-m-d\TH:i:s\Z'),
+            'statut' => $tache->getStatut(),
+            'priorite' => $tache->getPriorite(),
+            'collaborateur' => $tache->getCollaborateur() ? [
+                'id' => $tache->getCollaborateur()->getId(),
+                'nom' => $tache->getCollaborateur()->getNom(),
+                'prenom' => $tache->getCollaborateur()->getPrenom(),
+                'email' => $tache->getCollaborateur()->getEmail(),
+                'role' => $tache->getCollaborateur()->getRole()
+            ] : null,
+            'competenceRequise' => $tache->getCompetenceRequise() ? [
+                'id' => $tache->getCompetenceRequise()->getId(),
+                'nom' => $tache->getCompetenceRequise()->getNom(),
+                'description' => $tache->getCompetenceRequise()->getDescription()
+            ] : null,
+            'mission' => $tache->getMission() ? [
+                'id' => $tache->getMission()->getId(),
+                'titre' => $tache->getMission()->getTitre()
+            ] : null
+        ];
+        
         return new JsonResponse([
             'message' => 'Tâche trouvée.',
-            'data'    => $tache
+            'data' => $serializedTache
         ], 200);
     }
 
